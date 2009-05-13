@@ -1,0 +1,53 @@
+plot.tclust.Nd <-
+function (x, col, labels = c("cluster", "observation"), main, sub, text, xlab, ylab, ...)
+{
+	if (is.null (x$par$x))
+		stop ("dataset not included in tclust object - cannot plot object.")
+	
+	if (missing (col))
+		col = x$assign + 1
+
+	if (missing (sub))
+		sub <- paste ("k = ", x$k, #" (", x$par$k, "), 
+						", alpha = ", x$par$alpha, #", obj = ", round (x$obj, 2), 
+						sep = "")
+						
+	if (missing (main))
+		#main = "Cluster Assignment"
+		main = "Classification"
+
+	X <- discr_coords (x, x$par$equal.weights)
+
+	if (!missing (text))
+	{
+		if(length (text) != x$dim[1]) #nrow (X))
+			warning (paste ("parameter text: text array of length", x$dim[1], "expected"))
+	}
+	else if (!missing (labels))
+	{
+    	labels <- match.arg(labels)
+		if (labels == "cluster")
+			text = paste (x$assign)
+		else if (labels == "observation")
+			text = paste (1:nrow (X))
+	}
+
+	if (missing (xlab))
+		xlab <- "First discriminant coord."
+	if (missing (ylab))
+		ylab <- "Second discriminant coord."
+
+	if (missing (text))
+		plot (X[,1],X[,2], col = col, sub = sub, main = main, axes = FALSE, xlab = xlab, ylab = ylab, ...)
+	else
+	{
+		plot (X[,1], X[,2], main = main, type = "n", axes = FALSE, xlab = xlab, ylab = ylab, ...)
+		text (X[,1], X[,2], labels = text, col = col)
+	}
+	
+	mtext(sub, cex = 0.8, line= 0.25)
+
+	
+	box ()
+}
+
