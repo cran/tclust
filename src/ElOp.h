@@ -17,8 +17,6 @@
 */
 
 
-#pragma once
-
 	template <class T> class IMat ;
 	template <class T> class IVec ;
 //	template <class T> class IMatEdit ;
@@ -272,7 +270,7 @@
 		{
 
 			DWORD dwRetSize = max (vec1.size (), vec2.size ()) ;
-			ret.Recreate (dwRetSize) ;
+			ret.Reshape (dwRetSize) ;
 
 			DWORD	dwIdx1 = CheckIdx (dwRetSize - 1, vec1.size ()),
 					dwIdx2 = CheckIdx (dwRetSize - 1, vec2.size ()) ;

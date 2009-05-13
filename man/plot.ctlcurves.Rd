@@ -7,11 +7,7 @@ Plotting a \code{ctlcurves} object comparing the target functions values with di
 %These functions plot a ctlcurves object in two different styles, either classic or simple. The classical style displays three rows of diagnostic plots, analyzing different clustering results on the same dataset. The first row shows the target functions value. The second row displays the increase of the target functions value gained by increasing k by one, whereas the third row shows the minimum cluster weights for each estimation. The simple plots only display the target functions values, comparing the results of different values of parameter \code{restr.fact}.
 }
 \usage{
-%plot.ctlcurves(x, plot.idx, link.ylim = TRUE, ylim, main, min.weights = FALSE, ...)
-plot.ctlcurves(x, main, ylim, ylab, min.weights = FALSE, ...)
-%plot.ctlcurves(x, simple, ...)
-%plot.ctlcurves.simple(x, plot.idx, link.ylim = TRUE, ylim, main, ...)
-%plot.ctlcurves.classic(x, plot.idx, set.idx = 1, ...)
+plot.ctlcurves(x, main, ylim, ylab, min.weights = FALSE, col, lty = 1, ...)
 }
 \arguments{
   \item{x}{ The ctlcurves object to be printed. }
@@ -24,6 +20,8 @@ plot.ctlcurves(x, main, ylim, ylab, min.weights = FALSE, ...)
   \item{ylim, ylab}{ Argument passed to \code{\link[graphics]{plot}}. }
 %  \item{set.idx}{ If the \code{ctlcurves} - object contains more than one factor, only data related to \code{factor[set.idx]} is displayed. }
   \item{min.weights}{Locigal value indicating whether the minimum cluster weights shall be printed instead of the target functions values. By default this option is disabled}
+  \item{col}{ A single value or vector of line colors passed to \code{\link[graphics]{lines}}. }
+  \item{lty}{ A single value or vector of line types passed to \code{\link[graphics]{lines}}. }
    \item{\dots}{ Further arguments, passed to \code{\link[graphics]{plot}}. }
 }
 \details{ These curves show the values of the trimmed classification (log-)likelihoods when altering the trimming proportion \code{alpha} and the number of clusters \code{k}. The careful examination of these curves provides valuable information for choosing these parameters in a clustering problem. For instance, an appropriate \code{k} to be chosen is one that we do not observe a clear increase in the trimmed classification likelihood curve for k with respect to the k+1 curve for almost all the range of alpha values. Moreover, an appropriate choice of parameter alpha may be derived by determining where an initial fast increase of the trimmed classification likelihood curve stops for the final chosen k. A more detailed explanation can be found in García-Escudero et al (2009). }

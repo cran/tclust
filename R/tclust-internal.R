@@ -47,15 +47,16 @@ function (x, fact)
 }
 
 .vline <-
-function (x, yfact = 2, col = 1, ...)
+function (x, yfact = 2, col = 1, lty = 1, lwd = 1, ...)
 {
 	 ylim = par ("usr")[3:4]
 	 ylim <- ylim + diff (ylim) * (1 - 1 / yfact) / 2 * c(1,-1)
 	 
-	 if (length (col) == 1)
-	 	col = rep (col, length (x))
+ 	col = rep (col, length (x))
+ 	lty = rep (lty, length (x))
+ 	lwd = rep (lwd, length (x))
 	 
 	 for (i in 1:length (x))
-	 	lines (rep (x[i], 2), ylim, col = col[i],...)
+	 	lines (rep (x[i], 2), ylim, col = col[i], lty = lty [i], lwd = lwd [i], ...)
 }
 

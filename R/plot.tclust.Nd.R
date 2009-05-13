@@ -1,16 +1,37 @@
 plot.tclust.Nd <-
-function (x, col, labels = c("cluster", "observation"), main, sub, text, xlab, ylab, ...)
+function (x, labels = c("cluster", "observation"), text, main, sub, xlab, ylab, pch, col, by.cluster = FALSE, ...)
 {
 	if (is.null (x$par$x))
 		stop ("dataset not included in tclust object - cannot plot object.")
 	
-	if (missing (col))
-		col = x$assign + 1
-
 	if (missing (sub))
 		sub <- paste ("k = ", x$k, #" (", x$par$k, "), 
 						", alpha = ", x$par$alpha, #", obj = ", round (x$obj, 2), 
 						sep = "")
+
+	if (by.cluster)
+	{
+		maxassig <- max (x$assign)
+		
+		if (missing (col))
+			col <- 1:(x$k+1)
+		else
+			col <- rep (col,  len = maxassig + 1 )	
+		
+		if (missing (pch))
+			pch <- 1:(x$k+1)
+		else
+			pch <- rep (pch,  len = maxassig + 1 )
+		col <- col [x$assign + 1]		
+		pch <- pch [x$assign + 1]
+	}
+	else
+	{
+		if (missing (col))
+			col <- x$assign + 1
+		if (missing (pch))
+			pch <- 1
+	}
 						
 	if (missing (main))
 		#main = "Cluster Assignment"
@@ -20,8 +41,7 @@ function (x, col, labels = c("cluster", "observation"), main, sub, text, xlab, y
 
 	if (!missing (text))
 	{
-		if(length (text) != x$dim[1]) #nrow (X))
-			warning (paste ("parameter text: text array of length", x$dim[1], "expected"))
+		text <- rep (text, x$dim[1])
 	}
 	else if (!missing (labels))
 	{
@@ -38,15 +58,14 @@ function (x, col, labels = c("cluster", "observation"), main, sub, text, xlab, y
 		ylab <- "Second discriminant coord."
 
 	if (missing (text))
-		plot (X[,1],X[,2], col = col, sub = sub, main = main, axes = FALSE, xlab = xlab, ylab = ylab, ...)
+		plot (X[,1],X[,2], sub = sub, main = main, axes = FALSE, xlab = xlab, ylab = ylab, pch = pch, col = col, ...)
 	else
 	{
-		plot (X[,1], X[,2], main = main, type = "n", axes = FALSE, xlab = xlab, ylab = ylab, ...)
+		plot (X[,1], X[,2], main = main, type = "n", axes = FALSE, xlab = xlab, ylab = ylab, pch = pch, ...)
 		text (X[,1], X[,2], labels = text, col = col)
 	}
-	
-	mtext(sub, cex = 0.8, line= 0.25)
 
+	mtext(sub, cex = 0.8, line= 0.25)
 	
 	box ()
 }

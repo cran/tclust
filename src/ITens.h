@@ -17,22 +17,20 @@
 */
 
 
-#pragma once
 
 #include "IDim.h"
 #include "ElOp.h"
 #include <R.h>
 
 
+#include <stdarg.h>
+
 #define DIM_SEL		((DWORD) -1)
 	
 	template <class T> class IMat ;
-//	template <class T> class IMatEdit ;
 	template <class T> class IVec ;
-//	template <class T> class IVecEdit ;
 	template <class T, class D> class ITens_ ;
 	template <class T, class D> class ITensFlat ;
-//	template <class T, class D> class ITensEdit_ ;
 	template <class T, class D> class ITensFlatEdit ;
 
 	template <class T, class D>	class ITensConst ;

@@ -1,6 +1,8 @@
 tclust <-
 function (x, k = 3, alpha = 0.05, niter = 50, Ksteps = 10, restr = c("eigen", "deter", "sigma"), restr.fact = 2, equal.weights = FALSE, center, scale, store.x = TRUE, drop.empty.clust = TRUE, trace = 0, zero.tol = 1e-16)
 {
+
+	usetrace = max (0, trace)
 	if (is.data.frame (x))
 		x = as.matrix (x)
 	if (!is.numeric (x))
@@ -34,7 +36,7 @@ function (x, k = 3, alpha = 0.05, niter = 50, Ksteps = 10, restr = c("eigen", "d
 #	scaled = pcaPP:::ScaleAdv (x, center, scale)
 
 	ret <- .C ( "tclust",
-				as.integer (c (dim (x), k, niter, Ksteps, equal.weights, restr, trace)),		# integer parameters (last params: m_dwDebugPrint, m_dwConvCount, m_dwIterSuccess, m_dwAllEVZero)
+				as.integer (c (dim (x), k, niter, Ksteps, equal.weights, restr, usetrace)),		# integer parameters (last params: m_dwDebugPrint, m_dwConvCount, m_dwIterSuccess, m_dwAllEVZero)
 				parN = integer (3),
 				as.double (c (alpha, restr.fact, zero.tol)),													# double parameters
 				parD = double (1),

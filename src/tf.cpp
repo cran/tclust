@@ -2,19 +2,19 @@
 #include <R.h>
 
 #include "tf.h"
-
+/*
 #ifdef _MSC_VER
 	#include "..\..\..\IMat\RFunc.h"	 
-	#include "..\..\..\IMat\IMat.h"
+//	#include "..\..\..\IMat\IMat.h"
 #else
 	#include "RFunc.h"	 
-	#include "IMat.h"
+//	#include "IMat.h"
 #endif
-
+*/
 #include <R_ext/Applic.h>
 #include <Rmath.h>
 
-#include "restr.h"
+//#include "restr.h"
 
 	void TClust::FindInitClustSize ()
 	{
@@ -26,6 +26,11 @@
 		}
 		else	
 		{
+
+
+			GetRNGstate();
+
+
 			IVecD v (m_K) ;
 			DWORD k, n ;
 
@@ -52,7 +57,7 @@
 						break ;
 					}
 			}
-
+			PutRNGstate();
 			m_vWeights = m_vClustSize / m_dwNoTrim ;
 		}
 	}
@@ -67,6 +72,7 @@
 		}
 		else	
 		{
+			GetRNGstate();
 			IVecD v (m_K) ;
 
 			DWORD k, n ;
@@ -96,7 +102,7 @@
 					}
 			}
 
-			
+			PutRNGstate();
 
 			IVecD vtemp (m_K) ;
 			vtemp << m_vClustSize ;
@@ -119,6 +125,7 @@ if (int(m_dwTrace) >= 10)
 
 		IVecD vP (m_K) ;
 
+		GetRNGstate();
 		for (k = 0; k < m_K; k++)
 		{	//	for all clusters
 			//	finds p+1 observations for forming the initial cluster
@@ -131,7 +138,7 @@ if (int(m_dwTrace) >= 10)
 			colMeans (curX, m_avCurM[k]) ;
 			cov (curX, m_amCurS[k]) ;
 		}
-
+		PutRNGstate();
 		m_tCurS *= (m_p) / (m_p  + 1.0) ;
 	}
 
@@ -373,16 +380,18 @@ if (int(m_dwTrace) >= 10)
 			FindInitClustAssignment () ;
 
 
-			FindInitClustSize_R () ;
+			FindInitClustSize () ;
 
 			for (j = 0; 1; j++)
 			{
 
 				if (!trimEval ())
+				{
 					if (i)
 						return !SaveCurResult (CalcObjFunc (), 2) ;
 					else
 						SetAllCovmatsIdent () ;
+				}
 				if (!FindClustAssignment () ||		//	returns false, if the cluster assignment has not changed -> break 
 					j == m_dwKSteps)				//	max number of iterations reached -> break
 					break ;
@@ -435,6 +444,14 @@ if (int(m_dwTrace) >= 10)
 		m_mTempNP1 (m_n, m_p), m_mTempNP2 (m_n, m_p), m_mBestEVal (m_p, m_K), m_vWeights (m_K), m_vClustSize (m_K),
 		m_vDisc (m_n), m_vDiscSorted (m_n), m_vTempN1(m_n), m_vTempN2 (m_n), m_vTempNPp2 (2 * m_n * m_p + 2)/*,  m_vTrimIdx(m_n), m_vTrimIdxBest(m_n)*/
 	{
+
+			if (m_dwTrace >= 1)
+			{
+				Rprintf ("nParams: %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d\r\n", m_n, m_p, m_K, m_dwIter, m_dwKSteps, m_dwEqualWeights, m_dwRestr, m_dwTrace, m_dwConvCount, m_dwIterSuccess, m_dwCode) ;
+				Rprintf ("dParams: %f, %f, %f, %f\r\n", m_dAlpha, m_dFactor, m_dZeroTol, m_dBestObj) ;
+
+			}
+
 			//	splitting matrices and tensors into vector - and matrix arrays
 		m_tEVec.GetIMatArray (0, 1, m_amEVec) ;
 		m_tCurS.GetIMatArray (0, 1, m_amCurS) ;

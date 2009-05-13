@@ -1,11 +1,11 @@
-plot.bayesfact.p2 <-
-function (x, xlab = "Bayes Factor", ylab = "Clusters", main, xlim, print.bayes = TRUE, ...)
+plot.DiscrFact.p2 <-
+function (x, xlab = "Discriminant Factor", ylab = "Clusters", main, xlim, print.Discr = TRUE, ...)
 #, draw.legend
 {
 	n = x$x$dim[1]
 
 	if (missing (main))
-		#main = paste ("Mean Overall Bayes Factor =", format (mean (x$assignfact), digits = 3))
+		#main = paste ("Mean Overall Discriminant Factor =", format (mean (x$assignfact), digits = 3))
 		main = "Silhouette Plot"	
 
 	if (missing (xlim))
@@ -47,21 +47,21 @@ function (x, xlab = "Bayes Factor", ylab = "Clusters", main, xlim, print.bayes =
 			if (k == x$x$k)
 				ul <- par("usr") [4]
 
-#			lines (rep (x$mean.bayesfact[k + 1], 2), c(ll, ul), lty = 3)
+#			lines (rep (x$mean.DiscrFact[k + 1], 2), c(ll, ul), lty = 3)
 		}
 		cury = cury + gs
 	}
 
 	xpos = sum (par ("usr")[1:2] * c(1, 4)) / 5
 	
-	if (print.bayes)
+	if (print.Discr)
 	{
-#		text (xpos, cs, paste ("mean BF:", format (x$mean.bayesfact, digits = 4)), adj = 1)
-		legend ("topleft", legend = format (x$mean.bayesfact[(x$x$k + 1):1], digits = 4), inset = 0.04, col = 1 + (x$x$k:0), pch = 15, title = "Mean Bayes Factors", box.lwd = 0, bty = "n")	
+#		text (xpos, cs, paste ("mean BF:", format (x$mean.DiscrFact, digits = 4)), adj = 1)
+		legend ("topleft", legend = format (x$mean.DiscrFact[(x$x$k + 1):1], digits = 4), inset = 0.04, col = 1 + (x$x$k:0), pch = 15, title = "Mean Discriminant Factors", box.lwd = 0, bty = "n")	
 	}
 	abline(v = x$threshold + 1, lty = 2)
 
 #	if (draw.legend)
-#		legend (xlim[1] * 0.95, x$x$dim[1], c("Threshold", "Mean Bayes Factor per Cluster"), lty = 2:3)
+#		legend (xlim[1] * 0.95, x$x$dim[1], c("Threshold", "Mean Discriminant Factor per Cluster"), lty = 2:3)
 }
 

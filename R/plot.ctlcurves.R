@@ -1,5 +1,5 @@
 plot.ctlcurves <-
-function(x, main, ylim, ylab, min.weights = FALSE, ...)
+function(x, main, ylim, ylab, min.weights = FALSE, col, lty = 1, ...)
 {
 #	if (missing (plot.idx))
 #		par (mfrow = c (1, length (x$par$restr.fact)))
@@ -29,6 +29,13 @@ function(x, main, ylim, ylab, min.weights = FALSE, ...)
 
 	if (!missing (main))
 		setmain = main
+		
+	lty <- rep (lty, length (x$par$k))
+	
+	if (missing (col))
+		col <- x$par$k + 1
+	else
+		col <- rep (col, length (x$par$k))
 
 	for (i in 1: length (x$par$restr.fact))
 	{
@@ -48,7 +55,7 @@ function(x, main, ylim, ylab, min.weights = FALSE, ...)
 			if (min.weights && x$par$k[j] == 1)
 				next		# k == 1 -> min.weights == 1 -> we're not interested in that. 
 
-			lines (x$par$alpha, dat[j,,i], type="b", col = x$par$k[j] + 1, lty = 1, pch = as.character (x$par$k[j]))
+			lines (x$par$alpha, dat[j,,i], type="b", col = col[j], lty = lty[j], pch = as.character (x$par$k[j]))
 		}
 	}
 }

@@ -17,10 +17,8 @@
 */
 
 
-#pragma once
-
 #include "ITens.h"
-#include <stdio.h>
+//#include <stdio.h>
 
 template <class T> class IMatByRow ;
 
@@ -204,18 +202,23 @@ template <class T> class IMatByRow ;
 			delete [] pOrd ;
 		}
 
-		T *Detach (DWORD &dwSize = *(DWORD *) NULL)
+		T *Detach (DWORD &dwSize)
+		{
+			dwSize = size () ;
+			return Detach () ;
+		}
+
+		T *Detach ()
 		{
 			if (!t_base::IsFlat ())
 				return NULL ;
 
-			if (&dwSize)
-				dwSize = size () ;
 			IDim::Empty (t_base::m_apDim[0]) ;
 
 			return ::Detach (t_base::m_pDataRef) ;
 		}
 
+		
 		IMPL_OPERATOR_VEC(+, += , FC::FC_plus, IVec, T)
 		IMPL_OPERATOR_VEC(-, -= , FC::FC_minus, IVec, T)
 		IMPL_OPERATOR_VEC(/, /= , FC::FC_divide, IVec, T)
@@ -547,10 +550,10 @@ template <class T> class IMatByRow ;
 	class IMatByRow
 	{
 		public:
-			IMPL_OPERATOR_MAT_BY_ROW (+, +=, FC::FC_plus,		IMat, T) ;
-			IMPL_OPERATOR_MAT_BY_ROW (/, /=, FC::FC_divide,		IMat, T) ;
-			IMPL_OPERATOR_MAT_BY_ROW (*, *=, FC::FC_multiply,	IMat, T) ;
-			IMPL_OPERATOR_MAT_BY_ROW (^, ^=, FC::FC_pow,		IMat, T) ;
+			IMPL_OPERATOR_MAT_BY_ROW (+, +=, FC::FC_plus,		IMat, T)
+			IMPL_OPERATOR_MAT_BY_ROW (/, /=, FC::FC_divide,		IMat, T)
+			IMPL_OPERATOR_MAT_BY_ROW (*, *=, FC::FC_multiply,	IMat, T)
+			IMPL_OPERATOR_MAT_BY_ROW (^, ^=, FC::FC_pow,		IMat, T)
 //			IMPL_OPERATOR_MAT_BY_ROW (-, -=, FC::FC_minus,		IMat, T) ;
 
 			template <class U> inline IMat<T>  operator -   (const IVec<U> &vec)	const	{ return FC_ElOp<FC::FC_minus, T>::OpMV_row	(Item (), vec); }

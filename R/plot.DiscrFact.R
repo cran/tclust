@@ -1,4 +1,4 @@
-plot.bayesfact <-
+plot.DiscrFact <-
 function (x, ...)
 {
 #	if (nrow (x$center) <= 2)
@@ -9,7 +9,7 @@ function (x, ...)
 #	else
 #		par (mfrow = c(1, 2))
 
-	plot.bayesfact.p2 (x, ...)
-	plot.bayesfact.p3 (x, ...)	
+	plot.DiscrFact.p2 (x, ...)
+	plot.DiscrFact.p3 (x, ...)	
 }
 

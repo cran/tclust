@@ -20,7 +20,7 @@
 #include <math.h>
 #include "RFunc.h"
 
-#include "IMat.h"
+//#include "IMat.h"
 
 
 #include <R_ext/BLAS.h>

@@ -1,4 +1,4 @@
-bayesfact <-
+DiscrFact <-
 function (x, threshold = 1/10)
 	{
 		p <- x$dim[2]
@@ -40,14 +40,14 @@ function (x, threshold = 1/10)
 		ylimmin = min (assignfact[idx.fin]) * 1.5
 		assignfact[!idx.fin] = ylimmin * 2
 
-		mean.bayesfact <- array (,x$k)
+		mean.DiscrFact <- array (,x$k)
 		for (i in 0:x$k)
-			mean.bayesfact [i + 1] = mean (assignfact [ind == i])
+			mean.DiscrFact [i + 1] = mean (assignfact [ind == i])
 			
-		names (mean.bayesfact) <- c ("O", 1:x$k)
+		names (mean.DiscrFact) <- c ("O", 1:x$k)
 
-		ret = list (x = x, ylimmin = ylimmin, ind = ind, ind2 = ind2, assignfact = assignfact, disc = disc, disc2 = disc2, threshold = log (threshold), mean.bayesfact = mean.bayesfact)
-		class (ret) = "bayesfact"
+		ret = list (x = x, ylimmin = ylimmin, ind = ind, ind2 = ind2, assignfact = assignfact, disc = disc, disc2 = disc2, threshold = log (threshold), mean.DiscrFact = mean.DiscrFact)
+		class (ret) = "DiscrFact"
 		ret
 	}
 

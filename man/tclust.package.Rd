@@ -3,7 +3,7 @@
 \alias{tclust-package}
 \docType{package}
 \title{ General Trimmed Cluster Analysis }
-\description{ A package implementing the cluster algorithm (\code{\link[tclust]{tclust}})as introduced in ..., including some graphical diagnostic tools (\code{\link[tclust]{ctlcurves}} and \code{\link[tclust]{bayesfact}}) }
+\description{ A package implementing the cluster algorithm (\code{\link[tclust]{tclust}})as introduced in ..., including some graphical diagnostic tools (\code{\link[tclust]{ctlcurves}} and \code{\link[tclust]{DiscrFact}}) }
 \details{
 \tabular{ll}{
 Package: \tab tclust\cr

@@ -1,4 +1,4 @@
-summary.bayesfact <-
+summary.DiscrFact <-
 function (object, hide.emtpy = TRUE, show.clust, show.alt, ...)
 {
 	idx = object$assignfact > object$threshold

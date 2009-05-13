@@ -25,7 +25,7 @@ The constant \code{restr.fact >= 1} constrains the allowed differences among gro
 	\item{equal.weights}{  A logical value, specifying whether equal cluster weights (\code{TRUE}) or not (\code{FALSE}) shall be considered in the concentration and assignment steps. }
 	\item{center, scale}{ A center and scale vector, each of length \code{p} which can optionally be specified for centering and scaling \code{x} before calculation }
 	%For centering and scaling \code{x} before calculation, these parameters are passed to \code{\link[pcaPP]{ScaleAdv}}. Usual choices are \code{center = mean, scale = sd} for classical, or \code{center = median, scale = mad} for robust scaling. }	
-	\item{store.x}{ A logical value, specifying whether the data matrix \code{x} shall be included in the result structure. By default this value is set to \code{TRUE}, because functions \code{\link{plot.tclust}} and \code{\link{bayesfact}} depend on this information. However, when big data matrices are handled, the result structure's size can be decreased noticeably when setting this parameter to \code{FALSE}. }
+	\item{store.x}{ A logical value, specifying whether the data matrix \code{x} shall be included in the result structure. By default this value is set to \code{TRUE}, because functions \code{\link{plot.tclust}} and \code{\link{DiscrFact}} depend on this information. However, when big data matrices are handled, the result structure's size can be decreased noticeably when setting this parameter to \code{FALSE}. }
 	\item{drop.empty.clust}{ Logical value specifying, whether empty clusters shall be omitted in the resulting object. (The result structure does not contain center and covariance estimates of empty clusters anymore. Cluster names are reassigned such that the first \code{l} clusters (\code{l <= k}) always have at least one observation. }
 %	\item{throwwarnings}{ Whether warnings shall be thrown due to unexpected algorithm behaviour. If the algorithm is used in a different context (e.g. \code{\link{graphical.tclust}}), the calling function might handle the warnings itself, not passing them to the user. }
 	\item{trace}{ Defines the tracing level, which is set to \code{0} by default. Tracing level \code{2} gives additional information on the iteratively decreasing objective function's value.}
@@ -110,31 +110,6 @@ clus <- tclust(swissbank,k = 3, alpha=0.0, restr.fact = 15)
 pairs(swissbank,col=clus$assig+1) # Pairs plot of the clustering solution
 plot(swissbank[,4],swissbank[,6],col=clus$assig+1,xlab="Distance of the inner frame to lower border", ylab="Length of the diagonal") # Two coordinates
 plot(clus)
-
-
-
-% library (tclust)
-% set.seed (100)
-
-% n1 <- 300
-% n2 <- 300
-% n3 <- 350
-% n0 <- 50
-
-% x = rbind (		matrix (rnorm (2 * n1) 			+ c( 5, -5)	, ncol = 2, byrow = TRUE), 
-% 				matrix (rnorm (2 * n2) * 2		+ c( 5,  5)	, ncol = 2, byrow = TRUE),
-% 				matrix (rnorm (2 * n3) * 0.75	+ c(-5, -5)	, ncol = 2, byrow = TRUE),
-% 				matrix (rnorm (2 * n0) * 20					, ncol = 2, byrow = TRUE))
-
-% a <- tclust (x,k=4, niter = 20, Ksteps = 10)				
-
-% plot (a)
-% plot (a, labels = "observation")
-% plot (a, labels = "cluster")
-
-%tclust.bayesplot (a)
-%graphical.tclust (x)
-
 }
 
 \keyword{ multivariate }
