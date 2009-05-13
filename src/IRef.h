@@ -60,12 +60,15 @@ typedef unsigned char BYTE ;
 #endif
 */
 
-
+/*
 #ifndef _MSC_VER
-	#define __int64 long long
+//	#define __int64 long long
+//typedef long int __int64
 #endif
+*/
+//#define BACK_CAST(CLASS, TO, FROM) ((TO *)(1 + ((__int64) CLASS) - ((__int64) (FROM *) (TO *) 1)))
 
-#define BACK_CAST(CLASS, TO, FROM) ((TO *)(1 + ((__int64) CLASS) - ((__int64) (FROM *) (TO *) 1)))
+#define BACK_CAST(CLASS, TO, FROM) ((TO *)(1 + ((BYTE *) CLASS) - ((BYTE *) (FROM *) (TO *) 1)))
 
 #ifndef ASSERT
 
