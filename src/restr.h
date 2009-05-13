@@ -1,6 +1,6 @@
 #include "R.h"
 #ifdef _MSC_VER
-	#include "..\..\IMat\RFunc.h"	 
+	#include "..\..\..\IMat\RFunc.h"	 
 #else
 	#include "RFunc.h"	 
 #endif

@@ -20,7 +20,8 @@
 #include <math.h>
 
 #include <memory.h>
-#include <malloc.h>
+#include <stdlib.h>
+
 #include <R.h>
 #pragma once
 

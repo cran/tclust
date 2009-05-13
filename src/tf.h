@@ -1,7 +1,7 @@
 #ifdef _MSC_VER
-	#include "..\..\IMat\RFunc.h"	 
-	#include "..\..\IMat\IMat.h"
-	#include "..\..\IMat\ITens.h"
+	#include "..\..\..\IMat\RFunc.h"	 
+	#include "..\..\..\IMat\IMat.h"
+	#include "..\..\..\IMat\ITens.h"
 #else
 	#include "RFunc.h"	 
 	#include "IMat.h"
