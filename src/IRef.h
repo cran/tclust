@@ -21,6 +21,7 @@
 
 #include <memory.h>
 //#include <stdlib.h>
+#include <cstdarg>
 
 #include <R.h>
 
@@ -310,10 +311,11 @@ typedef unsigned char BYTE ;
 
 	enum SetDataFlag
 	{
-		sdf_modeReference,
-		sdf_modeAttach,
-		sdf_modeCopy
+		sdf_modeReference = 0,
+		sdf_modeAttach = 1,
+		sdf_modeCopy = 2
 	} ;
+
 class TClust ;
 	template <class T>
 	class CDataRef : public CRefLockBase < CDataRef <T> >

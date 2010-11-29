@@ -37,9 +37,16 @@ template <class T> class IMatByRow ;
 	{
 		public:
 
-		static inline int compareDesc (OrderContainer<T> *p1, OrderContainer<T> *p2) { return -compare (p1, p2) ;}
+		//static inline int compareDesc (OrderContainer<T> *p1, OrderContainer<T> *p2) { return -compare (p1, p2) ;}
 
-		static int compare (OrderContainer<T> *p1, OrderContainer<T> *p2)
+		
+		static inline int compareDesc (const void *p1, const void *p2) { return -compare_core ((OrderContainer<T> *)p1, (OrderContainer<T> *)p2) ; }
+		static inline int compare (const void *p1, const void *p2) { return compare_core ((OrderContainer<T> *)p1, (OrderContainer<T> *)p2) ; }
+
+		
+		public:
+
+		static inline int compare_core (const OrderContainer<T> *p1, const OrderContainer<T> *p2)
 		{
 			if (p1->m_val < p2->m_val)
 				return -1 ;
@@ -57,9 +64,12 @@ template <class T> class IMatByRow ;
 	{
 		public:
 
-		static inline int compareDesc (T *p1, T *p2) { return -compare (p1, p2) ;}
+		static inline int compareDesc (const void *p1, const void *p2) { return -compare_core((const T *)p1, (const T *)p2) ; }
 
-		static int compare (T *p1, T *p2)
+		static inline int compare (const void *p1, const void *p2) { return compare_core((const T *)p1, (const T *)p2) ; }
+
+		protected:
+		static inline int compare_core (const T *p1, const T *p2)
 		{
 			if (*p1 < *p2)
 				return -1 ;
@@ -191,9 +201,9 @@ template <class T> class IMatByRow ;
 			}
 
 			if (bDecreasing)
-				qsort (pOrd, size (), sizeof (OrderContainer<T>), (int (*)(const void*, const void*)) OrderContainer<T>::compareDesc) ;
+				qsort (pOrd, size (), sizeof (OrderContainer<T>), OrderContainer<T>::compareDesc) ;
 			else
-				qsort (pOrd, size (), sizeof (OrderContainer<T>), (int (*)(const void*, const void*)) OrderContainer<T>::compare) ;
+				qsort (pOrd, size (), sizeof (OrderContainer<T>), OrderContainer<T>::compare) ;
 
 
 			for (v = size () - 1; v != (DWORD) -1; v--)
@@ -694,4 +704,59 @@ template <class T> class IMatByRow ;
 		return TRUE ;
 	}
 
+	template <class TA, class TB, class TTC>
+	BOOL matmultvec_flat (const TA &a, const TB &b, IVec<TTC> &res)
+	{
+		if (a.ncol () != b.size ())
+			return FALSE ;
+		res.Reshape (a.nrow ()) ;
+		matmultvec_flat_NC (a, b, res) ;
+		return TRUE ;
+	}
 
+	template <class TA, class TB, class TTC>
+	BOOL matmultvec_flat_NR (const TA &a, const TB &b, const IVec<TTC> &res)
+	{
+		if (a.ncol () != b.size () ||
+			res.size () < a.nrow ())
+			return FALSE ;
+
+		matmultvec_flat_NC (a, b, res) ;
+
+		return TRUE ;
+	}
+
+	template <class TA, class TB, class TTC>
+	void matmultvec_flat_NC (const TA &a, const TB &b, const IVec<TTC> &res)
+	{
+		ASSERT (a.ncol () == b.size ()) ;
+		ASSERT (res.size () >= a.nrow ()) ;
+
+		typename TA::t_flat a_F (a) ;
+		typename TB::t_flat b_F (b) ;
+		typename IVec<TTC>::t_flatedit res_FE (res) ;
+
+		//const DWORD dwAncolm1 = a.ncol () - 1 ;
+		const DWORD dwAnrowm1 = a.nrow () - 1 ;
+
+//		res_FE.Reset () ;
+
+		const typename TA::m_datatype *pCurA, * const pA = a_F.GetPtr () ;
+		const typename TB::m_datatype *pCurB, * const pB = b_F.GetPtr () ;
+		typename IVec<TTC>::m_datatype *pCurRes, * const pRes = res_FE.GetPtr () ;
+
+		for (pCurRes = pRes + a.nrow () - 1 ; pCurRes >= pRes; --pCurRes)
+			*pCurRes = 0 ;
+
+		pCurA = pA + a.ncol () * a.nrow () ;
+
+		for (pCurB = pB + b.size () - 1; pCurB >= pB; --pCurB)
+			for (pCurRes = pRes + dwAnrowm1 ; pCurRes >= pRes; --pCurRes)
+				*pCurRes += *(--pCurA) * *pCurB ;
+
+/*
+		DWORD i, h ;
+		for (i = a.nrow () - 1; i != (DWORD) -1; i--)
+				for (h = dwAncolm1; h != (DWORD) -1; h--)
+					res (i) += (TTC) (a (i, h) * b(h)) ;
+*/	}

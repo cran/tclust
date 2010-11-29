@@ -199,7 +199,6 @@
 		inline DWORD GetFlatExtent () const { return m_dwSize * m_dwStepSize ; }
 
 	protected:
-
 		IDim (DWORD dwRefCount, DWORD dwSize, DWORD *pdwSmartIDC)	: CRefBase <IDim> (dwRefCount), m_dwSize (dwSize) , m_pdwSmartIDC (pdwSmartIDC), m_bFull (false) {}
 		IDim (DWORD dwRefCount, DWORD dwSize, DWORD dwStepSize)		: CRefBase <IDim> (dwRefCount), m_dwSize (dwSize) , m_dwStepSize (dwStepSize), m_bFull (true) {}
 

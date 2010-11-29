@@ -1,4 +1,9 @@
-exportPattern("^[^\\.]")
-useDynLib(tclust)
-
-
+exportPattern ("^[^\\.]")
+S3method (print, tclust)
+S3method (print, DiscrFact)
+S3method (print, ctlcurves)
+S3method (plot, tclust)
+S3method (plot, DiscrFact)
+S3method (plot, ctlcurves)
+S3method (summary, DiscrFact)
+useDynLib (tclust)

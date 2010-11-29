@@ -2,19 +2,9 @@
 #include <R.h>
 
 #include "tf.h"
-/*
-#ifdef _MSC_VER
-	#include "..\..\..\IMat\RFunc.h"	 
-//	#include "..\..\..\IMat\IMat.h"
-#else
-	#include "RFunc.h"	 
-//	#include "IMat.h"
-#endif
-*/
+
 #include <R_ext/Applic.h>
 #include <Rmath.h>
-
-//#include "restr.h"
 
 	void TClust::FindInitClustSize ()
 	{
@@ -26,10 +16,7 @@
 		}
 		else	
 		{
-
-
 			GetRNGstate();
-
 
 			IVecD v (m_K) ;
 			DWORD k, n ;
@@ -146,9 +133,14 @@ if (int(m_dwTrace) >= 10)
 	{
 		DWORD i ;
 
-		m_amCurS [0] *= m_vWeights (0) ;
+		 
+//		m_amCurS [0] *= m_vWeights (0) ;
+//		for (i = m_K - 1; i; i--)
+//			m_amCurS [0] += (m_amCurS [i] *= m_vWeights (i)) ;
+
+		m_amCurS [0] *= m_vClustSize (0) / m_dwNoTrim ;
 		for (i = m_K - 1; i; i--)
-			m_amCurS [0] += (m_amCurS [i] *= m_vWeights (i)) ;
+			m_amCurS [0] += (m_amCurS [i] *= m_vClustSize (i) / m_dwNoTrim) ;
 
 		eigen_sqr (m_amCurS[0], m_avEVal [0], m_amEVec [0], FALSE) ;
 
@@ -258,8 +250,11 @@ if (int(m_dwTrace) >= 10)
 			if (m_vInd (k) != (DWORD) -1)
 				m_vClustSize (m_vInd (k)) ++ ;
 
-		m_vWeights << m_vClustSize ;
-		m_vWeights /= m_dwNoTrim ;
+		if (!m_dwEqualWeights)
+		{
+			m_vWeights << m_vClustSize ;
+			m_vWeights /= m_dwNoTrim ;
+		}
 	}
 
 	BOOL TClust::FindClustAssignment (BOOL bLastRun) 
@@ -277,7 +272,7 @@ if (int(m_dwTrace) >= 10)
 			return FALSE ;							//	otherwise the alg will stop after the 1st iteration when k == 1, 
 		m_vIndOld << m_vInd ;						//	since there wouldn't even be the change of the change of the cluster assignment
 
-		if (!m_dwEqualWeights)
+//		if (!m_dwEqualWeights)						//	XXXC 20101108	Cluster sizes shall always be calculated. Just don't calc the weigths for (m_dwEqualWeights)
 			CalcClusterSize () ;
 
 		return TRUE ;

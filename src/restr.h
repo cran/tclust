@@ -1,5 +1,5 @@
 #include "R.h"
-#ifdef _MSC_VER
+#ifdef ES_DEV_ENV
 	#include "..\..\..\IMat\RFunc.h"	 
 #else
 	#include "RFunc.h"	 

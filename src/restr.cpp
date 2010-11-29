@@ -114,11 +114,22 @@
 			dFact = 1 / dFact ;
 
 		double	dMin = 0, dMax = 0 ;
-		mEV.MinMax (dMin, dMax) ;
+		DWORD i ;
+
+//		mEV.MinMax (dMin, dMax) ;	//	bug: only clusters with vClustSize > 0 shall be considered here...
+
+		BOOL bFoundOne = FALSE ;	//	XXXC 20101108	calculating the min / max of Clustersizes only for clusters with a size > 0
+		for (i = mEV.ncol () - 1; i != (DWORD) -1; i--)
+			if (vClustSize (i) > dZeroTol)
+			{
+				mEV.GetCol (i).MinMax (dMin, dMax, !bFoundOne) ;
+				bFoundOne = TRUE ;
+			}
 
 		DWORD dwK = vClustSize.size () ;
 
-		if (dMax / dMin > dFact)	//	min (ev) < max (ev) / dFact --> so we have to restrict the eigenvalues
+		if (//dMin <= dZeroTol ||
+			dMax / dMin > dFact)	//	min (ev) < max (ev) / dFact --> so we have to restrict the eigenvalues
 		{
 			IVecD &vdCheckEV = vTempNPp2 ;
 

@@ -1,15 +1,17 @@
 plot.DiscrFact <-
-function (x, ...)
+function (x, enum.plots = FALSE, ...)
 {
-#	if (nrow (x$center) <= 2)
-#	{
-		par (mfrow = c(1, 3))
-		plot (x$x)	
-#	}
-#	else
-#		par (mfrow = c(1, 2))
+  if (enum.plots)
+    main.pre <-  c ("(a)", "(b)", "(c)")
+  else
+    main.pre <- NULL
 
-	plot.DiscrFact.p2 (x, ...)
-	plot.DiscrFact.p3 (x, ...)	
+  old.par <- par (mfrow = c (1,3))
+
+  plot (x$x, main.pre = main.pre[1], ...)
+  plot.DiscrFact.p2 (x, main.pre = main.pre[2], ...)
+  plot.DiscrFact.p3 (x, main.pre = main.pre[3], ...)  
+
+  par (old.par)
 }
 

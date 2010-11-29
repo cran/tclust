@@ -891,6 +891,21 @@ for (d = 0; d < t_dims::ndim (); d++)
 			return tSum ;
 		}
 
+		T norm2 () const
+		{
+			if (!t_dims::size ())
+				return 0 ;
+
+			t_Iter	itDim = t_base::dim (),
+					it = itDim - 1 ;
+
+			T tSum = sqr (Element (it)) ;
+
+			while (it.mm (itDim))
+				tSum += sqr (Element (it)) ;
+			return sqrt (tSum) ;
+		}
+
 		T min () const
 		{
 			if (!t_dims::size ())
@@ -909,7 +924,7 @@ for (d = 0; d < t_dims::ndim (); d++)
 			return tMin ;
 		}
 
-		void MinMax (T &min, T&max) const
+		void MinMax (T &min, T&max, BOOL bReset = TRUE) const
 		{
 			if (!t_dims::size ())
 				return ;
@@ -917,8 +932,11 @@ for (d = 0; d < t_dims::ndim (); d++)
 			t_Iter	itDim = t_base::dim (),
 					it = itDim - 1 ;
 
-			min = Element (it) ;
-			max = Element (it) ;
+			if (bReset)
+			{
+				min = Element (it) ;
+				max = Element (it) ;
+			}
 
 			while (it.mm (itDim))
 			{
@@ -1188,7 +1206,17 @@ for (d = 0; d < t_dims::ndim (); d++)
 	{
 		public:
 			ITensFlat (const ITens_ <T, D> &tens)
+				: m_pDataRef (NULL)
 			{
+				Set (tens) ;
+			}
+
+			ITensFlat () : m_pDataRef (NULL) { }
+
+			void Set (const ITens_ <T, D> &tens)
+			{
+				CutRef (m_pDataRef) ;
+
 				if (tens.IsFlat ())
 				{
 					tens.m_pDataRef->Reference (m_pDataRef = NULL) ;
@@ -1206,6 +1234,7 @@ for (d = 0; d < t_dims::ndim (); d++)
 			~ITensFlat () { CutRef (m_pDataRef) ; }
 
 			inline operator const T *	() { return m_pDataRef->GetData () + m_dwOffset ; }
+			inline const T * GetPtr () { return m_pDataRef->GetData () + m_dwOffset ; }
 //			inline T * HackConst		() { return m_pDataRef->GetData () + m_dwOffset ; }
 
 		protected:
@@ -1221,6 +1250,7 @@ for (d = 0; d < t_dims::ndim (); d++)
 	class ITensFlatEdit
 	{
 		public:
+			typedef T t_type ;
 
 			ITensFlatEdit (const ITens_ <T, D> &tens) : m_pTens (NULL)
 			{
@@ -1262,6 +1292,7 @@ for (d = 0; d < t_dims::ndim (); d++)
 			}
 
 			inline operator T *	() const { return m_pDataRef->GetData () + m_dwOffset ; }
+			inline T * GetPtr () const { return m_pDataRef->GetData () + m_dwOffset ; }
 
 		protected:
 			CDataRef<T> *m_pDataRef ;

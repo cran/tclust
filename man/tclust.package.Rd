@@ -3,14 +3,15 @@
 \alias{tclust-package}
 \docType{package}
 \title{ General Trimmed Cluster Analysis }
-\description{ A package implementing the cluster algorithm (\code{\link[tclust]{tclust}})as introduced in ..., including some graphical diagnostic tools (\code{\link[tclust]{ctlcurves}} and \code{\link[tclust]{DiscrFact}}) }
+\description{ A package implementing different (robust) clustering algorithms (\code{\link[tclust]{tclust}}) based on trimming 
+and including some graphical diagnostic tools (\code{\link[tclust]{ctlcurves}} and \code{\link[tclust]{DiscrFact}}) }
 \details{
 \tabular{ll}{
 Package: \tab tclust\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2009-05-13\cr
-License: \tab What license is it under?\cr
+License: GPL-3\cr
 }
 %~~ An overview of how to use the package, including the most important functions ~~
 }
@@ -19,7 +20,10 @@ Agustin Mayo Iscar,
 Heinrich Fritz,
 Maintainer: Luis Angel Garcia Escudero <lagarcia@eio.uva.es>
 }
-%\references{ % How to cite your paper? }
+\references{ 
+\enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2008), "A General Trimming Approach to Robust Cluster Analysis." Annals of Statistics, Vol.36, 1324-1345.\cr
+\enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2010), "A Review of Robust Clustering Methods." Advances in Data Analysis and Classification, Vol.4, 89-109.
+}
 \keyword{ package }
 %~~ Optionally other keywords from doc/KEYWORDS, one per line
 %\seealso{ %~~ Optional links to other man pages, e.g. ~~ %~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~ }
