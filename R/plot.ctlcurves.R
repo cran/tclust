@@ -33,12 +33,15 @@ function(x, main, ylim, ylab, min.weights = FALSE, col, lty = 1, ...)
   for (i in 1: length (x$par$restr.fact))
   {
     if (missing (main))
-      setmain <- paste ("Restriction Factor =", x$par$restr.fact[i])
+      setmain <- "CTL-Curves"
+    
 
     plot (0, type = "n", ylim = setylim, xlim = range (x$par$alpha),
           main = setmain, xlab = "", ylab = ylab)
-    mtext ("a", side = 1, line = 3, font = 5)
-
+    mtext (expression (alpha), side = 1, line = 3)
+	mtext (paste ("Restriction Factor =", x$par$restr.fact[i]), line = 0.25)
+	
+	
     for (j in 1:length (x$par$k))
     {
             # k == 1 -> min.weights == 1 -> we're not interested in that. 

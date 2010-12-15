@@ -44,10 +44,13 @@ function (x, labels = c ("cluster", "observation"), text, main, sub, xlab, ylab,
   if (ylab.m <- missing (ylab))
     ylab <- ""
   
+    
+    
   if (missing (sub))
-    sub = paste ("k = ", x$k, #" (", x$par$k, "), 
-          ", alpha = ", x$par$alpha, #", obj = ", round (x$obj, 2),
-          sep = "")
+    sub <- bquote(paste (k == .(x$par$k), ", ", alpha == .(x$par$alpha)))
+#     sub = paste ("k = ", x$k, #" (", x$par$k, "), 
+#           ", alpha = ", x$par$alpha, #", obj = ", round (x$obj, 2),
+#           sep = "")
 
   if (missing (main))
     main <- "Classification"

@@ -1,6 +1,6 @@
 tclust <-
 function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 10, restr = c("eigen",
-          "deter", "sigma"), restr.fact = 2, equal.weights = FALSE, center,
+          "deter", "sigma"), restr.fact = 12, equal.weights = FALSE, center,
           scale, store.x = TRUE, drop.empty.clust = TRUE, trace = 0,
           zero.tol = 1e-16)
 {

@@ -8,7 +8,7 @@
 \code{tkmeans} implements a robust version of the data driven trimming method "k-means". In particular, the trimmed k-means method is represented by the \code{tclust} method, setting parameters \code{restr = "eigen"}, \code{restr.fact = 1} and \code{equal.weights = TRUE}. }
 \usage{
   tclust(x, k = 3, alpha = 0.05, nstart = 50, iter.max = 10, 
-         restr = c("eigen", "deter", "sigma"), restr.fact = 2, 
+         restr = c("eigen", "deter", "sigma"), restr.fact = 12, 
          equal.weights = FALSE, center, scale, store.x = TRUE,
          drop.empty.clust = TRUE, trace = 0, zero.tol = 1e-16)
          

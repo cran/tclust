@@ -937,12 +937,22 @@ for (d = 0; d < t_dims::ndim (); d++)
 				min = Element (it) ;
 				max = Element (it) ;
 			}
+			else
+			{
+				T &dCur = Element (it) ;
+				if (dCur > max)
+					max = dCur ;
+				else if (dCur < min)
+					min = dCur ;
+			}
 
 			while (it.mm (itDim))
 			{
 				T &dCur = Element (it) ;
-				if (dCur > max)	max = dCur ;
-				if (dCur < min)	min = dCur ;
+				if (dCur > max)
+					max = dCur ;
+				else if (dCur < min)
+					min = dCur ;
 			}
 			
 		}
