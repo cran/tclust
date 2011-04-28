@@ -1,16 +1,18 @@
 \name{plot.tclust}
 \encoding{latin1}
 \alias{plot.tclust}
+\alias{plot.tkmeans}
 \title{ plot Method for tclust Objects }
 \description{
-  The \code{\link[graphics]{plot}} method for class \code{tclust}.
+  The \code{\link[graphics]{plot}} method for classes \code{tclust} and \code{tkmeans}.
 }
 \usage{
 \method{plot}{tclust} (x, ...)
+\method{plot}{tkmeans} (x, ...)
 }
 \arguments{
   \item{x}{
-    The \code{tclust} object to be displayed.
+    The \code{tclust} or \code{tkmeans} object to be displayed.
   }
   \item{\dots}{
     Further (optional) arguments which specify the details of the 
@@ -25,7 +27,7 @@
   \item{\code{main}}{
     The title of the plot.
     Use "/p" for displaying the chosen parameters \code{alpha} 
-    and \code{k} or "/r" for plotting the chosen restriction.
+    and \code{k} or "/r" for plotting the chosen restriction (\code{tclust} only).
   }
   \item{\code{main.pre}}{
     An optional string which is added to the plot's caption.
@@ -33,7 +35,7 @@
   \item{\code{sub}}{
     A string specifying the subtitle of the plot.
     Use "/p" (default) for displaying the chosen parameters \code{alpha} 
-    and \code{k}, "/r" for plotting the chosen restriction and "/pr" for both.
+    and \code{k}, "/r" for plotting the chosen restriction (\code{tclust} only) and "/pr" for both.
   }
   \item{\code{sub1}}{
     A secondary (optional) subtitle.
@@ -59,11 +61,11 @@
   }
   \item{\code{tol}}{
     The tolerance interval.
-    95\% tolerance ellipsoids (assuming normality) are plotted by default.
+    95\% tolerance ellipsoids (assuming normality) are plotted by default (\code{tclust} only).
   }
   \item{\code{tol.col, tol.lty, tol.lwd}}{
     Vectors of length \code{k} or \code{1} containing the \code{col},
-    \code{lty} and \code{lwd} arguments for the tolerance ellipses/lines.
+    \code{lty} and \code{lwd} arguments for the tolerance ellipses/lines (\code{tclust} only).
   }
  }
 }

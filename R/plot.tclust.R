@@ -10,6 +10,12 @@ function (x,  ...)
     .plot.tclust.Nd (x, ...)
 }
 
+plot.tkmeans <-
+function (x,  ...)
+{
+	plot.tclust (x, ...)
+}
+
 #######################
 ##  .plot.tclust.1d  ##
 #######################
@@ -49,16 +55,25 @@ function (x, xlab, ylab, xlim, ylim, tol = 0.95, tol.lwd = 1, tol.lty = 3, tol.c
     tol.fact <- NULL
 
   x.c = as.numeric (x$centers)
-  x.sd = sqrt (as.numeric (x$cov))
-
-  if (missing (xlim))
+  if (!is.null (x$cov))		## tkmeans- objects don't have cov-info
   {
-    xlim <- range (x$par$x)
-    if (!is.null (tol.fact))
-      xlim <- range (xlim, x.c + x.sd * tol.fact, x.c - x.sd * tol.fact)
+	  x.sd = sqrt (as.numeric (x$cov))
+
+	  if (missing (xlim))
+	  {
+		xlim <- range (x$par$x)
+		if (!is.null (tol.fact))
+		  xlim <- range (xlim, x.c + x.sd * tol.fact, x.c - x.sd * tol.fact)
+	  }
   }
+  else
+  {
+	if (missing (xlim))
+		xlim <- range (x$par$x)
+  }
+
   if (missing (ylim))
-    ylim <- c (-1, 1)
+	ylim <- c (-1, 1)
 
   X <- cbind (x$par$x, y)
   .plot.tclust.0 (x = x, X = X, xlab = xlab, ylab = ylab, axes = 1,
@@ -66,7 +81,8 @@ function (x, xlab, ylab, xlim, ylim, tol = 0.95, tol.lwd = 1, tol.lty = 3, tol.c
  
   .vline (x.c, 3, lty = 2, col = 1 + (1:x$k))    ##  cluster centers
 
-  if (!is.null (tol.fact))
+	if (!is.null (tol.fact) &&
+		!is.null (x$cov))		## tkmeans- objects don't have cov-info
   {
     #tol.fact = sqrt(qchisq(tol, 1))
     if (missing (tol.col))
@@ -116,7 +132,7 @@ function (x, xlab, ylab, tol = 0.95, tol.lwd = 1, tol.lty = 3, tol.col = 1,
   X <- cbind (x$par$x[, 1:2])
   .plot.tclust.0 (x = x, X = X, xlab = xlab, ylab = ylab, axes = 3, ...)
 
-  if (is.numeric (tol) && length (tol) == 1 &&  0 < tol && tol < 1)
+  if (!is.null (x$cov) && is.numeric (tol) && length (tol) == 1 &&  0 < tol && tol < 1)
   {
     tol.col <- rep (tol.col, x$k)
     tol.lty <- rep (tol.lty, x$k)
@@ -244,11 +260,16 @@ function (x, X, labels = c ("none", "cluster", "observation"), text,
       sub.ovr <- FALSE
   }
 
+	if (is.null (x$par$restr.C))
+		sub.restr <- FALSE
+
   ralph <- round (x$par$alpha, 2)
 
   txt.par <- bquote(paste (k == .(x$par$k), ", ", alpha == .(ralph)))
 
-  if (x$par$restr.C == 2) ## this is the sigma - restriction, thus no restr.fact has to be printed.
+  if (is.null(x$par$restr.C))
+	txt.restr <- ""
+  else if (x$par$restr.C == 2) ## this is the sigma - restriction, thus no restr.fact has to be printed.
     txt.restr <- paste ("restr = \"", x$par$restr, "\"", sep = "")
   else
     txt.restr <- paste ("restr = \"", x$par$restr, "\", restr.fact = ", x$par$restr.fact, sep = "")
@@ -257,10 +278,10 @@ function (x, X, labels = c ("none", "cluster", "observation"), text,
     main <- "Classification"  #"Cluster Assignment"
   else
     if (is.character (main))
-	  if (main == "/r")
-	    main <- txt.restr
-	  if (main == "/p")
-	    main <- txt.par
+      if (main == "/r" && !is.null (x$par$restr.C))
+        main <- txt.restr
+      if (main == "/p")
+        main <- txt.par
 
   if (!missing (main.pre) && !is.null (main.pre))
     main <- paste (main.pre, main)
@@ -268,7 +289,7 @@ function (x, X, labels = c ("none", "cluster", "observation"), text,
   if (sub.ovr)
     if (sub.par)
       sub  <- txt.par
-    else 
+    else if (!is.null (x$par$restr.C))
       sub <- txt.restr
 
   if (missing (sub1) && sub.restr && !(!sub.par && sub.ovr))

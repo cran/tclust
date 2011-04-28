@@ -253,7 +253,7 @@
 ##	.tclust.R  ##
 #################
 
-.tclust.R <- function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 10, f.restr = .restr.diffax, equal.weights = FALSE, fuzzy = FALSE, m = 2, zero.tol = 1e-16,  trace = 0, store.x = TRUE, f.hook.iter, f.hook.model, ...)
+.tclust.R <- function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, f.restr = .restr.diffax, equal.weights = FALSE, fuzzy = FALSE, m = 2, zero.tol = 1e-16,  trace = 0, store.x = TRUE, f.hook.iter, f.hook.model, ...)
 {
 	if (is.data.frame(x))
 		x <- data.matrix(x)

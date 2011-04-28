@@ -1,21 +1,21 @@
 \name{plot.DiscrFact}
 \encoding{latin1}
 \alias{plot.DiscrFact}
-\alias{plot.DiscrFact.p2}
-\alias{plot.DiscrFact.p3}
+\alias{plot_DiscrFact_p2}
+\alias{plot_DiscrFact_p3}
 \title{ plot Method for DiscrFact Objects }
 \description{
 The \code{\link[graphics]{plot}} method for class \code{DiscrFact}: Next to a plot of the \code{tclust} object which has been used for creating the \code{DiscrFact} object, a silhouette plot indicates the presence of groups with a large amount of doubtfully assigned observations. A third plot similar to the standard \code{tclust} plot serves to highlight the identified doubtful observations.
 }
 \usage{
 \method{plot}{DiscrFact} (x, enum.plots = FALSE, ...)
-plot.DiscrFact.p2 (x, xlab = "Discriminant Factor", 
+plot_DiscrFact_p2 (x, xlab = "Discriminant Factor", 
                    ylab = "Clusters", main, xlim, 
                    print.Discr = TRUE, main.pre, ...)
                   
                   
                   
-plot.DiscrFact.p3 (x, main = "Doubtful Assignments", col, pch, 
+plot_DiscrFact_p3 (x, main = "Doubtful Assignments", col, pch, 
                    col.nodoubt = grey (0.8), by.cluster = FALSE, 
                    ...)
                    
@@ -67,8 +67,8 @@ dsc.2 <- DiscrFact (clus.2)
 plot (dsc.2)
 
 dev.off ()
-plot.DiscrFact.p2 (dsc.1)
-plot.DiscrFact.p3 (dsc.2)
+plot_DiscrFact_p2 (dsc.1)
+plot_DiscrFact_p3 (dsc.2)
 }
 \keyword{ hplot }
 \keyword{ cluster }

@@ -1,7 +1,7 @@
 \name{tclust}
 \encoding{latin1}
 \alias{ tclust }
-\alias{ tkmeans }
+%\alias{ tkmeans }
 \alias{ print.tclust }
 \title{ General Trimming Approach to Robust Cluster Analysis  }
 \description{ 
@@ -10,9 +10,9 @@
   Relative cluster scatter can be restricted by a constant value
   \code{restr.fact}. For robustifying the estimation, a proportion
   \code{alpha} of observations may be trimmed. 
-  \code{tkmeans} implements a robust version of the data driven trimming
-  method "k-means".
-  In particular, the trimmed k-means method is represented by the \code{tclust}
+%  \code{tkmeans} implements a robust version of the data driven trimming
+%  method "k-means".
+  In particular, the trimmed k-means method (\code{\link[tclust]{tkmeans}})is represented by the \code{tclust}
   method, setting parameters \code{restr = "eigen"}, \code{restr.fact = 1}
   and \code{equal.weights = TRUE}.
 }
@@ -23,10 +23,9 @@ tclust (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
         equal.weights = FALSE, center, scale, store.x = TRUE, 
         drop.empty.clust = TRUE, trace = 0, warnings = 3, 
         zero.tol = 1e-16)
-
-tkmeans (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, 
-        center, scale,  store.x = TRUE, drop.empty.clust = TRUE, 
-        trace = 0, warnings = 2, zero.tol = 1e-16)
+%tkmeans (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, 
+%        center, scale,  store.x = TRUE, drop.empty.clust = TRUE, 
+%        trace = 0, warnings = 2, zero.tol = 1e-16)
 }
 \arguments{
   \item{x}{
@@ -238,7 +237,8 @@ tkmeans (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 }
 
 \references{ 
- Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals of Statistics, Vol.36, 1324-1345. Technical Report available at www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf}
+Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals of Statistics, Vol.36, 1324-1345. Technical Report available at www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf\cr
+Fritz, H.; Garcia-Escudero, L.A.; Mayo-Iscar, A. (2012), "tclust: An R Package for a Trimming Approach to Cluster Analysis". Journal of Statistical Software, 47(12), 1-26. URL http://www.jstatsoft.org/v47/i12/}
 \author{ Agustin Mayo Iscar, Luis Angel Garcia Escudero, Heinrich Fritz }
 
 \examples{
@@ -266,10 +266,10 @@ clus <- tclust (x, k = 3, alpha=0.0, restr.fact = 100)
 
 plot (clus)
 
-#--- EXAMPLE 2 ------------------------------------------
-data (geyser2)
-clus <- tkmeans (geyser2, k = 3, alpha = 0.03)
-plot (clus)
+%#--- EXAMPLE 2 ------------------------------------------
+%data (geyser2)
+%clus <- tkmeans (geyser2, k = 3, alpha = 0.03)
+%plot (clus)
 
 #--- EXAMPLE 3 ------------------------------------------
 data (M5data)

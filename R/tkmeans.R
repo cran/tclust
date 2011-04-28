@@ -1,5 +1,5 @@
-tkmeans <-
-function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, center, scale,
+.tkmeans.old <-
+function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, center = 0, scale = 1,
           store.x = TRUE, drop.empty.clust = TRUE, trace = 0, warnings = 2, 
           zero.tol = 1e-16)
 {

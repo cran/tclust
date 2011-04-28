@@ -15,6 +15,15 @@ function (x, equal.weights)
   W <- matrix (0, ncol = p, nrow = p)
   cl.num = x$k # sum (x$usek)
 
+  if (is.null (x$cov))		# tk-means items don't have cov info
+  {
+    if (is.null (x$par$x))
+      stop ("Cannot access the data matrix. Set store.x = TRUE.")
+	x$cov <- array (dim = c (p, p, cl.num))
+	for (i in 1:cl.num)
+		x$cov[,,i] <- cov (x$par$x[x$cluster == i,])
+  }
+
   for (i in 1:cl.num)
   {
     if (equal.weights)
@@ -38,4 +47,3 @@ function (x, equal.weights)
   proj <- x$par$x %*% units
   return (proj)
 }
-

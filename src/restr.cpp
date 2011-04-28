@@ -21,12 +21,11 @@
 			//eigen_sqr (m_amCurS[k], m_avEVal[k], m_amEVec[k], FALSE) ;
 			sme_eigen_sqr_NC (!m_amCurS[k], m_mEVal.GetColRef (k), !m_amEVec[k], FALSE) ;			//	2do: use SCVecArray instead!
 
-		double dMin, dMax; 
+		double dMin = 0, dMax = 0; 
 		minmax (m_mEVal, dMin, dMax) ;
 		return dMin / dMax > m_dZeroTol ;
 
 	}
-	
 
 	BOOL CTClust::restr_diff_ax ()
 	{
@@ -111,7 +110,7 @@
 			else if (m_dRestrFactor == 1 && !m_nDeter)	//	searching for spherical clusters -> the direction does not matter.
 				m_nRestr = 1 ;
 			break ;
-		case 2:	break ;
+		case 2:	break ;									//	all cov matrices are identical
 		case 3:	//	prop
 			if (m_dRestrFactor == 1)					//	all cov structures are supposed to be equal
 				m_nRestr = 2 ;							//		use restr_equal

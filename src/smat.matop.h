@@ -29,6 +29,10 @@
 	void sme_tmatmult				(const SCMatD &a, const SCMatD &b, const SVMatD &c, const BOOL bTransA, const BOOL bTransB) ;
 	void sme_tmatmult_NC			(const SCMatD &a, const SCMatD &b, const SVMatD &c, const BOOL bTransA, const BOOL bTransB) ;
 
+	void sme_matmult_a_at_R			(const SCMatD &a, SVMatD &b, BOOL bTransA) ;
+	void sme_matmult_a_at			(const SCMatD &a, const SVMatD &b, BOOL bTransA) ;
+	void sme_matmult_a_at_NC		(const SCMatD &a, const SVMatD &b, BOOL bTransA) ;
+
 	void sme_matmult_a_b_at_R		(const SCMatD &a, const SCMatD &b, SVMatD &c, BOOL bTransA = FALSE, BOOL bTransB = FALSE) ;
 	void sme_matmult_a_b_at		(const SCMatD &a, const SCMatD &b, SVMatD &c, BOOL bTransA = FALSE, BOOL bTransB = FALSE) ;
 	void sme_matmult_a_b_at_NC	(const SCMatD &a, const SCMatD &b, SVMatD &c, BOOL bTransA = FALSE, BOOL bTransB = FALSE) ;
@@ -100,6 +104,23 @@
 
 		*--pA = *--pB ;
 	}
+
+	template <class TA>
+	void SetDiag (const SVMat <TA> &a)
+	{
+		t_size dwR, dwC ;
+		t_size const dwREnd = a.nrow () ;
+		TA * pA = a ;
+		TA const * const pAEnd = a.GetDataEnd () ;
+
+		for (dwC = 0; pA < pAEnd; ++dwC)
+			for (dwR = 0; dwR < dwREnd; ++dwR)
+			{
+				*pA = (dwC == dwR) ? 1.0 : 0.0 ;
+				++pA ;
+			}
+	}
+
 
 	template <class TA>
 	void SetDiag_sq (const SVMat <TA> &a)

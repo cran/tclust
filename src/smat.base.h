@@ -762,7 +762,7 @@
 		}
 	} ;
 
-template <class T> class SVVec ;
+	template <class T> class SVVec ;
 	template <class T>
 		class SVec : public SCVec<T>
 	{
@@ -879,25 +879,25 @@ template <class T> class SVVec ;
 
 		void Copy (const tc_this &vec) const
 		{
-			THROW (EqualDims (vec)) ;
+			THROW (this->EqualDims (vec)) ;
 			Copy_NC (vec) ;
 		}
 
 		void Copy (const tb_DataContC &vec) const
 		{
-			ASSERT (size () == vec.size ()) ;
+			ASSERT (t_this::size () == vec.size ()) ;
 			Copy_NC (vec) ;
 		}
 
 		void Copy_NC (const tc_this &vec) const
 		{
-			ASSERT (EqualDims (vec)) ;
+			ASSERT (this->EqualDims (vec)) ;
 			memcpy (t_this::GetData (), vec.GetData (), t_this::GetSize () * sizeof (T)) ;
 		}
 
 		void Copy_NC (const tb_DataContC &vec) const
 		{
-			ASSERT (size () == vec.size ()) ;
+			ASSERT (t_this::size () == vec.size ()) ;
 			memcpy (t_this::GetData (), vec.GetData (), t_this::GetSize () * sizeof (T)) ;
 		}
 
@@ -935,6 +935,14 @@ template <class T> class SVVec ;
 			t_base::Set (pData, dwSize) ;
 			t_base::SetDim_NC (dwSize) ;
 		}
+
+		const t_this GetDataRef (t_size dwStart, t_size dwEnd) const
+		{
+			ASSERT (dwStart <= dwEnd) ;
+			ASSERT (dwEnd <= t_this::size ()) ;
+			return t_this (**this, dwStart, dwEnd - dwStart) ;
+		}
+
 
 
 		protected:
@@ -1203,10 +1211,10 @@ template <class T> class SVMat ;
 			return SVec<T> (**this, t_this::GetIdx (0, dwCol), t_this::nrow ()) ;
 		}
 
-		const t_this GetColRef (t_size dwStart, t_size dwEnd)
+		const t_this GetColRef (t_size dwStart, t_size dwEnd) const
 		{
 			ASSERT (dwStart <= dwEnd) ;
-			ASSERT (dwEnd <= ncol ()) ;
+			ASSERT (dwEnd <= t_this::ncol ()) ;
 			return t_this (**this, t_this::GetIdx (0, dwStart), t_this::nrow (), dwEnd - dwStart) ;
 		}
 
@@ -1252,13 +1260,13 @@ template <class T> class SVMat ;
 
 		void Copy (const tc_this &mat) const
 		{
-			THROW (EqualDims (mat)) ;
+			THROW (this->EqualDims (mat)) ;
 			Copy_NC (mat) ;
 		}
 
 		void Copy_NC (const tc_this &mat) const
 		{
-			ASSERT (EqualDims (mat)) ;
+			ASSERT (this->EqualDims (mat)) ;
 			memcpy (t_this::GetData (), mat.GetData (), t_this::GetSize () * sizeof (T)) ;
 		}
 
@@ -1416,4 +1424,100 @@ template <class T> class SVMat ;
 	typedef SCMatArray<double> SCMatArrayD ;
 	typedef SCMatArray<int> SCMatArrayN ;
 
+/////////////////
+//  SMat Sort  //	basic sort routines..
+/////////////////
+
+	template <class T> 
+	class CQSortComp
+	{
+	public:
+		static int compare (const void * elem1, const void * elem2)
+		{
+			if (*(T *) elem1 < *(T *) elem2)
+				return -1 ;
+			if (*(T *) elem1 > *(T *) elem2)
+				return 1 ;
+			return 0 ;
+		}
+
+		static int compare_rev (const void * elem1, const void * elem2)
+		{
+			return -compare_rev (elem1, elem2) ;
+		}
+
+		static int compare_p (const void * elem1, const void * elem2)
+		{
+			return compare (* (T **)elem1, * (T **)elem2) ;
+		}
+
+		static int compare_p_rev (const void * elem1, const void * elem2)
+		{
+			return -compare (* (T **)elem1, * (T **)elem2) ;
+		}
+	} ;
+
+	template <class T>
+	void sme_qsort (T *p, t_size dwLen, BOOL bDecr = FALSE)
+	{
+		if (bDecr)
+			qsort (p, dwLen, sizeof (T), CQSortComp<T>::compare_rev) ;	
+		else
+			qsort (p, dwLen, sizeof (T), CQSortComp<T>::compare) ;
+	}
+
+	template <class T>
+	void sme_qsortI (T *p, int *pnIdx, t_size dwLen, BOOL bDecr = FALSE)
+	{
+		ASSERT_TEMPRANGE (0, 0) ;
+		SDataRef_Static &tr = tempRef (0) ;
+
+		tr.Require (sm_max (sizeof (T*), sizeof (T)) * dwLen) ;
+		T **pIdx = (T **) tr.GetData () ;
+
+		t_size i = 0 ;
+
+		for (i = dwLen - 1; i != NAI; i--)
+			pIdx[i] = p + i ;
+
+		if (bDecr)
+			qsort (pIdx, dwLen, sizeof (T *), CQSortComp<T>::compare_p_rev) ;
+		else
+			qsort (pIdx, dwLen, sizeof (T *), CQSortComp<T>::compare_p) ;
+
+
+		for (i = dwLen - 1; i != NAI; i--)
+			pnIdx[i] = pIdx[i] - p ;
+
+		//tr.Require (sizeof (T) * dwLen) ,
+		T *pBuf = (T *) tr.GetData () ;
+		memcpy (pBuf, p, sizeof (T) * dwLen) ;
+		
+		for (i = dwLen - 1; i != NAI; i--)
+			p[i] = pBuf[pnIdx[i]] ;
+
+	}
+
+
+	template <class T>
+		t_size which_max1 (T const *p, t_size n)
+	{
+		T const * const pEnd = p + n ;
+		T max = *p ;
+		T const * pMax = p, *pCur = p + 1;
+		for (; pCur < pEnd; ++pCur)
+			if (sm_setmax_b (max, *pCur))
+				pMax = p ;
+		return pMax - p ;
+
+	}
+
+	template <class T>
+		t_size which_max1 (const SCData <T> &a)
+	{
+		return which_max1 (a.GetData (), a.size ()) ;
+	}
+
 #endif	//#ifndef ES_SMAT_BASE_H
+
+

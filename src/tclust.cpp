@@ -132,7 +132,7 @@
 			{
 				if (!restrEval ())
 				{
-					if (i)
+					if (j)	//	2do: BUG: shouldn't this be "j" !?!? -> 20120515: changed to j
 					{
 						SaveCurResult (CalcObjFunc (), 2) ;
 						return ;
@@ -142,7 +142,7 @@
 				}
 
 				if (!FindClustAssignment () ||		//	returns false, if the cluster assignment has not changed -> break 
-					j == m_nKSteps)				//	max number of iterations reached -> break
+					j == m_nKSteps)					//	max number of iterations reached -> break
 					break ;
 
 				if (int(m_nTrace) >= 2)
@@ -217,6 +217,12 @@
 		if (m_nFuzzy && m_dM < 1)
 		{
 			meal_printf ("Input parameter error: m must  be >= 1\n") ;
+			return FALSE ;
+		}
+
+		if (!m_dwNoTrim || m_dAlpha >= 1.0)
+		{
+			meal_printf ("Input parameter error: alpha was chosen too small (all observations were trimmed)\n") ;
 			return FALSE ;
 		}
 		return TRUE ;
@@ -604,19 +610,19 @@
 		FindOutliers (vDisc, m_vInd) ;
 
 		pnAssign = m_vInd ;
-		for (k = 0; k < m_n; ++k)												//	setting the rows of m_mZ which correspond to trimmed observations to zero.
+		for (k = 0; k < m_n; ++k)														//	setting the rows of m_mZ which correspond to trimmed observations to zero.
 		{
 			if (*pnAssign == -1)
 				ResetRow (!m_mZ, 0, k) ;
 			++pnAssign ;
 		}
 
-		if (equal (m_mZ, m_mZOld))												//	the m_mZ matrix didn't change 
+		if (equal (m_mZ, m_mZOld))														//	the m_mZ matrix didn't change 
 			return FALSE ;
 
-		m_mZOld.Copy (m_mZ) ;													//	save current m_mZ - matrix
+		m_mZOld.Copy (m_mZ) ;															//	save current m_mZ - matrix
 
-		colSums_NC (*m_vClustSize, m_mZ) ;										//	calculate cluster sizes
+		colSums_NC (*m_vClustSize, m_mZ) ;												//	calculate cluster sizes
 
 		if (!m_nEqualWeights)
 			EO<SOP::divide_r>::VScVc (*m_vWeights, sum (m_vClustSize), m_vClustSize) ;	//	calculate cluster weights (if necessary)
@@ -749,7 +755,7 @@
 		ASSERT (m_dwTrim > dwSmaller) ;
 
 		t_size dwProblem = i - dwSmaller ;						//	the number of ties around the trimming threshold
-		t_size dwChoose = m_dwTrim - dwSmaller ;			//	the number of ties which have to be trimmed 
+		t_size dwChoose = m_dwTrim - dwSmaller ;				//	the number of ties which have to be trimmed 
 
 		SVecN vIdx (m_aTemp[1], dwChoose) ;
 		SVecN vTemp (m_aTemp [2], dwProblem) ;
@@ -794,6 +800,25 @@
 				++ pdCurDisc ;
 				++ pdCurLL ;
 			}
+		}
+	}
+
+	void CTClust::FindNearestClust_new (const SVecD &vDisc, const SVecN &vInd)	//	new version - implements tie-handling!
+	{
+		t_size r ;
+
+		double *pdCurDisc = vDisc ;
+		int *pnCurInd = vInd ;
+
+		SVecD curRow (m_aTemp[1], m_K) ;
+
+		for (r = 0; r < vDisc.size(); ++r)									//	for each row of m_mLL
+		{
+			CopyRow (*curRow, m_mLL, r) ;
+//			select_cluster_old (*pdCurDisc, *pnCurInd, curRow) ;			//	select the cluster corresponding to the largest value of the current row of m_mLL
+			select_cluster (*pdCurDisc, *pnCurInd, curRow) ;				//	select the cluster corresponding to the largest value of the current row of m_mLL
+			++pdCurDisc ;
+			++pnCurInd ;
 		}
 	}
 
@@ -854,25 +879,6 @@
 
 		nInd = pdIdx [nInd] - pdMax ;										//	select a maximum according to the drawn random index.
 		dDisc = pdMax[nInd] ;
-	}
-
-	void CTClust::FindNearestClust_new (const SVecD &vDisc, const SVecN &vInd)	//	new version - implements tie-handling!
-	{
-		t_size r ;
-
-		double *pdCurDisc = vDisc ;
-		int *pnCurInd = vInd ;
-
-		SVecD curRow (m_aTemp[1], m_K) ;
-
-		for (r = 0; r < vDisc.size(); ++r)									//	for each row of m_mLL
-		{
-			CopyRow (*curRow, m_mLL, r) ;
-//			select_cluster_old (*pdCurDisc, *pnCurInd, curRow) ;			//	select the cluster corresponding to the largest value of the current row of m_mLL
-			select_cluster (*pdCurDisc, *pnCurInd, curRow) ;				//	select the cluster corresponding to the largest value of the current row of m_mLL
-			++pdCurDisc ;
-			++pnCurInd ;
-		}
 	}
 
 

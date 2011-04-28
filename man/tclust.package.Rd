@@ -21,8 +21,8 @@ Maintainer: Luis Angel Garcia Escudero <lagarcia@eio.uva.es>
 }
 \references{ 
 \enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2008), "A General Trimming Approach to Robust Cluster Analysis." Annals of Statistics, Vol.36, 1324-1345.\cr
-\enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2010), "A Review of Robust Clustering Methods." Advances in Data Analysis and Classification, Vol.4, 89-109.
-}
+\enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2010), "A Review of Robust Clustering Methods." Advances in Data Analysis and Classification, Vol.4, 89-109.\cr
+Fritz, H.; Garcia-Escudero, L.A.; Mayo-Iscar, A. (2012), "tclust: An R Package for a Trimming Approach to Cluster Analysis". Journal of Statistical Software, 47(12), 1-26. URL http://www.jstatsoft.org/v47/i12/}
 \keyword{ package }
 %~~ Optionally other keywords from doc/KEYWORDS, one per line
 %\seealso{ %~~ Optional links to other man pages, e.g. ~~ %~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~ }

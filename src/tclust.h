@@ -1,10 +1,14 @@
 
+
+/*
 #ifdef ES_DEV_ENV
 	#include "../../../SMat/smat.h"
 #else
 	#include "smat.h"
 #endif
-
+//	or 
+*/
+#include "clust.h"
 
 	class CTClust
 	{
@@ -101,21 +105,3 @@
 
 	BOOL RestrictEigenValues_deter (const SVMatD &mEV, const SCVecD & vClustSize, double dFact, double dZeroTol, double &dUnRestrFact) ;
 	BOOL RestrictEigenValues (const SVMatD &mEV, const SCVecD & vClustSize, double dFact, double dZeroTol, double &dUnRestrFact) ;
-
-	class UOP	//	user defined operators for class EO
-	{
-	public:
-		class AaC_BpaC				{ CALC_3_2(void) { a = c; b += c; } } ;
-		class inc_a_if_b_equals_c	{ CALC_3_1(void) { if (b == (TB) c) a += 1 ; } } ;
-		class inc_a_if_b_leq_c		{ CALC_3_1(void) { if (b <= (TB) c) a += 1 ; } } ;
-		class Apa_logB				{ CALC_2_1(void) { a += log (b) ; } } ;				//	used in CalcObjFunc;
-		class Apa_sqr_BmC			{ CALC_3_1(void) { a += sm_sqr (b * c) ; } } ;		//	used in CalcDensity;
-		class Aa_Bm_exp_Adm2		{ CALC_2_1(void) { a = b * exp (a / -2) ; } } ;		//	used in CalcDensity;
-		class neg_log				{ CALC_2_1(void) { a = -log (b) ; } } ;
-		class neg_log_0set0			{ CALC_2_1(void) { a = (b > 0) ? -log (b) : 0 ; } } ;
-		class Apa_log_B				{ CALC_2_1(void) { a += log (b) ; } } ;
-		class Apa_log_B_limit0		{ CALC_2_1(void) { a += log ((b >= 0) ? b : 0) ; } } ;
-//		class Apa_sqrt_BmC			{ CALC_3_1(void) { a += sqrt (b * c) ; } } ;
-//		class AmP_exp_Bd2			{ CALC_2_1(void) { a *= exp (b / 2) ; } } ;			//	used in CalcDensity;
-	} ;
-

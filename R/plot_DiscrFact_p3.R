@@ -1,4 +1,4 @@
-plot.DiscrFact.p3 <-
+plot_DiscrFact_p3 <-
 function (x, main = "Doubtful Assignments", col, pch, col.nodoubt = grey (0.8), 
           by.cluster = FALSE, ...)
 {

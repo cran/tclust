@@ -1,4 +1,4 @@
-plot.DiscrFact.p2 <-
+plot_DiscrFact_p2 <-
 function (x, xlab = "Discriminant Factor", ylab = "Clusters", main, xlim,
           print.Discr = TRUE, main.pre, ...)
 {

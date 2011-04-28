@@ -1,10 +1,11 @@
-#include "package.h"
+#include "R_package.h"
 #include "tclust.h"
+#include "tkmeans.h"
 
 #ifdef ES_DEV_ENV
-	#include "..\..\..\RDev\R.meal.h"
+	#include "..\..\..\RDev\R_meal.h"
 #else
-	#include "R.meal.h"
+	#include "R_meal.h"
 #endif	//	#ifdef ES_DEV_ENV
 
 R_MEAL_SETTINGS ("heinrich_fritz@hotmail.com") ;	//	settings for the R meal - implementation
@@ -12,6 +13,34 @@ R_MEAL_SETTINGS ("heinrich_fritz@hotmail.com") ;	//	settings for the R meal - im
 ////////////////////////////////
 //	exporting functions to R  //
 ////////////////////////////////
+
+	void tkmeans (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdObjER, int *pnConvER)
+	{
+		TRY (
+				CTKMeans (	  pnParIn[0]	//	n
+							, pnParIn[1]	//	p
+							, pnParIn[2]	//	k
+							, pdParIn[0]	//	dAlpha
+							, pdParIn[1]	//	dZeroTol
+							, pdX
+							, pnAssign
+							, pdClustSize
+							, pdWeights
+							, pnParIn[3]	//	nEqualWeights
+							, pnParIn[4]	//	nTrace
+							, pdM
+				).SetPtr (    pnParOut + 0	//	pnConvCount
+				            , pnParOut + 1	//	pnIterSuccess
+				            , pnParOut + 2	//	pnCode
+				            , pnParOut + 3	//	pnErrExc
+				            , pdParOut + 0	//	pdBestObj
+				).calc (	  pnParIn[5]	//	nIter
+							, pnParIn[6]	//	nKSteps
+							, pnConvER
+							, pdObjER
+				) ;
+			)
+	}
 
 	void tclust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER)
 	{

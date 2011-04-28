@@ -221,7 +221,7 @@ print.ctlcurves <-
 function (x, ...)
 {
   cat ("Computed ", length (x$par$k) * length (x$par$alpha), 
-       " solutions (chosen restr.fact = ", x$par$restr.fact, ").\n^\n",
+       " solutions (chosen restr.fact = ", x$par$restr.fact, ").\n\n",
      sep = "")
 
   idx.ar <- x$par$restr.fact < x$unrestr.fact
