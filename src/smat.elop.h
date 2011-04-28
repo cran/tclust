@@ -1,5 +1,5 @@
 /*
-    SMat - Simple Matrix Classes
+    SMat - Simple Matrix Classes v0.1beta
     Copyright (C) 2011 by Heinrich Fritz (heinrich_fritz@hotmail.com)
 
     This program is free software: you can redistribute it and/or modify

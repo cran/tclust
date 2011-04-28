@@ -1,5 +1,5 @@
 /*
-    SMat - Simple Matrix Classes
+    SMat - Simple Matrix Classes v0.1beta
     Copyright (C) 2011 by Heinrich Fritz (heinrich_fritz@hotmail.com)
 
     This program is free software: you can redistribute it and/or modify
@@ -77,9 +77,9 @@
 	typedef SCData<int> SCDataN ;
 	typedef SVData<int> SVDataN ;
 
-///////////////////////
-//	SDataRef_Static  //	//	2do: -> SDataRef
-///////////////////////
+////////////////
+//	SDataRef  //
+////////////////
 
 	class SDataRef
 	{
@@ -202,8 +202,8 @@
 			CRefRange *m_pPerm ;
 		} ;
 
-
 		inline t_size GetSize () { return sizeRef () ; }
+		inline t_size GetMemSize () { return GetSize () * sizeof (t_pitem) ; }
 		inline t_pitem * GetData () { return dataRef (); }
 
 		void Require (t_size dwCount) ;

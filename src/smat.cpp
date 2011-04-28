@@ -1,5 +1,5 @@
 /*
-    SMat - Simple Matrix Classes
+    SMat - Simple Matrix Classes v0.1beta
     Copyright (C) 2011 by Heinrich Fritz (heinrich_fritz@hotmail.com)
 
     This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,30 @@
 #include "smat.h"
 #undef SMAT_FLAG_NO_INI
 
-#include <cstdlib>
+//#include <cstdlib>
 #include "smat.meal.h"
+
+	void *smat_malloc (t_size dwSize)	//	2do: move to meal (use e.g. R_malloc)
+	{
+		return new char [dwSize] ;
+	}
+
+	void smat_free (void *pPtr)
+	{
+		delete [] (char *) pPtr ;
+	}
+
+/*	void *smat_realloc (void *pOld, t_size dwOld, t_size dwNew)	//	2do: remove
+	{
+		void *pNew = smat_malloc (dwNew) ;
+
+		if (dwOld && pOld)
+			memcpy (pNew, pOld, sm_min (dwOld, dwNew)) ;
+		delete [] (char *) pOld ;
+		return pNew ;
+
+	}
+*/
 
 ////////////////
 //	SMat_EXC  //
@@ -68,7 +90,9 @@
 	void SDataRef::Free ()
 	{
 		if (IsOwner ())
-			free (m_pData) ;
+			//free (m_pData) ;
+			smat_free (m_pData) ;
+			//delete [] (char *) m_pData ;
 		m_pData = NULL ;
 		m_pDataEnd = NULL ;
 		m_dwCount = 0 ;
@@ -130,13 +154,13 @@
 		Free () ;
 		Alloc_NF (dwSize) ;
 	}
-	
 
 	void SDataRef::Alloc_NF (t_size dwSize)
 	{
 		if (dwSize)
 		{
-			GetDataRef () = malloc (dwSize) ;
+			GetDataRef () = smat_malloc (dwSize) ;
+//			GetDataRef () = new char [dwSize] ;
 			GetSizeRef () = dwSize ;
 			GetDataEndRef () = (char *) GetData () + GetSize () ;
 		}
@@ -207,11 +231,18 @@
 		if (dwCount <= GetSize ())
 			return ;
 
-		m_ppData = (t_pitem *) realloc (m_ppData, dwCount * sizeof (t_pitem)) ;
+		t_pitem *pNew = new t_pitem [dwCount] ;			//	do a realloc for dataRef () with size dwCount
+		if (GetSize ())
+			memcpy (pNew, GetData (), GetMemSize ()) ;
+		delete [] GetData () ;
+		dataRef () = pNew ;
+
+		//m_ppData = (t_pitem *) realloc (m_ppData, dwCount * sizeof (t_pitem)) ;
+		//m_ppData = (t_pitem *) smat_realloc (m_ppData, m_dwSize * sizeof (t_pitem), dwCount * sizeof (t_pitem)) ;
 
 		t_size i ;
 		for (i = GetSize (); i < dwCount; ++i)
-			m_ppData [i] = new t_item ;
+			GetData () [i] = new t_item ;
 		sizeRef () = dwCount ;
 	}
 
@@ -226,7 +257,9 @@
 		t_size i ;
 		for (i = GetSize () - 1; i != NAI; i--)
 			delete GetData () [i] ;
-		free (GetData ()) ;
+		//free (GetData ()) ;
+		//smat_free (GetData ()) ;
+		delete [] GetData () ;
 		dataRef () = NULL ;
 		sizeRef () = 0 ;
 	}

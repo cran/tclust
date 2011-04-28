@@ -1,5 +1,5 @@
 /*
-    SMat - Simple Matrix Classes
+    SMat - Simple Matrix Classes v0.1beta
     Copyright (C) 2011 by Heinrich Fritz (heinrich_fritz@hotmail.com)
 
     This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ typedef UINT BOOL ;
 	#define NULL 0
 #endif
 
-typedef  UINT t_size ;
+typedef  UINT t_size ;	//	2do: use size_t instead
 typedef  UINT t_count ;
 
 #define NAI	((t_size) -1)	//	not an index
