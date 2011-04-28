@@ -15,6 +15,6 @@ function (x, main = "Doubtful Assignments", col, pch, col.nodoubt = grey (0.8),
     pch <- x$x$cluster + 1
   
   plot (x$x, by.cluster = FALSE, col = col, pch = pch, main = main, sub = "", 
-    ...)
+    sub1 = "", ...)
 }
 

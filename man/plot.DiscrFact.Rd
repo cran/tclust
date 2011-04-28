@@ -58,7 +58,6 @@ x <- rbind (
 )
 
 clus.1 <- tclust (x, k = 2, alpha=0.1, restr.fact=12)
-                                  # "Improper" choice of parameters
 clus.2 <- tclust (x, k = 3, alpha=0.1, restr.fact=1)
 
 dsc.1 <- DiscrFact (clus.1)

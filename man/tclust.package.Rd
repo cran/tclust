@@ -11,8 +11,7 @@ Package: \tab tclust\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
 Date: \tab 2009-05-13\cr
-License: GPL-3\cr
-}
+License: \tab GPL-3\cr}
 %~~ An overview of how to use the package, including the most important functions ~~
 }
 \author{

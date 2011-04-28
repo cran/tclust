@@ -1,17 +1,39 @@
-.dmnorm <-
-function(X,mu,sigma)
+##  Multivariate normal density
+#o  .dmnorm <- function (X,mu,sigma) ((2 * pi)^(-length(mu) / 2)) * (det(sigma)^(-1/ 2)) * exp (-0.5 * mahalanobis (X, mu, sigma))
+.dmnorm <- function (X,mu,sigma)
 {
-  ((2*pi)^(-length(mu)/2))*(det(sigma)^(-1/2))*exp(-0.5*mahalanobis(X,mu,sigma))
+  ((2 * pi)^(-length(mu) / 2)) *
+  (det(sigma)^(-1/ 2)) *
+  exp (-0.5 * .evmaha (X, mu, sigma))
 }
 
-.doEllipses <-
-function (eigval, eigvec, eigen, center, n = 100, size = 1, ...)
-{
-  if (missing (eigval))          ##  get EVals from eobject eigen
-    eigval = eigen$values
+.evmaha <- function (X, mu, sigma)    ##  calculate mahalanobis distances 
+                                      ##  using the eigenvalues and eigenvectors. 
+                                      ##  thus no singularity problems arise.
+{                                     ##  Mahalanobis distance == Inf is possible.
+    v <- eigen (sigma)
+    Zt <- t (v$vectors) %*% (t (X) - mu)
+    colSums ((Zt * v$values^(-.5))^2)
+}
 
-  if (missing (eigvec))          ##  get EVecs from eobject eigen
-    eigvec = eigen$vectors
+#.dmnorm <-
+#function(X,mu,sigma)
+#{
+#  ((2*pi)^(-length(mu)/2))*(det(sigma)^(-1/2))*exp(-0.5*mahalanobis(X,mu,sigma))
+#}
+
+.doEllipses <-
+function (eigval, eigvec, eigen, center, cov, n = 100, size = 1, ...)
+{
+  if (!missing (cov))
+    eigen <- base::eigen (cov)
+  if (!missing (eigen))
+  {
+    eigval <- eigen$values
+    eigvec <- eigen$vectors
+  }
+
+  eigval[eigval < 0] <- 0
 
                       ##  check dimensionality of eigenvalues
   if (!is.numeric (eigval) || !length (eigval) == 2)
@@ -25,17 +47,17 @@ function (eigval, eigvec, eigen, center, n = 100, size = 1, ...)
   if (!is.matrix (eigvec) || any (dim (eigvec) != 2))
     stop ("argument eigvec has to be a numeric mamtrix of dimension 2x2.")
 
-  r = seq (0, 2 * pi, length.out = n)    ##  create rad rep. of circle
+  r <- seq (0, 2 * pi, length.out = n)    ##  create rad rep. of circle
 
-  PC = rbind (sin(r), cos (r))      ##  create circle in PCA cords
+  uc <- rbind (sin(r), cos (r))      ##  create a unit circle
                            ##  "stretch" circle corresponding to ev & sizefact
-  PC = t(PC * sqrt(eigval) * size)
-                           ##  rotate resulting ellipsis from PC into XY coords
-  XY = PC %*% t(eigvec)          
+  uc = t(uc * sqrt(eigval) * size)
+                           ##  rotate resulting ellipses from PC into XY coords
+  XY = uc %*% t(eigvec)          
 
-  XY = t( t(XY) + center)  ##  move ellipsis to the specified center
+  XY = t( t(XY) + center)  ##  move ellipses to the specified center
 
-  lines (XY[,1], XY[,2], ...) ##  draw ellipsis
+  lines (XY[,1], XY[,2], ...) ##  draw ellipses
 }
 
 .getsubmatrix <-
@@ -100,3 +122,14 @@ function (x, yfact = 2, col = 1, lty = 1, lwd = 1, ...)
 #   args <- unlist (sapply (f, .formalsnames, simplify = TRUE))
 #   args [args != "..."]
 # }
+
+
+
+.Conv2Matrix <- function (x, sx = substitute (x))
+{
+    if(is.matrix(x))
+        return (x)
+    if(is.data.frame(x))
+        return (data.matrix(x))
+    return (matrix(x, nrow = length(x), ncol = 1, dimnames = list(names(x), deparse(sx))))
+}

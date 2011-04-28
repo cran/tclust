@@ -1,7 +1,7 @@
 DiscrFact <-
 function (x, threshold = 1/10)
   {
-    p <- x$dim[2]
+    p <- x$int$dim[2]
 
     if (!any (class (x) == "tclust"))
       stop ("parameter x: expected object of type \x22tclust\x22")
@@ -18,12 +18,24 @@ function (x, threshold = 1/10)
       ll[,k] <- (x$size[k] / no.trim)* .dmnorm (x$par$x,x$centers[,k],
         as.matrix (x$cov[,,k]))
 
-    llo = apply (-ll, 1, order)  # calculates the rowise order of the ll matrix
+    llo <- apply (-ll, 1, order)  # calculates the row-wise order of the ll matrix
+    if (!is.matrix (llo))
+      llo <- matrix (llo, ncol = nrow (ll)) ## -> transposed..
+
 
     disc <- ll[cbind (1:n, llo[1, ])]
-    disc2 <- ll[cbind (1:n, llo[2, ])]
     ind <- llo[1,]
-    ind2<- llo[2,]
+
+    if (nrow (llo) >= 2)
+    {
+      disc2 <- ll[cbind (1:n, llo[2, ])]
+      ind2<- llo[2,]
+    }
+    else
+    {
+      ind2 <- rep (0, n)
+      disc2 <- disc * threshold
+     }
 
     mropt <- sort (disc)[n - floor (n * (1 - alpha)) + 1] 
     idx.out <- disc < mropt

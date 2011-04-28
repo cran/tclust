@@ -49,8 +49,10 @@ x <- rbind (
 	rmvnorm (100, cen * 2.5, sig * 50)
 )
 clus.1 <- tclust (x, k = 2, alpha = 0.1, restr.fact = 12)
-                                         # "Improper" choice of parameters
-clus.2 <- tclust (x, k = 3, alpha = 0.1, restr.fact = 1)  
+
+clus.2 <- tclust (x, k = 3, alpha = 0.1, restr.fact = 1)
+  ##  restr.fact and k are chosen improperly for pointing out the 
+  ##    difference in the plot of DiscrFact
 
 dsc.1 <- DiscrFact (clus.1)
 plot(dsc.1)

@@ -2,7 +2,7 @@ plot.DiscrFact.p2 <-
 function (x, xlab = "Discriminant Factor", ylab = "Clusters", main, xlim,
           print.Discr = TRUE, main.pre, ...)
 {
-  n = x$x$dim[1]
+  n = x$x$int$dim[1]
 
   if (missing (main))
     main = "Silhouette Plot"  
@@ -19,7 +19,7 @@ function (x, xlab = "Discriminant Factor", ylab = "Clusters", main, xlim,
 
   axis (side = 1)
 
-  cs = c (0, cumsum (c (x$x$dim[1] - sum (x$x$size), x$x$size)))
+  cs = c (0, cumsum (c (x$x$int$dim[1] - sum (x$x$size), x$x$size)))
 
   {
     ylines <- cs[-1]

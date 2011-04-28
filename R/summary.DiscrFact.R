@@ -15,7 +15,7 @@ function (object, hide.emtpy = TRUE, show.clust, show.alt, ...)
 
   if (show.clust)
   {
-    cat ("\r\nNumber of doubtful assignments in clusters:\r\n")
+    cat ("\nNumber of doubtful assignments in clusters:\n")
     facts1 <- object$ind[idx] + 1
     cha <- as.array (tabulate (facts1, nbins = k1))
     dimnames (cha) <- list (dn)
@@ -30,7 +30,7 @@ function (object, hide.emtpy = TRUE, show.clust, show.alt, ...)
 
     #chma <- chma[apply (chma, 1, sum) != 0, , drop = FALSE]
 
-    cat ("\r\nObservations with doubtful decision are alternatively assigned to clusters:\r\n")  
+    cat ("\nObservations with doubtful decision are alternatively assigned to clusters:\n")  
     chma <- matrix (tabulate (facts2, nbins = k1 * k1), ncol =k1, nrow = k1)
     dimnames (chma) <- list (dn, dn)
     if (hide.emtpy)
