@@ -18,7 +18,7 @@ function (x, threshold = 1/10)
       ll[,k] <- (x$size[k] / no.trim)* .dmnorm (x$par$x,x$centers[,k],
         as.matrix (x$cov[,,k]))
 
-    llo <- apply (-ll, 1, order)  # calculates the row-wise order of the ll matrix
+    llo <- apply (-ll, 1, order)  # the row-wise order of matrix ll 
     if (!is.matrix (llo))
       llo <- matrix (llo, ncol = nrow (ll)) ## -> transposed..
 

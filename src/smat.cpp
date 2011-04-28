@@ -20,7 +20,7 @@
 #include "smat.h"
 #undef SMAT_FLAG_NO_INI
 
-#include "malloc.h"
+#include <cstdlib>
 #include "smat.meal.h"
 
 ////////////////

@@ -104,6 +104,7 @@
 
 	class UOP	//	user defined operators for class EO
 	{
+	public:
 		class AaC_BpaC				{ CALC_3_2(void) { a = c; b += c; } } ;
 		class inc_a_if_b_equals_c	{ CALC_3_1(void) { if (b == (TB) c) a += 1 ; } } ;
 		class inc_a_if_b_leq_c		{ CALC_3_1(void) { if (b <= (TB) c) a += 1 ; } } ;
