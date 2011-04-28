@@ -222,7 +222,7 @@
 			m_mTemp1.Reshape_NC (m_p, m_p) ;
 			sme_matmult_a_diagb_at_NC (mDu, m_vTemp1, !m_mTemp1) ;
 			for (k = m_K - 1; k != NAI; k--)
-				dRes += pdCluStSize [k] * (log (pow (pdst[k], m_p)) + sme_sum_matmult_diag_NC (m_mTemp1, m_amCurS[k]) / pdst[k]) ;
+				dRes += pdCluStSize [k] * (log (pow (pdst[k], (double) m_p)) + sme_sum_matmult_diag_NC (m_mTemp1, m_amCurS[k]) / pdst[k]) ;
 
 			if (!i || dRes < dMinRes)
 			{
