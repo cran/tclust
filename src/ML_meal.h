@@ -16,24 +16,45 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SMAT_H
-#define SMAT_H
+//	ML_meal.h
+//	MATLAB Mathematical Environment Abstraction Layer
 
-#ifndef SMAT_FLAG_NO_INI
-//#include "smat.ini.h"	//	ON ERROR / IF NOT FOUND: create an empty "smat.ini.h" file in your source directory.
-						//	smat.ini.h is a user-defined header file for providing smat with additional declarations.
-#endif	//	#ifndef SMAT_FLAG_NO_INI
+#ifndef ML_MEAL_H
+#define ML_MEAL_H
+#ifdef MATLAB_MEX_FILE
 
-#include "smat.def.h"
-#include "smat.base.h"
-#include "smat.elop.h"
-#include "smat.math.h"
-#include "smat.mem.h"
-#include "smat.matop.h"
-#include "smat.misc.h"
-#include "smat.random.h"
-#include "smat.sort.h"
-#include "smat.stat.h"
-#include "smat.meal.h"
+#include "matrix.h"
+#include "mex.h"
 
-#endif	//	#ifndef SMAT_H
+#include "lapack.h"
+#include "blas.h"
+
+//#include "mwutil.h"
+
+#ifdef SMAT_H
+
+	void Int2Double (double *pd, const int *pn, int n)
+	{
+		EO<SOP::assign>::VVc_raw (pd, pd + n, pn) ;
+	}
+
+	void Double2Int (int *pn, const double *pd, int n)
+	{
+		EO<SOP::assign>::VVc_raw (pn, pn + n, pd) ;
+	}
+
+#endif	//	#ifdef SMAT_H
+
+	class CRmealSettings 
+	{
+	public:
+		CRmealSettings () ;
+		CRmealSettings (const char *szEmail) ;
+		const char *GetEmail () { return m_szEmail ; }
+	protected:
+		const char *m_szEmail ;
+	} ;
+
+#endif	//	#ifdef MATLAB_MEX_FILE
+
+#endif	//	#ifndef ML_MEAL_H

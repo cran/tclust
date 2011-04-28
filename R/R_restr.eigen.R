@@ -200,7 +200,8 @@ ev <- autovalues
 					##	this is an auxiliary function, wrapping the RestrictEigenValues_deter - C++ function.
 					##	results should ALWAYS be EXACTLY the same as returned by .restr2_deter_ .
 
-	ret <- .C (name = "RestrictEigenValues_deter", PACKAGE = "tclust"
+					##	20120831: removed "name =" argmuent name from .C call
+	ret <- .C ("RestrictEigenValues_deter", PACKAGE = "tclust"
 		, as.integer (c(p, K))
 		, nParOut = integer (1)
 		, as.double (c (restr.fact, zero.tol))
@@ -221,7 +222,8 @@ ev <- autovalues
 					##	this is an auxiliary function, wrapping the RestrictEigenValues - C++ function.
 					##	results should ALWAYS be EXACTLY the same as returned by .restr2_eigenv.
 
-	ret <- .C (name = "RestrictEigenValues", PACKAGE = "tclust"
+					##	20120831: removed "name =" argmuent name from .C call
+	ret <- .C ("RestrictEigenValues", PACKAGE = "tclust"
 		, as.integer (c(p, K))
 		, nParOut = integer (1)
 		, as.double (c (restr.fact, zero.tol))

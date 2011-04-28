@@ -1,9 +1,8 @@
-ca8843b97f41b836e9a924950a3e2695 *DESCRIPTION
-d32239bcb673463ab874e80d47fae504 *LICENSE
+f1b5de44ba35aba2d9ab18b8e714ab4b *DESCRIPTION
 f9b7d45058c2d820bba794d3a0341ca6 *NAMESPACE
 777633e9758ef2691dd0a7a3ecfec1dc *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
-8155919404b6047ebac7e00e5f6667b0 *R/R_restr.eigen.R
+84f88ea6b97b32175093fd4bded54056 *R/R_restr.eigen.R
 878cbdf3263e36983fb6f3eef8699cef *R/R_tclust.R
 428b1ddddabe03f9b5884dc39463b29c *R/ScaleAdv.R
 2401d0b7c0b8cb5d815c09d6c12eed93 *R/ctlcurves.R
@@ -24,8 +23,9 @@ fcb5d41e9de0719bf822ee237e10aea8 *R/tkmeans.C.R
 07d47f09cb5f69e3932f5718a9e31f9c *data/geyser2.rda
 c4e71bb9da5103406950f08bdf511c1b *data/swissbank.rda
 a06055d40ada0debd72d9b29d03d06df *inst/CITATION
+4f2f8242cc7f16d4b74e2d493ed7c4dc *inst/doc/tclust.R
 7a9bb44fd17d2788ad65c0b8843eeb24 *inst/doc/tclust.bib
-102919284f7acccfee32a8b8a5909a1f *inst/doc/tclust.pdf
+4579eebb2238994c795f87cb8803e1e3 *inst/doc/tclust.pdf
 53f1b97a35c6bf45a284925ead79cff5 *inst/doc/tclust.rnw
 944f7c7a79e244c8d3b4974d3bb5829a *man/DiscrFact.Rd
 9e8d1b2accd1e1be697ccae340e3e575 *man/M5data.Rd
@@ -40,8 +40,12 @@ a573368ac95e50a6c56772f31d0ab992 *man/swissbank.Rd
 3a9cb1b618d836c248161b9e57ce6a48 *man/tclust.Rd
 2fb329de891b39a038282d6eb88c5ecc *man/tclust.package.Rd
 907563bba03086a8bdceeb1913906b92 *man/tkmeans.Rd
+ecd2a168df3dfeca85dccee4ef27399a *src/ML_meal.cpp
+a345008d7eb6f22c46fce474f0f5f4cc *src/ML_meal.h
 754991b8f3de457d07a1fff506e86b39 *src/ML_package.cpp
 6d4f7c34e61ba72e655b11f09eab0062 *src/ML_package.h
+5190547fb04c808c41fed4bfaf34a7be *src/ML_passrng.cpp
+33f5c7321b954c7b25874fc49fea65a4 *src/ML_passrng.h
 4c0d792bef0f5df1a722caea26f4ded0 *src/Makevars
 55421a030d9e0cd85b3c41cc7ab0fed4 *src/R.Inc.h
 809ddf5e64ece893d6d6394e5d2f4693 *src/R_meal.cpp
@@ -57,7 +61,7 @@ c0d88ed6a703fb332ef4a5fd38097786 *src/restr_eigen.cpp
 544f9315ec8806345cd943b0b8f98d70 *src/smat.base.h
 af5cff60469d564e5db1e5d38e84abcc *src/smat.cpp
 f707f51fb21bdac052a9cc47a30e8099 *src/smat.def.h
-c634f9e0a63749129037b14d3d521733 *src/smat.elop.h
+c2f1f4800e5c2bb239f13dd155f1eec8 *src/smat.elop.h
 be18645c82a502d4cdf0a26113a4b1d7 *src/smat.h
 75ef01065bb651f9becf0754043e3932 *src/smat.math.h
 81aabd3bda88afce83348d87a209217e *src/smat.matop.h
