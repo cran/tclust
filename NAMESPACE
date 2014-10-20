@@ -1,3 +1,11 @@
+# Import all packages listed as Imports or Depends
+import(
+  cluster,
+  mclust,
+  mvtnorm,
+  sn
+)
+
 exportPattern ("^[^\\.]")
 S3method (print, tclust)
 S3method (print, DiscrFact)
@@ -8,3 +16,5 @@ S3method (plot, ctlcurves)
 S3method (plot, tkmeans)
 S3method (summary, DiscrFact)
 useDynLib (tclust)
+
+

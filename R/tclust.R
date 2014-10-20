@@ -1,32 +1,32 @@
 
 tclust <-
-function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, 
-          restr = c ("eigen", "deter", "sigma"), restr.fact = 12, 
-          equal.weights = FALSE, center = 0, scale = 1, store.x = TRUE, 
+function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
+          restr = c ("eigen", "deter", "sigma"), restr.fact = 12,
+          equal.weights = FALSE, center = 0, scale = 1, store.x = TRUE,
           drop.empty.clust = TRUE, trace = 0, warnings = 3, zero.tol = 1e-16
          )
 {
 #  Disabled arguments:
-#  restr = c ("eigen", "deter", "sigma", "dir.eigen", "dir.deter", "prop"), 
-#  iter.tune, 
+#  restr = c ("eigen", "deter", "sigma", "dir.eigen", "dir.deter", "prop"),
+#  iter.tune,
   ovv <- 0      ##  optimization parameter for "optVectors"
   fuzzy <- FALSE
   m <- 2
   iter.tune <- 10
   x.s <- substitute(x)
 
-  par <- list (x = x, x.s = x.s, k = k, alpha = alpha, nstart = nstart, 
-               iter.max = iter.max, restr = restr[1], restr.fact = restr.fact, 
-               equal.weights = equal.weights, center = center, scale = scale, 
+  par <- list (x = x, x.s = x.s, k = k, alpha = alpha, nstart = nstart,
+               iter.max = iter.max, restr = restr[1], restr.fact = restr.fact,
+               equal.weights = equal.weights, center = center, scale = scale,
 			   store.x = store.x, drop.empty.clust = drop.empty.clust,
 			   trace = trace, warnings = warnings, zero.tol = zero.tol,
 			   ovv = ovv, fuzzy = fuzzy, m = m, iter.tune = iter.tune)
 
   par <- .tclust.preproc (par)
 
-  ret.C <- .C ( "tclust", PACKAGE = "tclust", DUP = FALSE
-        , as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max, 
-		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace, 
+  ret.C <- .C ( "tclust", PACKAGE = "tclust", DUP = TRUE
+        , as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
+		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace,
 					par$iter.tune, par$ovv))
         , parN = integer (5)
         , as.double (c (par$alpha, par$restr.fact, par$m, par$zero.tol))
@@ -48,34 +48,34 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 }
 
 .tclust.int <-
-function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20, 
-          restr = c ("eigen", "deter", "sigma"), restr.fact = 12, 
-          equal.weights = FALSE, center = 0, scale = 1, store.x = TRUE, 
+function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
+          restr = c ("eigen", "deter", "sigma"), restr.fact = 12,
+          equal.weights = FALSE, center = 0, scale = 1, store.x = TRUE,
           drop.empty.clust = TRUE, trace = 0, warnings = 3, zero.tol = 1e-16,
 		  fuzzy = FALSE, m = 2, iter.tune = 10, ovv = 0
          )
 {
 #  Disabled arguments:
-#  restr = c ("eigen", "deter", "sigma", "dir.eigen", "dir.deter", "prop"), 
-#  iter.tune, 
+#  restr = c ("eigen", "deter", "sigma", "dir.eigen", "dir.deter", "prop"),
+#  iter.tune,
 #  ovv <- 0      ##  optimization parameter for "optVectors"
 #  fuzzy <- FALSE
 #  m <- 2
 #  iter.tune <- 10
   x.s <- substitute(x)
 
-  par <- list (x = x, x.s = x.s, k = k, alpha = alpha, nstart = nstart, 
-               iter.max = iter.max, restr = restr[1], restr.fact = restr.fact, 
-               equal.weights = equal.weights, center = center, scale = scale, 
+  par <- list (x = x, x.s = x.s, k = k, alpha = alpha, nstart = nstart,
+               iter.max = iter.max, restr = restr[1], restr.fact = restr.fact,
+               equal.weights = equal.weights, center = center, scale = scale,
 			   store.x = store.x, drop.empty.clust = drop.empty.clust,
 			   trace = trace, warnings = warnings, zero.tol = zero.tol,
 			   ovv = ovv, fuzzy = fuzzy, m = m, iter.tune = iter.tune)
 
   par <- .tclust.preproc (par)
 
-  ret.C <- .C ( "tclust", PACKAGE = "tclust", DUP = FALSE
-        , as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max, 
-		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace, 
+  ret.C <- .C ( "tclust", PACKAGE = "tclust", DUP = TRUE
+        , as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
+		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace,
 					par$iter.tune, par$ovv))
         , parN = integer (5)
         , as.double (c (par$alpha, par$restr.fact, par$m, par$zero.tol))
@@ -137,7 +137,7 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
   if (ret.C$parN[4])	##	error excecution
     stop ()
 
-  parlist <- list (k = O$k, alpha = O$alpha, nstart = O$nstart, 
+  parlist <- list (k = O$k, alpha = O$alpha, nstart = O$nstart,
                    iter.max = O$iter.max, equal.weights = O$equal.weights)
 
   if (O$store.x)
@@ -177,7 +177,7 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 
   dn.x <- dimnames (O$x)
 
-  rownames (ret$centers) <- 
+  rownames (ret$centers) <-
     if (is.null (colnames (O$x)))
       paste ("X", 1:ncol (O$x))
     else
@@ -228,7 +228,7 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
   O$ret$cov <- array (ret.C$cov, c (O$p, O$p, O$k))[, , O$idxuse, drop = FALSE]
 
   dimnames (O$ret$cov) <- dimnames (O$ret$centers)[c (1, 1, 2)]
-    
+
 	## calculate the "unrestr.fact"
 #  if (O$deter.C)
 #    get.Mm <- function (x, O) det (cov (O$x[x == O$ret$cluster, ]))
@@ -277,7 +277,7 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 {
   ret$warnings <- list (
                   singular = ret$int$code == 2
-                , iter = ret$int$iter.successful && ret$int$iter.converged / 
+                , iter = ret$int$iter.successful && ret$int$iter.converged /
                          ret$int$iter.successful < 0.5
                 , drop = O$k > ret$k
                 , size = any (ret$size < O$n / 50)
@@ -293,7 +293,7 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
   ret$warnings$restr.lo = ret$unrestr.fact > O$restr.fact
   ret$warnings$restr.hi = ret$unrestr.fact * 2 < O$restr.fact
 
-  if (ret$warnings$sizep || ret$warnings$size)    
+  if (ret$warnings$sizep || ret$warnings$size)
     ret$warnings$restr.lo <- FALSE
 
   return (ret)
@@ -305,8 +305,8 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
   if (O$warnings >= 1)
   {
     if (ret$warnings$iter)
-      warning (paste ("Less than 50% of the iterations (", 
-        round (ret$int$iter.converged / ret$int$iter.successful * 100, 1), 
+      warning (paste ("Less than 50% of the iterations (",
+        round (ret$int$iter.converged / ret$int$iter.successful * 100, 1),
                "%) converged - please increase iter.max.", sep = ""))
     if (ret$warnings$smallobj)
       warning ("Due to a very small objective function's value, the final solution does not seem to be reliable.\n  More iterations are probably needed (-> increase \"nstart\").")
@@ -347,7 +347,7 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
     if (ret$par$restr != "sigma")
     {
       if (ret$warnings$restr.lo)
-         warning (paste ("The result is artificially constrained due to ", 
+         warning (paste ("The result is artificially constrained due to ",
          "restr.fact = ",ret$par$restr.fact,".", sep = ""))
 #       warning (paste ("The chosen restriction factor (", ret$par$restr.fact,
 #       ") artificially restricts the solution.\n",

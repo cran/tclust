@@ -72,7 +72,7 @@ col <- c (og, 4, 2, 3)
 pch <- c (1, 4, 2, 3)
 
   ## plotting results..
-plot (res.a, col = col, pch = pch, tol.lty = 2, xlab = "", 
+plot (res.a, col = col, pch = pch, tol.lty = 2, xlab = "",
      ylab = "", main.pre ="(a)", main = "/r")
 plot (res.b, col = col, pch = pch, tol.lty = 2, xlab = "",
      ylab = "", main.pre ="(b)", main = "/r")
@@ -126,11 +126,11 @@ ylab <- "" #names (geyser2)[2]
 
   ## applying PAM on the geyser2 data set
 clus <- pam (geyser2, 3)
-plot (geyser2, xlab = xlab, ylab = ylab, col = clus$clustering + 1, 
+plot (geyser2, xlab = xlab, ylab = ylab, col = clus$clustering + 1,
       main = "(a) PAM with Geyser")
 points (clus$medoids, pch = "X", cex = 1.4)
 
-  ## modifying the geyser2 data set 
+  ## modifying the geyser2 data set
 geyser2.mod <- geyser2
 idx <- c (16,  21, 36, 171, 236, 265)
 geyser2.mod[idx,] <- geyser2[idx,] - 12
@@ -171,60 +171,60 @@ ylab <- "" #"x2"
 xi <- c (0.5, -1)
 Omega <- diag (2) / 2 + 0.5
 alpha <- c (0, 0)
-rnd1 <- rmst (n, xi, Omega, alpha, df = 2)
+rnd1 <- rmst (n, xi, Omega, alpha, nu = 2)
 xi <- c (6, -3)
 Omega <- matrix (c (4, 1, 1, 2), nrow = 2, ncol = 2)
 alpha <- c (0, 0)
-rnd2 <- rmst (n, xi, Omega, alpha, df = 3)
+rnd2 <- rmst (n, xi, Omega, alpha, nu = 3)
 xi <- c (-3, 3)
 Omega <- matrix (c (2, 1, 1, 4), nrow = 2, ncol = 2)
 alpha <- c (0, 0)
-rnd3 <- rmst (n, xi, Omega, alpha, df = 4)
+rnd3 <- rmst (n, xi, Omega, alpha, nu = 4)
 rnd.1 <- rbind (rnd1, rnd2, rnd3)
-real.clus1 <- c (rep (1, n), rep (2, n), rep (3, n)) 
+real.clus1 <- c (rep (1, n), rep (2, n), rep (3, n))
 
 ylim <- c (-25, 15)
   ## Plotting the real clusters
-plot (rnd.1, xlim = c (-15, 80), ylim = ylim, xlab = xlab, ylab = ylab, 
+plot (rnd.1, xlim = c (-15, 80), ylim = ylim, xlab = xlab, ylab = ylab,
       col = real.clus1 + 1, pch = real.clus1 + 1)
 title ("(a) Elliptical t components", line = 1.6)
 
   ## applying tclust without trimming
 clus <- tclust (rnd.1, k = 3, alpha = 0.0)
-plot (clus, xlim = c (-15, 80), ylim = ylim, xlab = xlab, ylab = ylab, 
+plot (clus, xlim = c (-15, 80), ylim = ylim, xlab = xlab, ylab = ylab,
       main.pre = "(b)")
 
  ## applying tclust with trimming (5%)
 clus <- tclust (rnd.1, k = 3, alpha = 0.05)
-plot (clus, xlim = c (-15, 80), ylim = ylim, xlab = xlab, ylab = ylab, 
+plot (clus, xlim = c (-15, 80), ylim = ylim, xlab = xlab, ylab = ylab,
       main.pre = "(c)")
 
   ## data generation: Mixture of non-elliptical t's
 xi <- c (0.5, -1)
 Omega <- diag (2) / 2 + 0.5
 alpha <- c (2, 80)
-rnd1 <- rmst (n, xi, Omega, alpha, df = 2)
+rnd1 <- rmst (n, xi, Omega, alpha, nu = 2)
 xi <- c (6, -3)
 Omega <- matrix (c (4, 1, 1, 2), nrow = 2, ncol = 2)
 alpha <- c (2, 2)
-rnd2 <- rmst (n, xi, Omega, alpha, df = 3)
+rnd2 <- rmst (n, xi, Omega, alpha, nu = 3)
 xi <- c (-3, 3)
 Omega <- matrix (c (2, 1, 1, 4), nrow = 2, ncol = 2)
 alpha <- c (4, 4)
-rnd3 <- rmst (n, xi, Omega, alpha, df = 4)
+rnd3 <- rmst (n, xi, Omega, alpha, nu = 4)
 
 rnd.2 <- rbind (rnd1, rnd2, rnd3)
-real.clus2 <- c (rep (1, n), rep (2, n), rep(3, n)) 
+real.clus2 <- c (rep (1, n), rep (2, n), rep(3, n))
 
 ylim <- c (-10, 20)
   ## Plotting the real clusters
-plot (rnd.2, xlim = c (-10, 20), ylim = ylim, xlab = xlab, ylab = ylab, 
+plot (rnd.2, xlim = c (-10, 20), ylim = ylim, xlab = xlab, ylab = ylab,
       col = real.clus2 + 1, pch=real.clus2 + 1)
 title ("(d) Non-elliptical t components", line = 1.6)
 
  ## applying tclust without trimming
 clus <- tclust (rnd.2, k = 3, alpha = 0.0)
-plot (clus, xlim = c (-10, 20), ylim = ylim, xlab = xlab, ylab = ylab, 
+plot (clus, xlim = c (-10, 20), ylim = ylim, xlab = xlab, ylab = ylab,
       main.pre = "(e)")
 
  ## applying tclust with trimming (5%)
@@ -248,7 +248,7 @@ par (op)
 library (mclust)
 
   ## function for plotting mclust-objects in tclust-style.
-mclustplottcluststyle2d <- function (x, clus, clus.perm, tol.lty = 3, 
+mclustplottcluststyle2d <- function (x, clus, clus.perm, tol.lty = 3,
                                      size = sqrt (qchisq (0.95, 2)), ...)
 {
   if (missing (clus.perm))
@@ -261,7 +261,7 @@ mclustplottcluststyle2d <- function (x, clus, clus.perm, tol.lty = 3,
   k <- ncol (clus$parameters$mean)
 
   for (i in 1:k)
-    tclust:::.doEllipses (cov = clus$parameters$variance$sigma[,, i], 
+    tclust:::.doEllipses (cov = clus$parameters$variance$sigma[,, i],
                           center = clus$parameters$mean[, i], size = size,
                           lty = tol.lty)
 }
@@ -303,10 +303,10 @@ x <- rbind (
             noise)
 
   ##  applying mclust
-noiseInit <- sample (c (TRUE, FALSE), size = nrow (x), 
+noiseInit <- sample (c (TRUE, FALSE), size = nrow (x),
                      replace = TRUE, prob = c (0.1, 0.9))
 clus <- Mclust (x, initialization = list (noise = noiseInit), G = 2)
-mclustplottcluststyle2d (x, clus, c (0, 2, 1), xlab = "", ylab = "", 
+mclustplottcluststyle2d (x, clus, c (0, 2, 1), xlab = "", ylab = "",
                          main = "(c) mclust", tol.lty = 2)
 
   ##  applying tclust
@@ -339,7 +339,7 @@ clus.2 <- tclust (mixt, k = 2, alpha = 0.05, restr.fact =  8, warnings = 2)
 
   ## plotting results
 op <- par (mfrow = c (1, 2))
-plot(clus.1, by.clust = TRUE, col = c (og, 2, 3, 4), pch = c (1, 2, 3, 4), 
+plot(clus.1, by.clust = TRUE, col = c (og, 2, 3, 4), pch = c (1, 2, 3, 4),
      tol.lty = 2, main.pre = "(a)")
 plot(clus.2, by.clust = TRUE, col = c (og, 2, 3), pch = c (1, 2, 3),
      tol.lty = 2, main.pre = "(b)")
@@ -379,7 +379,7 @@ set.seed (10)
   ## creating a one dimensional data "matrix"
 geyser1 <- geyser2[, 1, drop = FALSE]
   ## applying tkmeans
-plot (tkmeans (geyser1, k = 2, alpha = 0.03), jitter = TRUE, tol.lwd = 2, 
+plot (tkmeans (geyser1, k = 2, alpha = 0.03), jitter = TRUE, tol.lwd = 2,
       main.pre = "(a)")
 
   ## adding a random dimension to geyser2
@@ -409,7 +409,7 @@ mixt2 <- rbind (
 
   ## applying tclust
 set.seed (100)
-clus.w <- tclust (mixt2, k = 3, alpha = 0.1, restr.fact = 1, 
+clus.w <- tclust (mixt2, k = 3, alpha = 0.1, restr.fact = 1,
                   equal.weights = TRUE, warnings = 1)
 
   ## applying DiscrFact
@@ -478,7 +478,7 @@ op <- par (mfrow = c (1, 3), mar = mmar)
 xlab <- "Distance of the inner frame to lower border"
 ylab <- "Length of the diagonal"
 
-plot (swissbank[, 4], swissbank[, 6], col = "darkgrey", pch = pch, 
+plot (swissbank[, 4], swissbank[, 6], col = "darkgrey", pch = pch,
       main = "(a) Cluster1", xlab = xlab, ylab = ylab)
 
 cl1 <- cl == 1
@@ -486,7 +486,7 @@ points (swissbank[cl1, 4], swissbank[cl1, 6], pch = pch[cl1], col = 2)
 idx <- (cl1) & condition
 points (swissbank[idx, 4], swissbank[idx, 6], pch = 1, cex = 4, col = "blue")
 
-plot (swissbank[, 4], swissbank[, 6], col = "darkgrey", pch = pch, 
+plot (swissbank[, 4], swissbank[, 6], col = "darkgrey", pch = pch,
       main = "(b) Cluster2", xlab = xlab, ylab = ylab)
 cl2 <- cl == 2
 points (swissbank[cl2, 4], swissbank[cl2, 6], pch = pch[cl2], col = 3)
@@ -494,7 +494,7 @@ idx <- (cl2) & condition
 points (swissbank[idx, 4], swissbank[idx, 6], pch = 1, cex = 4, col = "blue")
 
 cl0 <- cl == 0
-plot (swissbank[, 4], swissbank[, 6], col = "darkgrey", pch = pch, 
+plot (swissbank[, 4], swissbank[, 6], col = "darkgrey", pch = pch,
       main = "(c) Trimmed", xlab = xlab, ylab = ylab)
 
 points (swissbank[cl0, 4], swissbank[cl0, 6], pch = pch[cl0])

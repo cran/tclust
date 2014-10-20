@@ -1,0 +1,28 @@
+2014-10-20  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.2-3
+    *
+2014-10-06  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.2-2
+    *
+    * Test case regarding usage of 'mclust' fixed
+    *
+2014-09-23  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.2-1
+    *
+    * New maintainer 
+    *
+    * Reference to package 'fpc' fixed
+    *
+    * 'DUP = FALSE' in several .C calls changed to 'DUP = TRUE'
+    *
+    * test/* added
+    *
+    * NAMESPACE - import statement added
+    *
+    * vignettes directory created
+    *
+    * other minor issues fixed
+    *
