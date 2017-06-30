@@ -17,11 +17,6 @@ Computes the two first discriminant coordinates (canonical coordinates) directly
 \value{ A two-dimensional matrix, containing the canonical coordinates of all observations given by the \code{tclust}-object. }
 \references{ Hennig, C. and Christlieb, N. (2002), "Validating visual clusters in large datasets: fixed point clusters of spectral features.", Computational Statistics and Data Analysis Vol.40, 723-739. }
 \author{ Agustin Mayo Iscar, Luis Angel Garcia Escudero, Heinrich Fritz }
-\note{ This function is intended to be used internally by this package only.
- %~Make other sections like Warning with \section{Warning }{....} ~
-}
-%\seealso{ ~~objects to See Also as \code{\link{help}}, ~~~ }
-
 \keyword{ hplot }
 \keyword{ multivariate }
 \keyword{ robust }

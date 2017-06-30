@@ -6,9 +6,8 @@
 	#include "smat.def.h"
 #endif
 
-	EXPORT void tkmeans (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdObjER, int *pnConvER) ;
-
-	EXPORT void tclust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER) ;
+	EXPORT void C_tkmeans (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdObjER, int *pnConvER) ;
+	EXPORT void C_tclust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER) ;
 
 	EXPORT void restr_dir_C (int *pdwParamIn, int *pdwParamOut, double *pdParamIn, double *pdS, double *pdCSize, double *pdEVec, double *pdEval) ;
 	EXPORT void restr_prop_C (int *pdwParamIn, int *pdwParamOut, double *pdParamIn, double *pdS, double *pdCSize, double *pdEVec, double *pdEval) ;

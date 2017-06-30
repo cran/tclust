@@ -24,23 +24,22 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 
   par <- .tclust.preproc (par)
 
-  ret.C <- .C ( "tclust", PACKAGE = "tclust", DUP = TRUE
-        , as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
+  ret.C <- .C(C_tclust, DUP = TRUE,
+        as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
 		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace,
-					par$iter.tune, par$ovv))
-        , parN = integer (5)
-        , as.double (c (par$alpha, par$restr.fact, par$m, par$zero.tol))
-        , parD = double (2)
-        , as.double (par$x)
-        , center = double (par$p * par$k)
-        , cov = double (par$p * par$p * par$k)
-        , cluster = integer (nrow (par$x))
-        , size = double (par$k)
-        , weights = double (par$k)
-        , z = double (par$z.size)
-        , er.obj = double (par$nstart)
-        , er.conv = integer (par$nstart)
-  )
+					par$iter.tune, par$ovv)),
+        parN = integer (5),
+        as.double (c (par$alpha, par$restr.fact, par$m, par$zero.tol)),
+        parD = double (2),
+        as.double (par$x),
+        center = double (par$p * par$k),
+        cov = double (par$p * par$p * par$k),
+        cluster = integer (nrow (par$x)),
+        size = double (par$k),
+        weights = double (par$k),
+        z = double (par$z.size),
+        er.obj = double (par$nstart),
+        er.conv = integer (par$nstart))
 
   par <- .tclust.postproc (par, ret.C)
 
@@ -73,23 +72,22 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 
   par <- .tclust.preproc (par)
 
-  ret.C <- .C ( "tclust", PACKAGE = "tclust", DUP = TRUE
-        , as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
+  ret.C <- .C(C_tclust, DUP = TRUE,
+        as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
 		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace,
-					par$iter.tune, par$ovv))
-        , parN = integer (5)
-        , as.double (c (par$alpha, par$restr.fact, par$m, par$zero.tol))
-        , parD = double (2)
-        , as.double (par$x)
-        , center = double (par$p * par$k)
-        , cov = double (par$p * par$p * par$k)
-        , cluster = integer (nrow (par$x))
-        , size = double (par$k)
-        , weights = double (par$k)
-        , z = double (par$z.size)
-        , er.obj = double (par$nstart)
-        , er.conv = integer (par$nstart)
-  )
+					par$iter.tune, par$ovv)),
+        parN = integer (5),
+        as.double (c (par$alpha, par$restr.fact, par$m, par$zero.tol)),
+        parD = double (2),
+        as.double (par$x),
+        center = double (par$p * par$k),
+        cov = double (par$p * par$p * par$k),
+        cluster = integer (nrow (par$x)),
+        size = double (par$k),
+        weights = double (par$k),
+        z = double (par$z.size),
+        er.obj = double (par$nstart),
+        er.conv = integer (par$nstart))
 
   par <- .tclust.postproc (par, ret.C)
 

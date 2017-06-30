@@ -21,19 +21,18 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 
   par <- .tkmeans.preproc (par)
 
-  ret.C <- .C ( "tkmeans", PACKAGE = "tclust", DUP = TRUE
-        , as.integer (c (dim (par$x), par$k, par$equal.weights, par$usetrace, par$nstart, par$iter.max))
-        , parN = integer (5)
-        , as.double (c (par$alpha, par$zero.tol))
-        , parD = double (2)
-        , as.double (par$x)
-        , center = double (par$p * par$k)
-        , cluster = integer (nrow (par$x))
-        , size = double (par$k)
-        , weights = double (par$k)
-        , er.obj = double (par$nstart)
-        , er.conv = integer (par$nstart)
-  )
+  ret.C <- .C(C_tkmeans, DUP = TRUE,
+        as.integer (c (dim (par$x), par$k, par$equal.weights, par$usetrace, par$nstart, par$iter.max)),
+        parN = integer (5),
+        as.double (c (par$alpha, par$zero.tol)),
+        parD = double (2),
+        as.double (par$x),
+        center = double (par$p * par$k),
+        cluster = integer (nrow (par$x)),
+        size = double (par$k),
+        weights = double (par$k),
+        er.obj = double (par$nstart),
+        er.conv = integer (par$nstart))
 
   par <- .tkmeans.postproc (par, ret.C)
 

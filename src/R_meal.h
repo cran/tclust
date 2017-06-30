@@ -19,6 +19,11 @@
 //	R.meal.h
 //	R Mathematical Environment Abstraction Layer
 
+// VT:10.10.2016
+// Problem compiling on Solaris
+// 
+using namespace std;
+
 #ifdef R_PACKAGE_FILE
 #ifndef R_MEAL_H
 #define R_MEAL_H

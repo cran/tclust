@@ -1,3 +1,32 @@
+2017-06-27  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.2-7
+	* DESCRIPTION (Version): 1.2-6
+	* DESCRIPTION (Version): 1.2-5
+    *
+    * src/smat.base.h - fix to compile on gcc-7: lines 737-741
+    *
+    * C functions registered (warning "Found no calls to: ‘R_registerRoutines’,
+    *       ‘R_useDynamicSymbols’" fixed)
+    *
+    * A test example with random data suppressed
+    *
+
+2016-10-10  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.2-4
+    *
+    * NAMESPASE - add importFrom() for functions in "grDevices", "graphics", "stats" and "utils".
+    *
+    * DESCRIPTION - fixed the description
+    *
+    * R/R_restr.eigen.R - removed non-ascii characters from comments
+    *
+    * src/R_meal.h: fix a problem on Solaris by adding
+    **      using namespace std;
+    *   - however, I cannot test if this is sufficient
+    *
+    *
 2014-10-20  Valentin Todorov  <valentin.todorov@chello.at>
     *
 	* DESCRIPTION (Version): 1.2-3
@@ -12,7 +41,7 @@
     *
 	* DESCRIPTION (Version): 1.2-1
     *
-    * New maintainer 
+    * New maintainer
     *
     * Reference to package 'fpc' fixed
     *

@@ -14,7 +14,7 @@ R_MEAL_SETTINGS ("heinrich_fritz@hotmail.com") ;	//	settings for the R meal - im
 //	exporting functions to R  //
 ////////////////////////////////
 
-	void tkmeans (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdObjER, int *pnConvER)
+	void C_tkmeans (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdObjER, int *pnConvER)
 	{
 		TRY (
 				CTKMeans (	  pnParIn[0]	//	n
@@ -42,7 +42,7 @@ R_MEAL_SETTINGS ("heinrich_fritz@hotmail.com") ;	//	settings for the R meal - im
 			)
 	}
 
-	void tclust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER)
+	void C_tclust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER)
 	{
 		TRY (
 				CTClust (pnParIn, pnParOut, pdParIn, pdParOut, pdX, pdM, pdS, pnAssign, pdClustSize, pdWeights, pdZ, pdObjER, pnConvER) ;

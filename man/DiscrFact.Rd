@@ -2,14 +2,12 @@
 \encoding{latin1}
 \alias{DiscrFact}
 \alias{print.DiscrFact}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{ Discriminant Factor Analysis for tclust Objects}
 \description{ Analyzes a \code{tclust}-object by calculating discriminant factors and comparing the quality of the actual cluster assignments and the second best possible assignment for each observation. Discriminant factors, measuring the strength of the "trimming" decision may also be defined. % (!? what does this sentence mean?). 
 Cluster assignments of observations with large discriminant factors are considered as "doubtful" decisions. Silhouette plots give a graphical overview of the discriminant factors distribution (see \code{\link{plot.DiscrFact}}). More details can be found in García-Escudero et al. (2010).}
 \usage{
 DiscrFact(x, threshold = 1/10)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{ A \code{tclust} object. }
   \item{threshold}{ %Observations with discriminant factors larger than \code{log (threshold)} are considered as to be "doubtfully" assigned to a cluster.
@@ -18,7 +16,6 @@ DiscrFact(x, threshold = 1/10)
 }
 \details{
 This function compares the actual (best) assignment of each observation to its second best possible assignment. This comparison is based on the discriminant factors of each observation, which are calculated here. If the discriminant factor of an observation is larger than a given level (\code{log (threshold)}), the observation is considered as "doubtfully" assigned to a cluster. More information is shown when \link[=plot.DiscrFact]{plotting} the returned \code{DiscrFact} object.
-%  The function plots two graphs: The first displays a silhouette plot based on the discriminant factors of the observations. The cluster solution is not reliable when groups with many observations with large discriminant factors appear in the silhouette plot. Thus, when comparing clustering solutions, those having smaller values for the associated mean of discriminant factor are preferable. The second plot displays the dataset, highlighting observations with discriminant factor greater than the given threshold.
 }
 \value{
 The function returns an S3 object of type \code{DiscrFact} containing the following components:
@@ -61,8 +58,6 @@ dsc.2 <- DiscrFact (clus.2)
 plot (dsc.2)
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{ hplot }
 \keyword{ cluster }
 \keyword{ robust }

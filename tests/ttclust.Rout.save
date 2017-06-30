@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2014-09-22 r66656) -- "Unsuffered Consequences"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R Under development (unstable) (2017-06-16 r72802) -- "Unsuffered Consequences"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -15,15 +15,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> ##  VT::03.09.2016 - this will render the output independent
+> ##  from the version of the package
+> suppressPackageStartupMessages(library(tclust))
+> 
 > require(tclust)
-Loading required package: tclust
-Loading required package: mvtnorm
-Loading required package: sn
-Loading required package: stats4
-Loading required package: mclust
-Package 'mclust' version 4.4
-Type 'citation("mclust")' for citing this R package in publications.
-Loading required package: cluster
 > #--- EXAMPLE 1 ------------------------------------------
 > 
 > set.seed(123)
@@ -557,31 +553,25 @@ Mean discriminant factor per cluster:
 > 
 > 
 > ########## Classification Trimmed Likelihood Curves  ###################
-> #--- EXAMPLE 1 ------------------------------------------
 > 
-> sig <- diag (2)
-> cen <- rep (1, 2)
-> x <- rbind (
-+ 	rmvnorm (108, cen * 0,   sig),
-+ 	rmvnorm (162, cen * 5,   sig * 6 - 2),
-+ 	rmvnorm (30, cen * 2.5, sig * 50)
-+ )
-> 
-> (ctl <- ctlcurves (x, k = 1:4))
-Depending on arguments x, k and alpha, this function needs some time to compute.
-(Remove this message by setting "trace = 0")
-Computed 24 solutions (chosen restr.fact = 50).
-
-   alpha
-k   0 0.04 0.08 0.12 0.16 0.2
-  1                          
-  2                          
-  3 * *k   *k   *k   *k      
-  4 * *k   *k   *k   *    k  
-
-(*) Identified 10 artificially restricted solutions.
-(k) Identified 8 solutions with very small/dropped clusters.
-> 
+> ## Do not run - it takes too long and can show differences on some
+> ##  architectures due to the random numbers.
+> ##
+> if(FALSE)
++ {
++ #--- EXAMPLE 1 ------------------------------------------
++ 
++     sig <- diag (2)
++     cen <- rep (1, 2)
++     x <- rbind (
++     	rmvnorm (108, cen * 0,   sig),
++     	rmvnorm (162, cen * 5,   sig * 6 - 2),
++     	rmvnorm (30, cen * 2.5, sig * 50)
++     )
++ 
++     (ctl <- ctlcurves (x, k = 1:4))
++ 
++ }
 > 
 > #--- EXAMPLE 2 ------------------------------------------
 > 
@@ -596,12 +586,12 @@ k   0 0.04 0.08 0.12 0.16 0.2
   1                          
   2                          
   3                          
-  4   k                   *  
-  5   k    *    *k   k       
+  4             *            
+  5        k    *k   *k      
 
 (*) Identified 3 artificially restricted solutions.
-(k) Identified 4 solutions with very small/dropped clusters.
+(k) Identified 3 solutions with very small/dropped clusters.
 > 
 > proc.time()
    user  system elapsed 
-   6.28    0.04    6.31 
+   5.03    0.07    5.11 

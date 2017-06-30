@@ -1,3 +1,7 @@
+##  VT::03.09.2016 - this will render the output independent
+##  from the version of the package
+suppressPackageStartupMessages(library(tclust))
+
 require(tclust)
 #--- EXAMPLE 1 ------------------------------------------
 
@@ -64,18 +68,25 @@ x <- rbind (
 
 
 ########## Classification Trimmed Likelihood Curves  ###################
+
+## Do not run - it takes too long and can show differences on some
+##  architectures due to the random numbers.
+##
+if(FALSE)
+{
 #--- EXAMPLE 1 ------------------------------------------
 
-sig <- diag (2)
-cen <- rep (1, 2)
-x <- rbind (
-	rmvnorm (108, cen * 0,   sig),
-	rmvnorm (162, cen * 5,   sig * 6 - 2),
-	rmvnorm (30, cen * 2.5, sig * 50)
-)
+    sig <- diag (2)
+    cen <- rep (1, 2)
+    x <- rbind (
+    	rmvnorm (108, cen * 0,   sig),
+    	rmvnorm (162, cen * 5,   sig * 6 - 2),
+    	rmvnorm (30, cen * 2.5, sig * 50)
+    )
 
-(ctl <- ctlcurves (x, k = 1:4))
+    (ctl <- ctlcurves (x, k = 1:4))
 
+}
 
 #--- EXAMPLE 2 ------------------------------------------
 
