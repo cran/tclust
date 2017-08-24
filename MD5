@@ -1,5 +1,5 @@
-a6678d63a55efe6227e6f83755579780 *ChangeLog
-6ab1d1b4c18afacdfdeffce9f3019dcd *DESCRIPTION
+9fecd7950f46b078f549232e4df252de *ChangeLog
+dbf6e1b692d57196e9041e78206b4b7b *DESCRIPTION
 309a96a098c35a452c184275b9d79da0 *NAMESPACE
 777633e9758ef2691dd0a7a3ecfec1dc *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
@@ -24,7 +24,7 @@ a9708b204da52bafe7c6767318e00483 *build/vignette.rds
 254420a444641abae7db495664f1d92c *data/M5data.rda
 07d47f09cb5f69e3932f5718a9e31f9c *data/geyser2.rda
 c4e71bb9da5103406950f08bdf511c1b *data/swissbank.rda
-a06055d40ada0debd72d9b29d03d06df *inst/CITATION
+304533ba1eb37e924fbbfce77cfc5e06 *inst/CITATION
 77cce0abff8228d2bfe05b034fc08166 *inst/doc/tclust.R
 12a2d2724dba9f4256d79d1ee1f31241 *inst/doc/tclust.pdf
 dc9c8d2337804409670aeaeb0bfe7d6f *inst/doc/tclust.rnw
@@ -38,7 +38,7 @@ d8c54049e736fd73178b912daffd4c9d *man/plot.ctlcurves.Rd
 fd2e25cf34a2f3d58555e163ec71bee2 *man/plot.tclust.Rd
 02573eb260907b5a090586f470896b11 *man/summary.DiscrFact.Rd
 a573368ac95e50a6c56772f31d0ab992 *man/swissbank.Rd
-3a9cb1b618d836c248161b9e57ce6a48 *man/tclust.Rd
+4462cc7cb76d3cd5d5cbb3ca18a49938 *man/tclust.Rd
 2fb329de891b39a038282d6eb88c5ecc *man/tclust.package.Rd
 907563bba03086a8bdceeb1913906b92 *man/tkmeans.Rd
 ecd2a168df3dfeca85dccee4ef27399a *src/ML_meal.cpp
@@ -57,7 +57,7 @@ c23e62b608c4a4bb02d9bd6c7c1d51f8 *src/R_package.cpp
 25109ac7b872d898f3a97e47441415c0 *src/clust.cpp
 948d65c8cc3ba9a662758f3b85732370 *src/clust.h
 8ad5313fabf3b19d951888eeedc24455 *src/perftimer.h
-b7e59cb3b7751469160e2f6d68aa1c53 *src/restr.cpp
+bbb7d4e3c63cd776ad813b2338e78ea2 *src/restr.cpp
 c0d88ed6a703fb332ef4a5fd38097786 *src/restr_eigen.cpp
 814acd5c54d48035b7b824b8154bc649 *src/smat.base.h
 af5cff60469d564e5db1e5d38e84abcc *src/smat.cpp
@@ -79,7 +79,7 @@ d5c8e1a30c94e0032f9a4b5ada5bd3ff *src/smat_meal_passrng.h
 53c55ce7e17d721687b03808a829ca5e *src/tclust_init.c
 2bf8bb385b082f2d6c519bb67138a2d7 *src/tkmeans.cpp
 03232e1f5a2edd5eb3d1804fd88c3294 *src/tkmeans.h
-37a5d4fe0c94e273e562dbfea3d1e2e3 *tests/ttclust.R
-0fd3fc8a21815375678b7d98f609c34c *tests/ttclust.Rout.save
+8c7c3c72e96665a0756c6f6156cf28b6 *tests/ttclust.R
+2c15fdc8fbde61c67d231ed3e4fe91a9 *tests/ttclust.Rout.save
 7a9bb44fd17d2788ad65c0b8843eeb24 *vignettes/tclust.bib
 dc9c8d2337804409670aeaeb0bfe7d6f *vignettes/tclust.rnw

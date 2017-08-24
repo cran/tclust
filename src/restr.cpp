@@ -2,13 +2,19 @@
 
 	BOOL CTClust::restrEval ()
 	{
+        //VT::09.08.2017
+	// we have a problem in restr_equal, i.e. restriction on Sigma.
+	// the last two restrictions are not used.
+        if(m_nTrace > 0)
+            meal_printf ("TRACE... Restriction: %d\n", m_nRestr) ;
+
 		switch (m_nRestr)
 		{
-		case 0:	return restr_diff_ax () ;
-		case 1: return restr_dir () ;
-		case 2:	return restr_equal () ;
-		case 3: return restr_prop () ;
-		case 4: return restr_none (); 
+		case 0:	return restr_diff_ax() ;     // eigen
+		case 1: return restr_dir() ;         // deter
+		case 2:	return restr_equal() ;       // sigma
+		case 3: return restr_prop() ;        // suppressed
+		case 4: return restr_none();         // suppressed
 		}
 		THROW (0) ;
 		return FALSE ;
@@ -57,9 +63,14 @@
 		return TRUE ;
 	}
 
+    // Restriction 'sigma'
 	BOOL CTClust::restr_equal ()
 	{
 		t_size k ;
+
+        //VT::09.08.2017
+        if(m_nTrace > 0)
+            meal_printf ("TRACE... Restriction=sigma, m_K: %d\n", m_K) ;
 
 		EO<SOP::a_multiply>::VSc (*m_amCurS [0], m_vClustSize (0) / m_dwNoTrim) ;
 
@@ -72,6 +83,10 @@
 
 		for (k = m_K - 1; k; k--)
 		{
+            //VT::09.08.2017
+            if(m_nTrace > 0)
+                meal_printf ("TRACE... Restriction=sigma, k: %d\n", k) ;
+
 			m_mEVal.GetColRef (k).Copy_NC (m_mEVal.GetColRef (0)) ;
 
 			m_amCurS [k].Copy_NC (m_amCurS [0]) ;

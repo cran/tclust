@@ -275,14 +275,14 @@ plot (clus)
 data (M5data)
 x <- M5data[, 1:2]
 
-clus.a <- tclust (x, k = 3, alpha = 0.1, restr.fact =  1, 
+clus.a <- tclust (x, k = 3, alpha = 0.1, restr.fact =  1,
                   restr = "eigen", equal.weights = TRUE, warnings = 1)
-clus.b <- tclust (x, k = 3, alpha = 0.1, restr.fact =  1, 
-                  restr = "sigma", equal.weights = TRUE)
-clus.c <- tclust (x, k = 3, alpha = 0.1, restr.fact =  1, 
-                  restr = "deter", equal.weights = TRUE, iter.max = 100, 
+clus.b <- tclust (x, k = 3, alpha = 0.1, restr.fact =  1,
+                   equal.weights = TRUE, warnings = 1)
+clus.c <- tclust (x, k = 3, alpha = 0.1, restr.fact =  1,
+                  restr = "deter", equal.weights = TRUE, iter.max = 100,
 		  warnings = 1)
-clus.d <- tclust (x, k = 3, alpha = 0.1, restr.fact = 50, 
+clus.d <- tclust (x, k = 3, alpha = 0.1, restr.fact = 50,
                   restr = "eigen", equal.weights = FALSE)
 
 pa <- par (mfrow = c (2, 2))

@@ -2,9 +2,10 @@ citHeader("To cite tclust in publications use:")
 
 citEntry(entry = "Article",
   title        = "{tclust}: An {R} Package for a Trimming Approach to Cluster Analysis",
-  author       = personList(as.person("Heinrich Fritz"),
-                   as.person("Luis A. Garc\\'{\\i}a-Escudero"),
-                   as.person("Agust\\'{\\i}n Mayo-Iscar")),
+  author       = personList(
+                    as.person("Heinrich Fritz"),
+                    as.person("Luis A. Garcia-Escudero"),
+                    as.person("Agustin Mayo-Iscar")),
   journal      = "Journal of Statistical Software",
   year         = "2012",
   volume       = "47",
