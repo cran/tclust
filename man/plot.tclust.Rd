@@ -95,10 +95,9 @@
 #--- EXAMPLE 1------------------------------
 sig <- diag (2)
 cen <- rep (1, 2)
-x <- rbind (
-	rmvnorm (360, cen * 0,   sig),
-	rmvnorm (540, cen * 5,   sig * 6 - 2),
-	rmvnorm (100, cen * 2.5, sig * 50)
+x <- rbind(mvtnorm::rmvnorm(360, cen * 0,   sig),
+	       mvtnorm::rmvnorm(540, cen * 5,   sig * 6 - 2),
+	       mvtnorm::rmvnorm(100, cen * 2.5, sig * 50)
 )
 # Two groups and 10\% trimming level
 a <- tclust (x, k = 2, alpha = 0.1, restr.fact = 12)

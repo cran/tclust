@@ -45,6 +45,8 @@ R_MEAL_SETTINGS ("heinrich_fritz@hotmail.com") ;	//	settings for the R meal - im
 	void C_tclust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER)
 	{
 		TRY (
+                //VT::08.05.2018
+                // meal_printf("MY-TRACE ... Entering C_tclust()/CTClust()...\n");
 				CTClust (pnParIn, pnParOut, pdParIn, pdParOut, pdX, pdM, pdS, pnAssign, pdClustSize, pdWeights, pdZ, pdObjER, pnConvER) ;
 			)
 	}

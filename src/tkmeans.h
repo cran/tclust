@@ -14,15 +14,13 @@
 			virtual void SaveCurResult () {CClust_CM::SaveCurResult () ; }
 			virtual BOOL FindClustAssignment () { return CClust_CM::FindClustAssignment () ; } ;
 
-//			virtual double CalcObjFunc () { return CClust_CM::CalcObjFunc () ; }
-//			virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) { CClust_CM::CalcDensity (mX, vDens, k, dFact) ; }
-
 			virtual double CalcObjFunc () ; 
 			virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) ;
 
+            //VT::08.05.2018
+    		virtual void FindInitClustAssignment () ;
 
 			virtual void FindOutliers (const SVecD &vDisc, const SVecN &vInd) { CClust_N::FindOutliers (vDisc, vInd) ; }
 			virtual void FindNearestClust (const SVecD &vDisc, const SVecN &vInd) {CClust_N::FindNearestClust (vDisc, vInd) ; }
 			virtual void select_cluster (double &dDisc, int &nInd, const SCVecD &row) {CClust_N::select_cluster (dDisc, nInd, row) ; }
-
 	} ;

@@ -3,15 +3,15 @@
 suppressPackageStartupMessages(library(tclust))
 
 require(tclust)
+require(mvtnorm)
 #--- EXAMPLE 1 ------------------------------------------
 
 set.seed(123)
 sig <- diag (2)
 cen <- rep (1,2)
-x <- rbind (
-            rmvnorm (360, cen * 0,   sig),
-            rmvnorm (540, cen * 5,   sig * 6 - 2),
-            rmvnorm (100, cen * 2.5, sig * 50)
+x <- rbind(mvtnorm::rmvnorm(360, cen * 0,   sig),
+            mvtnorm::rmvnorm(540, cen * 5,   sig * 6 - 2),
+            mvtnorm::rmvnorm(100, cen * 2.5, sig * 50)
            )
 
 # Two groups and 10% trimming level
@@ -50,10 +50,9 @@ data (swissbank)
 ##### Discriminant Factor Analysis for tclust Objects ############################
 sig <- diag (2)
 cen <- rep (1, 2)
-x <- rbind (
-	rmvnorm (360, cen * 0,   sig),
-	rmvnorm (540, cen * 5,   sig * 6 - 2),
-	rmvnorm (100, cen * 2.5, sig * 50)
+x <- rbind(mvtnorm::rmvnorm(360, cen * 0,   sig),
+	       mvtnorm::rmvnorm(540, cen * 5,   sig * 6 - 2),
+	       mvtnorm::rmvnorm(100, cen * 2.5, sig * 50)
 )
 (clus.1 <- tclust (x, k = 2, alpha = 0.1, restr.fact = 12))
 
@@ -78,10 +77,9 @@ if(FALSE)
 
     sig <- diag (2)
     cen <- rep (1, 2)
-    x <- rbind (
-    	rmvnorm (108, cen * 0,   sig),
-    	rmvnorm (162, cen * 5,   sig * 6 - 2),
-    	rmvnorm (30, cen * 2.5, sig * 50)
+    x <- rbind(mvtnorm::rmvnorm(108, cen * 0,   sig),
+    	       mvtnorm::rmvnorm(162, cen * 5,   sig * 6 - 2),
+    	       mvtnorm::rmvnorm(30, cen * 2.5, sig * 50)
     )
 
     (ctl <- ctlcurves (x, k = 1:4))

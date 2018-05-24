@@ -124,6 +124,9 @@
 
 		for (i = 0; i < m_nIter; i++)
 		{
+            //VT::08.05.2018
+            // meal_printf("MY-TRACE ... Entering FindInitClustAssignment() from CTClust::calc() ...\n");
+
 			FindInitClustAssignment () ;
 			FindInitClustSize_R () ;
 			//FindInitClustSize () ;

@@ -1,5 +1,5 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 
@@ -20,15 +20,16 @@ Type 'q()' to quit R.
 > suppressPackageStartupMessages(library(tclust))
 > 
 > require(tclust)
+> require(mvtnorm)
+Loading required package: mvtnorm
 > #--- EXAMPLE 1 ------------------------------------------
 > 
 > set.seed(123)
 > sig <- diag (2)
 > cen <- rep (1,2)
-> x <- rbind (
-+             rmvnorm (360, cen * 0,   sig),
-+             rmvnorm (540, cen * 5,   sig * 6 - 2),
-+             rmvnorm (100, cen * 2.5, sig * 50)
+> x <- rbind(mvtnorm::rmvnorm(360, cen * 0,   sig),
++             mvtnorm::rmvnorm(540, cen * 5,   sig * 6 - 2),
++             mvtnorm::rmvnorm(100, cen * 2.5, sig * 50)
 +            )
 > 
 > # Two groups and 10% trimming level
@@ -446,10 +447,9 @@ Trimmed objective function:  -628.3746
 > ##### Discriminant Factor Analysis for tclust Objects ############################
 > sig <- diag (2)
 > cen <- rep (1, 2)
-> x <- rbind (
-+ 	rmvnorm (360, cen * 0,   sig),
-+ 	rmvnorm (540, cen * 5,   sig * 6 - 2),
-+ 	rmvnorm (100, cen * 2.5, sig * 50)
+> x <- rbind(mvtnorm::rmvnorm(360, cen * 0,   sig),
++ 	       mvtnorm::rmvnorm(540, cen * 5,   sig * 6 - 2),
++ 	       mvtnorm::rmvnorm(100, cen * 2.5, sig * 50)
 + )
 > (clus.1 <- tclust (x, k = 2, alpha = 0.1, restr.fact = 12))
 * Results for TCLUST algorithm: *
@@ -563,10 +563,9 @@ Mean discriminant factor per cluster:
 + 
 +     sig <- diag (2)
 +     cen <- rep (1, 2)
-+     x <- rbind (
-+     	rmvnorm (108, cen * 0,   sig),
-+     	rmvnorm (162, cen * 5,   sig * 6 - 2),
-+     	rmvnorm (30, cen * 2.5, sig * 50)
++     x <- rbind(mvtnorm::rmvnorm(108, cen * 0,   sig),
++     	       mvtnorm::rmvnorm(162, cen * 5,   sig * 6 - 2),
++     	       mvtnorm::rmvnorm(30, cen * 2.5, sig * 50)
 +     )
 + 
 +     (ctl <- ctlcurves (x, k = 1:4))
@@ -594,4 +593,4 @@ k   0 0.04 0.08 0.12 0.16 0.2
 > 
 > proc.time()
    user  system elapsed 
-   5.88    0.12    6.11 
+  11.21    0.23   11.43 

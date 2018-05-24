@@ -73,6 +73,9 @@
 
 		for (i = 0; i < nIter; i++)
 		{
+            //VT::08.05.2018
+            // meal_printf("MY-TRACE ... Entering FindInitClustAssignment() from CCClust::calc() ...\n");
+
 			FindInitClustAssignment () ;	//	2do: -> virtual; call FindInitClustSize_R
 			//FindInitClustSize_R () ;	
 			//FindInitClustSize () ;
@@ -166,7 +169,9 @@
 		SMatD mDCurCluster (m_aTemp [0], m_p + 1, m_p) ;
 		SVecN vNCurIdx (m_aTemp [1], m_p + 1) ;
 
-//		const double dCorrFact = (m_p) / (m_p  + 1.0) ;
+        //VT::08.05.2018
+        // meal_printf("MY-TRACE ... In CClust::FindInitClustAssignment() ...\n");
+
 		for (k = 0; k < m_K; ++k)
 		{								//	for all clusters
 										//	finds p+1 observations for forming the initial cluster
@@ -530,11 +535,9 @@
 
 		vDCurMean.Reset (0) ;
 
-		EO<SOP::a_plus>::VetMcdVcei (*vDCurMean, m_mX, vNIdx) ;
+		EO<SOP::a_plus>::VetMcdVcei(*vDCurMean, m_mX, vNIdx) ;
 
-		//EO<UOP::AaC_BpaC>::MsVetMcdVcei (!mDCurCluster, *vDCurMean, m_mX, vNCurIdx) ;	//	2do: change this to only summing up the selected items!
-
-										//	Divide the colSums of MDCurCluster by it's number of rows. -> vDCurMean is a mean vector.
+		//	Divide the colSums of MDCurCluster by it's number of rows. -> vDCurMean is a mean vector.
 		EO<SOP::a_divide>::VSc (*vDCurMean, vNIdx.size ()) ;
 	}
 

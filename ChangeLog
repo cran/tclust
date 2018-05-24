@@ -1,3 +1,16 @@
+2018-05-24  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.4-1
+	* DESCRIPTION (Version): 1.4-0
+    *
+    *   - Fixed issue with non-ascii symbols in .bib
+    *       (see mail from K. Hornik from 14.05.2018)
+    *   - Remove dependencies to mvtnorm, mclust, cluster, sn
+    *   - src/tkmeans.h, tkmeans.cpp: tkmeans() now can work with p>n
+    *   - valgrind:   ## VT::24.05.2018 - tclust(..., restr= "sigma"..., ) in vignette 
+    *
+    *
+
 2017-08-24  Valentin Todorov  <valentin.todorov@chello.at>
     *
 	* DESCRIPTION (Version): 1.3-1

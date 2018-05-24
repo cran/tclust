@@ -52,3 +52,32 @@
 
 		return dObj ;
 	}
+
+    //VT::08.05.2018
+	void CTKMeans::FindInitClustAssignment ()
+	{		//	finds initial cluster assignment
+
+        //VT::08.05.2018
+//        meal_printf("MY-TRACE ... In CTKMeans::FindInitClustAssignment() ...\n");
+
+		t_size k ;
+        t_size nsample = 1;
+
+        if(m_p < m_n/5)
+            nsample = m_p + 1;
+
+		SVecN vTempN (m_aTemp [0], m_n) ;
+		SMatD mDCurCluster (m_aTemp [0], m_p + 1, m_p) ;
+		SVecN vNCurIdx (m_aTemp [1], nsample) ;
+
+            
+		for (k = 0; k < m_K; ++k)
+		{								//	for all clusters
+										//	finds p+1 observations for forming the initial cluster
+                                        // if p > n/5, simply take one observation
+			SampleNoReplace (nsample, m_mX.nrow (), vNCurIdx, vTempN) ;
+			EstimInitClustParams(k, vNCurIdx) ;
+        }
+
+		FindInitClustSize_R () ;
+	}

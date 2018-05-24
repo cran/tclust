@@ -43,7 +43,7 @@
 
 		void SaveCurResult0 (double dCurObj, int nCode) ;
 
-		void FindInitClustAssignment () ;
+		virtual void FindInitClustAssignment () ;
 		void FindInitClustSize_R () ;
 		void FindInitClustSize () ;
 

@@ -56,8 +56,11 @@ res.a <- tclust (x, k = 3, alpha=0.1, restr.fact = 1, restr= "eigen",
                  equal.weights = TRUE, warnings = 1)
 
   ## applying tclust with restr= "sigma"
-res.b <- tclust (x, k = 3, alpha=0.1, restr.fact = 1, restr= "sigma",
-                 equal.weights = TRUE)
+  ##
+  ## VT::24.05.2018 - call with restr= "sigma" commented out
+  ##
+## res.b <- tclust (x, k = 3, alpha=0.1, restr.fact = 1, restr= "sigma",
+##                 equal.weights = TRUE)
 
   ## applying tclust with restr.fact = 1, restr= "deter"
 res.c <- tclust (x, k = 3, alpha=0.1, restr.fact = 1, restr= "deter",
@@ -74,8 +77,12 @@ pch <- c (1, 4, 2, 3)
   ## plotting results..
 plot (res.a, col = col, pch = pch, tol.lty = 2, xlab = "",
      ylab = "", main.pre ="(a)", main = "/r")
-plot (res.b, col = col, pch = pch, tol.lty = 2, xlab = "",
-     ylab = "", main.pre ="(b)", main = "/r")
+
+  ## VT::24.05.2018 - call with restr= "sigma" commented out
+  ##
+## plot (res.b, col = col, pch = pch, tol.lty = 2, xlab = "",
+##     ylab = "", main.pre ="(b)", main = "/r")
+
 plot (res.c, col = col, pch = pch, tol.lty = 2, xlab = "",
      ylab = "", main.pre ="(c)", main = "/r")
 plot (res.d, col = col, pch = pch, tol.lty = 2, xlab = "",
@@ -94,6 +101,7 @@ par (op)
 ################
 
   ## data generation
+library(mvtnorm)
 set.seed (10)
 x <- rbind (rmvnorm (200, c (0, 0), diag (2)),
             rmvnorm (200, c (5, 0), diag (2)))
