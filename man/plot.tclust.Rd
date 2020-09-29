@@ -4,7 +4,7 @@
 \alias{plot.tkmeans}
 \title{ plot Method for tclust Objects }
 \description{
-  The \code{\link[graphics]{plot}} method for classes \code{tclust} and \code{tkmeans}.
+  The \code{plot} method for classes \code{tclust} and \code{tkmeans}.
 }
 \usage{
 \method{plot}{tclust} (x, ...)
@@ -22,7 +22,7 @@
 \section{Further Arguments}{
  \describe{
   \item{\code{xlab, ylab, xlim, ylim, pch, col}}{
-    Arguments passed to \code{\link[graphics]{plot}}.
+    Arguments passed to \code{plot()}.
   }
   \item{\code{main}}{
     The title of the plot.
@@ -70,9 +70,9 @@
  }
 }
 \details{
-%  The method \code{plot} of the S3 class \code{tclust} selects the appropriate
+%  The method \code{plot()} of the S3 class \code{tclust} selects the appropriate
 %  function according to the dimensionality of the \code{tclust} object
-%  (either\code{ plot.tclust.1d},\code{ plot.tclust.2d} or\code{ plot.tclust.Nd}).
+%  (either\code{plot.tclust.1d},\code{plot.tclust.2d} or\code{plot.tclust.Nd}).
 %  Internally functions \code{plot.tclust.0} and \code{plot.tclust.title} are 
 %  called for doing the actual plotting and formatting the title.
 %  

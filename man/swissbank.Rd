@@ -5,9 +5,7 @@
 \description{ 
 Six variables measured on 100 genuine and 100 counterfeit old Swiss 1000-franc bank notes (Flury and Riedwyl, 1988). 
 }
-\usage{
-swissbank
-}
+\usage{data(swissbank)}
 \format{
 \describe{
 \item{\code{Length}}{ Length of the bank note }

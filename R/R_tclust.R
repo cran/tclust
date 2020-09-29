@@ -130,7 +130,7 @@
 			la2 <- array (log.ll, dim = c(pa$n, pa$K, pa$K))				#n	a (n x K x K) array. this is easier to handly
 
 	#o		yy <- matrix (0, nrow = pa$K, ncol = pa$K * pa$K)
-	#o		for (ii in 1:pa$K) 
+	#o		for (ii in 1:pa$K)
 	#o			yy[ii,((ii-1)*pa$K+1):(ii*pa$K)]=rep(1,pa$K)
 	#o		ll3 <- log.ll %*% yy
 			la3 <- aperm (la2, c (1, 3, 2))									##	an array of same dimension as la2, but the 2nd and 3rd dimensions are swapped (this corresponds to yy) (this is done with function "aperm")
@@ -231,8 +231,8 @@
 		if (sum(iter$z_ij[  ,k]) >  pa$zero.tol)
 #o			if (sum(iter$z_ij[!w,k]) <= pa$zero.tol)
 			if (sum(iter$z_ij[w <= 0, k]) <= pa$zero.tol)
-				iter$obj <- iter$obj + sum(iter$z_ij[w > 0,k] * log(w[w > 0]))  
-			else 
+				iter$obj <- iter$obj + sum(iter$z_ij[w > 0,k] * log(w[w > 0]))
+			else
 			{
 				iter$obj <- iter$obj -Inf
 				return (iter)					#n	we can already return -Inf, no need to do any further calculation
@@ -241,7 +241,7 @@
 	return (iter)
 }
 
-.TreatSingularity <- function (iter, pa) 
+.TreatSingularity <- function (iter, pa)
 {	
 	warning ("After trimming, all points in the data set are concentrated in k subspaces.") ##  a single point is a subspace too.
 
@@ -289,7 +289,7 @@
 		obj = -Inf,												##	current objective value
 		assig = array (0, n),									##	cluster assignment
 		csize = array (NA, k),									##	cluster sizes
-		cw = rep (NA, k),										##	cluster weights 
+		cw = rep (NA, k),										##	cluster weights
 		sigma = array (NA, c (p, p, k)),						##	cluster's sigmas
 		center = array (NA, c(k, p)),							##	cluster's centers
 		code = NA,												##	this is a return code supplied by functions like .findClustAssig
@@ -329,7 +329,7 @@
 				i == iter.max)									##		or we're in the last concentration step:
 				break											##		break the for - loop - we finished this iteration! dont re-estimate cluster parameters this time
 
-			iter <- .estimClustPar (x, iter, pa)					##		estimates the cluster's parameters (cov, center) based on the current iter$assig 
+			iter <- .estimClustPar (x, iter, pa)				##		estimates the cluster's parameters (cov, center) based on the current iter$assig
 
 			if (trace >= 2)
 			{
@@ -352,7 +352,7 @@
 			best.iter = iter
 	}
 
-	# no more re-calculation of the cluster - assignment necessary, because the algorithm stopped at the right position (after calculating the cluster assignment) 
+	# no more re-calculation of the cluster - assignment necessary, because the algorithm stopped at the right position (after calculating the cluster assignment)
 
 	return (.Parsetclust.Res (x, best.iter, parlist))
 }
@@ -402,14 +402,14 @@
 		)
 
 	ret <- list (
-		centers = t (iter$center[idx.clust, , drop = FALSE]), 
-		cov = iter$sigma [,, idx.clust, drop = FALSE], 
-		cluster = id.clust [iter$assig + 1], 
+		centers = t (iter$center[idx.clust, , drop = FALSE]),
+		cov = iter$sigma [,, idx.clust, drop = FALSE],
+		cluster = id.clust [iter$assig + 1],
 		par = parlist,
 		k = length (idx.clust),
 		obj = iter$obj,
 		size = iter$csize [idx.clust],
-		weights = iter$cw [idx.clust], 
+		weights = iter$cw [idx.clust],
 		ret.orig = iter,
 		int = int
 	)

@@ -16,6 +16,8 @@ function (x, ...)
   if (!is.null (x$restr.fact))
     cat ("Selected restriction factor:", x$restr.fact, "\n")
   cat (round (x$int$iter.converged / x$int$iter.successful* 100), "% of iterations converged successfully.\n", sep= "")
+
+  invisible(x)
 }
 
 .print.tkmeans <-
@@ -36,4 +38,6 @@ function (x, ...)
   if (!is.null (x$restr.fact))
     cat ("Selected restriction factor:", x$restr.fact, "\n")
   cat (round (x$int$iter.converged / x$int$iter.successful* 100), "% of iterations converged successfully.\n", sep= "")
+
+  invisible(x)
 }

@@ -9,11 +9,10 @@ function (x, ...)
 
   idx = x$assignfact > x$threshold
 
-  if (!sum (idx))
-  {
-    cat ("No decision is considered as doubtful\n")
-    return
-  }
+  if(!sum(idx))
+    cat("No decision is considered as doubtful\n")
+  else
+    cat(sum(idx), "decisions are considered as doubtful\n")
 
-  cat (sum (idx), "decisions are considered as doubtful\n")
+  invisible(x)
 }

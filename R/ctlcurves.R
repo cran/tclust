@@ -1,6 +1,6 @@
 
 ctlcurves <-
-function (x, k = 1:4, alpha = seq (0, 0.2, len = 6), 
+function (x, k = 1:4, alpha = seq (0, 0.2, len = 6),
           restr.fact = 50, trace = 1, ...)
 {
 ## disabled parameter:
@@ -21,7 +21,7 @@ function (x, k = 1:4, alpha = seq (0, 0.2, len = 6),
   dimnames (rs) <- list (k = k, alpha = round (alpha, 2))
   ndoubt <- drop <- out <- obj <- min.weights <- unrestr.fact <- rs
 
-#  stab <- 
+#  stab <-
 #  stab[,] <- TRUE
 
   p <- ncol (x)
@@ -85,15 +85,15 @@ function (x, k = 1:4, alpha = seq (0, 0.2, len = 6),
 #  warn <- list (restr.lo = max (unrestr.fact [stab]) > restr.fact)
 #
 #  if (warn$restr.lo)
-#  warning (paste ("The selected restriction factor (", 
+#  warning (paste ("The selected restriction factor (",
 #    ceiling (restr.fact), ") appears to be too small.\n",
-#    "ctlcurves suggests to increase the argument restr.fact to ", 
+#    "ctlcurves suggests to increase the argument restr.fact to ",
 #    ceiling (1.5 * max (unrestr.fact [stab])),".", sep = ""))
 
   par <- list (x = x, k = k, alpha = alpha, mah.alpha = mah.alpha,
                restr.fact = restr.fact)
 
-  ret <- list (obj = obj, min.weights = min.weights, par = par, 
+  ret <- list (obj = obj, min.weights = min.weights, par = par,
     unrestr.fact = unrestr.fact, ndoubt = ndoubt, out = out, drop = drop)
   #, stable = stab
 
@@ -108,7 +108,7 @@ function (x, k = 1:4, alpha = seq (0, 0.2, len = 6),
 #
 #  sug.alpha <- sug.k <- NULL
 #  if (any (dif.obj [,1] / m.dif > 2))                          ## trimming seems to make sense
-#    sug.k <- which.max (dif.obj [,1] / m.dif)  
+#    sug.k <- which.max (dif.obj [,1] / m.dif)
 #  else                      ## seems like trimming is not really needed
 #     sug.k <- which (rowMeans(dif.obj)/diff(range(obj)) < 0.05)[1]
 #
@@ -118,7 +118,7 @@ function (x, k = 1:4, alpha = seq (0, 0.2, len = 6),
 #  if (!warn$restr.lo &&
 #      length (sug.alpha) &&
 #      !is.na (unrestr.fact[sug.k, sug.alpha]))
-#    ret$suggestion <- list (k = k[sug.k], 
+#    ret$suggestion <- list (k = k[sug.k],
 #                            alpha = alpha[sug.alpha],
 #                            restr.fact = ceiling (1.5 * unrestr.fact[sug.k, sug.alpha]))
 
@@ -161,7 +161,7 @@ function(x, what = c ("obj", "min.weights", "doubtful"),#, "out"
   }
   else if (what == "min.weights")
   {
-  idxb.use <- x$par$k != 1       # k == 1 -> min.weights == 1 -> we're not interested in that. 
+  idxb.use <- x$par$k != 1       # k == 1 -> min.weights == 1 -> we're not interested in that.
     dat <- x$min.weights
     set.ylab <- "Minimum Weigths"
   set.main <- "Minimum Weight-Curves"
@@ -217,10 +217,9 @@ function(x, what = c ("obj", "min.weights", "doubtful"),#, "out"
     lines (x$par$alpha, nrow (x$par$x) * (1-x$par$alpha) * x$par$mah.alpha, lty = 2)
 }
 
-print.ctlcurves <-
-function (x, ...)
-{
-  cat ("Computed ", length (x$par$k) * length (x$par$alpha), 
+print.ctlcurves <- function (x, ...) {
+
+  cat ("Computed ", length (x$par$k) * length (x$par$alpha),
        " solutions (chosen restr.fact = ", x$par$restr.fact, ").\n\n",
      sep = "")
 
@@ -234,17 +233,19 @@ function (x, ...)
 
     attributes (uf) <- attributes (x$unrestr.fact)
 
-  print (uf, justify = "right", quote = FALSE)
+    print (uf, justify = "right", quote = FALSE)
 
     if (any (idx.ar))
-      cat ("\n(*) Identified ", sum (idx.ar), " artificially restricted solutions.", sep = "")
+        cat ("\n(*) Identified ", sum (idx.ar), " artificially restricted solutions.", sep = "")
     if (any (x$drop))
-      cat ("\n(k) Identified ", sum (x$drop), " solutions with very small/dropped clusters.", sep = "")
+        cat ("\n(k) Identified ", sum (x$drop), " solutions with very small/dropped clusters.", sep = "")
   }
   else
     cat ("\nNo artificially restricted solutions or dropped clusters found.")
 
  cat ("\n")
+
+ invisible(x)
 }
 
               ##  discarded versions of print.ctlcurves.
@@ -303,7 +304,7 @@ function (x, ...)
 ##  n.stable <- sum (x$stable)
 ##       , "Found ", n.stable, " stable models.\n"
 #
-#  cat ("Computed ", length (x$par$k) * length (x$par$alpha), 
+#  cat ("Computed ", length (x$par$k) * length (x$par$alpha),
 #       " solutions (chosen restr.fact = ", x$par$restr.fact, ").\n", sep = "")
 ##  cat ("Analyzed ", length (x$par$k) * length (x$par$alpha), " models for values of\n", sep = "")
 ##  cat ("  k:          ", paste (x$par$k, collapse = ", "), "\n")

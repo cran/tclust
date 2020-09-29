@@ -2,7 +2,7 @@
 \alias{plot.ctlcurves}
 \encoding{latin1}
 \title{ plot Method for ctlcurves Objects }
-\description{ The \code{\link[graphics]{plot}} method for class \code{ctlcurves}: This function plots a \code{ctlcurves} object, comparing the target functions values with different values of parameter \code{restr.fact}.
+\description{ The \code{plot} method for class \code{ctlcurves}: This function plots a \code{ctlcurves} object, comparing the target functions values with different values of parameter \code{restr.fact}.
 %These functions plot a ctlcurves object in two different styles, either classic or simple. The classical style displays three rows of diagnostic plots, analyzing different clustering results on the same data set. The first row shows the target functions value. The second row displays the increase of the target functions value gained by increasing k by one, whereas the third row shows the minimum cluster weights for each estimation. The simple plots only display the target functions values, comparing the results of different values of parameter \code{restr.fact}.
 }
 \usage{
@@ -18,7 +18,7 @@
 %  \item{link.ylim}{ A logical value indicating whether the y-ranges of the plots shall be identical. Ignored, if parameter ylim is set. }
 %  \item{ylim}{ The y-range of all plots displayed. If provided, parameter \code{link.ylim} is ignored. }
   \item{main}{ A character-string containing the title of the plot. }
-  \item{xlab, ylab, xlim, ylim}{ Arguments passed to \code{\link[graphics]{plot}}. }
+  \item{xlab, ylab, xlim, ylim}{ Arguments passed to \code{plot()}. }
 %  \item{set.idx}{ If the \code{ctlcurves} - object contains more than one factor, only data related to \code{factor[set.idx]} is displayed. }
 %  \item{min.weights}{Locigal value indicating whether the minimum cluster weights shall be printed instead of the target functions values. By default this option is disabled}
   \item{col}{ A single value or vector of line colors passed to \code{\link[graphics]{lines}}. }

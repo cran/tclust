@@ -5,7 +5,7 @@
 \alias{plot_DiscrFact_p3}
 \title{ plot Method for DiscrFact Objects }
 \description{
-The \code{\link[graphics]{plot}} method for class \code{DiscrFact}: Next to a plot of the \code{tclust} object which has been used for creating the \code{DiscrFact} object, a silhouette plot indicates the presence of groups with a large amount of doubtfully assigned observations. A third plot similar to the standard \code{tclust} plot serves to highlight the identified doubtful observations.
+The \code{plot} method for class \code{DiscrFact}: Next to a plot of the \code{tclust} object which has been used for creating the \code{DiscrFact} object, a silhouette plot indicates the presence of groups with a large amount of doubtfully assigned observations. A third plot similar to the standard \code{tclust} plot serves to highlight the identified doubtful observations.
 }
 \usage{
 \method{plot}{DiscrFact} (x, enum.plots = FALSE, ...)
@@ -25,11 +25,11 @@ plot_DiscrFact_p3 (x, main = "Doubtful Assignments", col, pch,
   \item{x}{ An object of class "\code{DiscrFact}" as from \code{DiscrFact ()}. }
   \item{enum.plots}{ A logical value indicating whether the plots shall be enumerated in their title ("(a)", "(b)", "(c)"). }
   \item{xlab, ylab, xlim}{ Arguments passed to funcion \code{\link[tclust]{plot.tclust}}. }
-  \item{main}{ Argument passed to funcion \code{\link[graphics]{plot}}. }
+  \item{main}{ Argument passed to funcion \code{plot()}. }
 %  \item{draw.legend}{ A logical value indicating whether the legend shall be displayed. }
   \item{print.Discr}{ A logical value indicating whether each clusters mean discriminant factor shall be plotted }
   \item{main.pre}{An optional string which is appended to the plot's caption.}
-  \item{pch, col}{Arguments passed to function \code{\link[graphics]{plot}}.}
+  \item{pch, col}{Arguments passed to function \code{plot()}.}
   \item{col.nodoubt}{Color of all observations not considered as to be assigned doubtfully.}
   \item{by.cluster}{Logical value indicating whether parameters \code{pch} and \code{col} refer to observations (\code{FALSE}) or clusters (\code{TRUE}).}
   \item{\dots}{ Arguments to be passed to or from other methods. }

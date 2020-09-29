@@ -5,9 +5,7 @@
 \description{ 
 A bivariate data set obtained from the Old Faithful Geyser, containing the eruption length and the length of the previous eruption for 271 eruptions of this geyser in minutes.
 }
-\usage{
-geyser2
-}
+\usage{data(geyser2)}
 \format{
 \describe{
 \item{\code{Eruption length}}{ The eruption length in minutes. }

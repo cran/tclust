@@ -29,13 +29,16 @@ The function returns an S3 object of type \code{DiscrFact} containing the follow
 	\item{threshold}{ The threshold used for deciding whether \code{assignfact} indicates a "doubtful" assignment. }
 	\item{mean.DiscrFact}{ A vector of length \code{k + 1} containing the mean discriminant factors for each cluster (including the outliers). }
 }
-\references{ %García-Escudero, L.A.; Gordaliza, A.; Matrán, C. and Mayo-Iscar, A. (2009), "Exploring the number of groups in robust model-based clustering".\cr
-%Preprint available at www.eio.uva.es/infor/personas/langel.html. 
-\enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2010), "Exploring the number of groups in robust model-based clustering." Statistics and Computing, (Forthcoming). \cr
-Preprint available at www.eio.uva.es/infor/personas/langel.html.
+\references{ 
+    \enc{García}{Garcia}-Escudero, L.A.; Gordaliza, A.; \enc{Matrán}{Matran}, C. and Mayo-Iscar, A. (2011), 
+    "Exploring the number of groups in robust model-based clustering." \emph{Statistics and Computing}, \bold{21} 
+    pp. 585-599, <doi:10.1007/s11222-010-9194-z>
 }
-\author{ Agustin Mayo-Iscar, Luis Angel García-Escudero, Heinrich Fritz }
-%\note{ ~~further notes~~  ~Make other sections like Warning with \section{Warning }{....} ~}
+
+\author{ 
+    Agustin Mayo-Iscar, Luis Angel García-Escudero, Heinrich Fritz 
+}
+
 \seealso{ \code{\link{plot.DiscrFact}}}
 \examples{
 sig <- diag (2)
