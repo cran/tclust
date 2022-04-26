@@ -1,3 +1,19 @@
+2022-01-21  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.5=0
+	* DESCRIPTION (Version): 1.4-3
+    *
+    * src/makevars
+    * src/R_meal.cpp - Fix for USE_FC_LEN_T becoming the default in 4.2.0
+    * src/R_meal_BLAS.cpp - -"-
+    * - Fix the reference to jstatsoft.org in CITATION (replace by DOI)
+    *       (see mail from Achim Zeileis from 06.10.2021)
+    *
+
+2020-09-28  Valentin Todorov  <valentin.todorov@chello.at>
+    *
+	* DESCRIPTION (Version): 1.4-2
+
 2018-05-24  Valentin Todorov  <valentin.todorov@chello.at>
     *
 	* DESCRIPTION (Version): 1.4-1
@@ -7,7 +23,7 @@
     *       (see mail from K. Hornik from 14.05.2018)
     *   - Remove dependencies to mvtnorm, mclust, cluster, sn
     *   - src/tkmeans.h, tkmeans.cpp: tkmeans() now can work with p>n
-    *   - valgrind:   ## VT::24.05.2018 - tclust(..., restr= "sigma"..., ) in vignette 
+    *   - valgrind:   ## VT::24.05.2018 - tclust(..., restr= "sigma"..., ) in vignette
     *
     *
 

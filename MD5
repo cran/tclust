@@ -1,5 +1,5 @@
-cadac0f2d4adfad7a06f75fee427f0a0 *ChangeLog
-faf85a67b828a0ce21dd18e04931278f *DESCRIPTION
+0371bbacee6b0732da7307a90cd9513e *ChangeLog
+53496cc8337f78756c9d160d20494c08 *DESCRIPTION
 00f6ba15bc95c02485c79a51e40186fb *NAMESPACE
 777633e9758ef2691dd0a7a3ecfec1dc *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
@@ -24,7 +24,7 @@ f8baa656faa8db3660c829c5fada3aa4 *R/tkmeans.C.R
 254420a444641abae7db495664f1d92c *data/M5data.rda
 07d47f09cb5f69e3932f5718a9e31f9c *data/geyser2.rda
 c4e71bb9da5103406950f08bdf511c1b *data/swissbank.rda
-5706df11e81d04e64135b2a88d3467db *inst/CITATION
+e8bf51c8910a7037e036e76bd2bfa7a4 *inst/CITATION
 78a9cfca699653da2cf20b34b3161c48 *inst/doc/tclust.R
 7104c887f03b316d674b40c431e3ef63 *inst/doc/tclust.pdf
 e34d84495ccc062b32d3dded03a278db *inst/doc/tclust.rnw
@@ -46,11 +46,11 @@ a345008d7eb6f22c46fce474f0f5f4cc *src/ML_meal.h
 6d4f7c34e61ba72e655b11f09eab0062 *src/ML_package.h
 5190547fb04c808c41fed4bfaf34a7be *src/ML_passrng.cpp
 33f5c7321b954c7b25874fc49fea65a4 *src/ML_passrng.h
-4c0d792bef0f5df1a722caea26f4ded0 *src/Makevars
+3bea4a11f9bcec02fc344b6b90cfae88 *src/Makevars
 55421a030d9e0cd85b3c41cc7ab0fed4 *src/R.Inc.h
-809ddf5e64ece893d6d6394e5d2f4693 *src/R_meal.cpp
+0516c4f17fdd4d25ab029f5ed32b0d72 *src/R_meal.cpp
 3f8f4a18576964e1deecaf904a0ab314 *src/R_meal.h
-703214a4d2e7d23156a6e5054b291898 *src/R_meal_BLAS.cpp
+7e84e3d4804199091cf1164c6ff19e14 *src/R_meal_BLAS.cpp
 57f02d75744629c497f38ef66da0c521 *src/R_package.cpp
 9921b1d8ec02c9ae0828b8d721e7ec3e *src/R_package.h
 c597c8b37791fea4f4a51876c86ce5e3 *src/clust.cpp
