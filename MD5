@@ -1,5 +1,5 @@
-0371bbacee6b0732da7307a90cd9513e *ChangeLog
-53496cc8337f78756c9d160d20494c08 *DESCRIPTION
+a8ebdb96e03f05e6001648c46e43c97b *ChangeLog
+42621a11d4129d64c98007f0b91346a1 *DESCRIPTION
 00f6ba15bc95c02485c79a51e40186fb *NAMESPACE
 777633e9758ef2691dd0a7a3ecfec1dc *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
@@ -75,7 +75,7 @@ d5c8e1a30c94e0032f9a4b5ada5bd3ff *src/smat_meal_passrng.h
 52c8756a0535181b763022e84dc4f355 *src/smat_meal_passrng_hpp.h
 c6667e694283b72e45570269da80b7c1 *src/tclust.cpp
 03f530c27db8c46d735a31e269a2adfd *src/tclust.h
-53c55ce7e17d721687b03808a829ca5e *src/tclust_init.c
+ec3791b660a06145408db91f10f811bd *src/tclust_init.c
 70badd8b0f2e2a17a0462e8f75fe9d82 *src/tkmeans.cpp
 253c7dd6825db26df588c61a1ae6d87f *src/tkmeans.h
 b91f4b7d2c5142160b3dbcaf2b4a31ea *tests/ttclust.R
