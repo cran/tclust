@@ -5,7 +5,10 @@
 //////////////
 
 	CClust::CClust ()
-		: m_dAlpha (0), m_dZeroTol (0), m_dDensFact (0), m_dPInv (0), m_dZeroTolSqrt (0), m_dwNoTrim (0), m_dwTrim (0)
+           // VT:22.03.2023 - to fix Wuninitialized warnings like
+           //  warning: base class 'CClust' is uninitialized when used here to access 'CClust::m_p' [-Wuninitialized]
+		: m_n (0), m_p (0), m_K (0), 
+          m_dAlpha (0), m_dZeroTol (0), m_dDensFact (0), m_dPInv (0), m_dZeroTolSqrt (0), m_dwNoTrim (0), m_dwTrim (0)
 	{
 		//	This constructor must never be called!!
 		THROW (0) ;
@@ -13,7 +16,7 @@
 
 	CClust::CClust (t_size n, t_size p, t_size k, double dAlpha, double dZeroTol, double *pdX, int *pnAssign, double *pdClustSize, double *pdClustWeights, int nEqualWeights, int nTrace)
 				//	parameters
-		: m_n (n), m_p (p), m_K (k)
+		: m_n(n), m_p(p), m_K(k)
 		, m_nEqualWeights (nEqualWeights), m_nTrace (nTrace)
 		, m_dAlpha (dAlpha)
 		, m_dZeroTol (dZeroTol)
@@ -33,6 +36,10 @@
 		, m_mX (pdX, m_n, m_p), m_mLL (m_n, m_K)//, m_mEVal (m_p, m_K), m_mZ (m_n, m_K), m_mZOld (m_n, m_K)
 	{
 		meal_GetRNGstate () ;
+                //VT::22.03.2023
+                //meal_printf("\nMY-TRACE ... CClust() constructor 2 ...\n");
+                //meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
+
 	}
 
 	CClust::~CClust ()
@@ -398,137 +405,18 @@
 	}
 
 ////////////////
-//  CClust_T  //
-////////////////
-
-	void CClust_T::FindOutliers (const SVecD &vDisc, const SVecN &vInd)
-	{
-		if (!m_dwTrim)
-			return ;
-
-		SVecN vOrder (m_aTemp[0], vDisc.size ()) ;
-		int * const pnOrder = vOrder, * const pnInd = vInd ;
-
-		double *pdDisc = vDisc ;
-		meal_sort_order (pdDisc, pnOrder, vDisc.size ()) ;		//	calculate the order of m_vDisc and store it in vOrder
-
-		ASSERT (m_dwTrim < m_n) ;								//	just to be sure..
-
-		double dThreshold = pdDisc[m_dwTrim - 1] + m_dZeroTol ;
-
-		t_size i ;
-		if (pdDisc[m_dwTrim] > dThreshold)						//	we don't have any ties around the trimming threshold.
-		{
-			for (i = m_dwTrim - 1; i!= NAI; i--)
-				pnInd [pnOrder[i]] = -1 ;
-			return ;
-		}
-
-		double dThresholdL = pdDisc[m_dwTrim - 1] - m_dZeroTol ;
-
-		for (i = 0; i < m_n && pdDisc[i] < dThresholdL; ++i)
-			pnInd [pnOrder[i]] = -1 ;
-
-		t_size dwSmaller = i ;									//	1 + number of smaller values than dThresholdL
-
-		for (; i < m_n; ++i)
-			if (pdDisc[i] > dThreshold)
-				break ;
-
-		ASSERT (m_dwTrim > dwSmaller) ;
-
-		t_size dwProblem = i - dwSmaller ;						//	the number of ties around the trimming threshold
-		t_size dwChoose = m_dwTrim - dwSmaller ;				//	the number of ties which have to be trimmed 
-
-		SVecN vIdx (m_aTemp[1], dwChoose) ;
-		SVecN vTemp (m_aTemp [2], dwProblem) ;
-
-												//	randomly draw these values
-		int *pnIdx = vIdx, * const pnEndIdx = vIdx.GetDataEnd () ; 
-		SampleNoReplace (dwChoose, dwProblem, pnIdx, vTemp) ;
-
-		for (; pnIdx < pnEndIdx; ++pnIdx)
-			pnInd [pnOrder [dwSmaller + *pnIdx]] = -1 ;
-	}
-
-	void CClust_T::FindNearestClust (const SVecD &vDisc, const SVecN &vInd)	//	new version - implements tie-handling
-	{
-		t_size r ;
-
-		double *pdCurDisc = vDisc ;
-		int *pnCurInd = vInd ;
-
-		SVecD curRow (m_aTemp[1], m_K) ;
-
-		for (r = 0; r < vDisc.size(); ++r)									//	for each row of m_mLL
-		{
-			CopyRow (*curRow, m_mLL, r) ;
-			select_cluster (*pdCurDisc, *pnCurInd, curRow) ;				//	select the cluster corresponding to the largest value of the current row of m_mLL
-			++pdCurDisc ;
-			++pnCurInd ;
-		}
-	}
-
-	void CClust_T::select_cluster (double &dDisc, int &nInd, const SCVecD &row)	//	temp0
-	{
-		double const *pdRow = row, *pdMax = pdRow, *const pdEndRow = row.GetDataEnd ()  ;
-
-		int nTies = 0 ;
-		++pdRow ;
-		for (; pdRow < pdEndRow; ++pdRow)											//	find the maximum
-		{
-			if (*pdMax <= *pdRow)
-			{
-				nTies = *pdRow - *pdMax <= m_dZeroTol ;
-				pdMax = pdRow ;
-			}
-		}
-
-		if (!nTies)															//	we do have exactly one maximum (no ties at the maximum!)
-		{
-			nInd = pdMax - row ;
-			dDisc = *pdMax ;
-			return ;
-		}
-																			//	everything >= dThreshold is considered as possible maximum
-		const double dThreshold = *pdMax - m_dZeroTol ;
-
-		SVec<double const *> vIdx (m_aTemp [0], row.size ()) ;
-
-		const double ** const pdIdx = vIdx, ** pdCurIdx = pdIdx ;
-
-		pdMax = row ;														//	from now on pdMax refers to the beginning of vector "row".
-		for (pdRow = pdMax; pdRow < pdEndRow; ++pdRow)
-			if (dThreshold <= *pdRow)										//	if the current value is greater or equal than the the threshold
-			{
-				*pdCurIdx = pdRow ;											//	save the corresponding pointer
-				++pdCurIdx ;
-			}
-
-		nInd = pdCurIdx - vIdx ;												//	debug line -> 2do: delete!
-		nInd = int (meal_unif_rand () * (pdCurIdx - vIdx)) ;					//	get a random index 
-
-		nInd = pdIdx [nInd] - pdMax ;										//	select a maximum according to the drawn random index.
-		dDisc = pdMax[nInd] ;
-	}
-
-////////////////
 //  CClust_M  //
 ////////////////
 
-	CClust_M::CClust_M (double *pdM) 
-		: m_mCurM (m_p, m_K), m_mBestM (pdM, m_p, m_K)
+	CClust_M::CClust_M (t_size p, t_size k, double *pdM) 
+		: m_mCurM (p, k), m_mBestM (pdM, p, k)
 	{
+                //VT::22.03.2023
+                //meal_printf("\nMY-TRACE ... CClust_M() constructor 1 ...\n");
+                //meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
 
 	}
 
-/*	CClust_M::CClust_M (t_size n, t_size p, t_size k, double dAlpha, double dZeroTol, double *pdX, int *pnAssign, double *pdClustSize, double *pdClustWeights, double *pdObjER, int *pnConvER, double *pdM)
-		: CClust (n, p, k, dAlpha, dZeroTol, pdX, pnAssign, pdClustSize, pdClustWeights, pdObjER, pnConvER)
-		, m_mCurM (m_p, m_K), m_mBestM (pdM, m_p, m_K)
-	{
-
-	}
-*/
 	void CClust_M::EstimInitClustParams (int k, const SCVecN &vNIdx)
 	{
 		SVecD vDCurMean = m_mCurM.GetColRef (k) ;	//	2do: use m_avCurM [k]	-> Implement	SCVecArray
@@ -555,115 +443,6 @@
 		EO<UOP::Apa_sqr_BsC>::VMcVct_NC (*vDens, mX, vCurM) ;				//	vDens <- rowSums (sqr (mX - vCurM))
 
 		EO<UOP::Aa_Bm_exp_Adm2>::VSc (*vDens, dFact * m_dDensFact) ;
-	}
-
-////////////////
-//  CClust_S  //	
-////////////////
-
-	CClust_S::CClust_S (double *pdM, double *pdS)
-		: CClust_M (pdM)
-		, m_dPd_Pp1 ((m_p) / (m_p  + 1.0))
-		, m_mEVal (m_p, m_K)
-		, m_amEVec (m_p, m_p, m_K), m_amCurS (m_p, m_p, m_K),m_amBestS (pdS, m_p, m_p, m_K)
-	{
-		
-	}
-
-/*	CClust_S::CClust_S (t_size n, t_size p, t_size k, double dAlpha, double dZeroTol, double *pdX, int *pnAssign, double *pdClustSize, double *pdClustWeights, double *pdObjER, int *pnConvER, double *pdM, double *pdS)
-		: CClust (n, p, k, dAlpha, dZeroTol, pdX, pnAssign, pdClustSize, pdClustWeights, pdObjER, pnConvER)
-		, CClust_M (n, p, k, dAlpha, dZeroTol, pdX, pnAssign, pdClustSize, pdClustWeights, pdObjER, pnConvER, pdM)
-		, m_amEVec (m_p, m_p, m_K), m_amCurS (m_p, m_p, m_K),m_amBestS (pdS, m_p, m_p, m_K)
-		, m_dPd_Pp1 ((m_p) / (m_p  + 1.0))
-		, m_mEVal (m_p, m_K)
-		{
-			
-		}
-*/
-	void CClust_S::EstimInitClustParams (int k, const SCVecN &vNIdx)
-	{
-		SMatD mDCurCluster (m_aTemp [0], m_p + 1, m_p) ;
-
-		SVecD vDCurMean = m_mCurM.GetColRef (k) ;	//	2do: use m_avCurM [k]	-> Implement	SCVecArray
-		vDCurMean.Reset (0) ;
-									//	stores the subsetted X matrix into MDCurCluster, and sums up it's columns to vcDCurMean.
-		EO<UOP::AaC_BpaC>::MsVetMcdVcei (!mDCurCluster, *vDCurMean, m_mX, vNIdx) ;
-
-									//	Divide the colSums of MDCurCluster by it's number of rows. -> vDCurMean is a mean vector.
-		EO<SOP::a_divide>::VSc (*vDCurMean, mDCurCluster.nrow ()) ;
-
-									//	Centers the mDCurCluster - matrix
-		EO<SOP::a_minus>::MVcet (!mDCurCluster, vDCurMean) ;
-
-									//	Calculating the covariance matrix
-		cov_centered_NC (!m_amCurS[k], mDCurCluster, m_dPd_Pp1) ;
-	
-	}
-
-	void CClust_S::SaveCurResult ()
-	{
-		t_size k ;
-		for (k = m_K - 1; k != NAI; k--)
-			m_amBestS[k].Copy_NC (m_amCurS[k]) ;	//	2do: use tensor!
-
-		CClust_M::SaveCurResult () ;
-	}
-
-	void CClust_S::SetSingularIniParams ()
-	{
-		//	setting all covariance matrices to ident matrix and correspondingly changes the eigenvalues & vectors
-
-		t_size k ;
-		for (k = m_K - 1; k != NAI; k--)
-		{
-			SetDiag_sq_NC (!m_amCurS[k]) ;
-			SetAntiDiag_sq_NC (!m_amEVec[k]) ;
-		}
-		m_mEVal.Reset (1) ;
-	}
-
-	void CClust_S::CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact)
-	{
-
-		const SVecD &vCurM = m_mCurM.GetColRef (k) ;
-		const SCVecD &vEVal = m_mEVal.GetColRef (k) ;
-		const SCMatD &mEVec = m_amEVec [k] ;
-
-		SMatD mZ (m_aTemp[0], mX.dim ()) ;
-		SVecD vTemp (m_aTemp[1], m_p) ;
-		SMatD mXc (m_aTemp[2], mX.dim ()) ;
-
-		EO<SOP::subtract>::MMcVct_NC (!mXc, mX, vCurM) ;					//	centering X
-
-//		m_mTempNP1.Reshape (mX.nrow (), mX.ncol ()) ;
-//		FC_ElOp<FC::FC_minus, DWORD>::OpMV_row (mX, vCurM, m_mTempNP1) ;	// TempNP1 = X centered
-
-		sme_matmult_NC (mXc, mEVec, !mZ) ;
-
-//		m_mTempNP2.Reshape (mX.nrow (), mX.ncol ()) ;
-//		matmultmat (m_mTempNP1, mEVec, m_mTempNP2) ;						//	X scaled (Z)
-
-//		m_vTempN1.Reshape (m_p) ;
-
-		EO<SOP::pow_r>::VScVc (*vTemp, -0.5, vEVal) ;						//	vTemp <- eval^(0.5)
-
-//		FC_ElOp<FC::FC_pow, DWORD>::OpVE (vEVal, -0.5, m_vTempN1) ;			//	Gamma ^-0.5
-
-		vDens.Reset (0) ;
-		EO<UOP::Apa_sqr_BmC>::VMcVct_NC (*vDens, mZ, vTemp) ;				//	vDens <- rowSums (sqr (mZ %*% vTemp))
-
-//		FC_ElOpAs<FC::FC_multiply>::OpMV_row (m_mTempNP2, m_vTempN1) ;		//	Z %*% Gamm ^-0.5
-//		FC_ElOpAs<FC::FC_sqr>::OpM (m_mTempNP2) ;							//	sqr (Z %*% Gamm ^-0.5)
-//		rowSums (m_mTempNP2, vDens) ;										//	 == mahalanobis
-
-		const double dDet = prod (vTemp) ;
-		//EO<SOP::a_multiply>::SVc (dDet, vTemp) ;							//	dDet <- prod (exp (eval^-(0.5)/2))
-
-//		FC_ElOpAs<FC::FC_multiply>::OpVE (vDens, -0.5) ;					//	mahalanobis * 0.5
-//		FC_ElOpAs<FC::FC_exp>::OpV (vDens) ;								//	exp (maha / 2)
-//		double dDet = prod (m_vTempN1) ;									//	||Sigma||
-
-		EO<UOP::Aa_Bm_exp_Adm2>::VSc (*vDens, dDet * dFact * m_dDensFact) ;
 	}
 
 ////////////////
@@ -752,251 +531,17 @@
 			EO<SOP::divide_r>::VScVc (*m_vWeights, m_dwNoTrim, m_vClustSize) ;	//	m_vWeights <- m_vClustSize / m_dwNoTrim
 	}
 
-
-
-////////////////
-//  CClust_F  //
-////////////////
-
-	CClust_F::CClust_F (double dM, double *pdZ)
-		: m_dM (dM)
-		, m_dMm1Inv (1 / (m_dM - 1))
-		, m_mZ (m_n, m_K), m_mZ_best (pdZ, m_n, m_K), m_mZOld (m_n, m_K)
-	{
-
-	}
-
-	void CClust_F::SaveCurResult ()
-	{
-		m_mZ_best.Copy_NC (m_mZ) ;
-	}
-
-	double CClust_F::CalcObjFunc ()
-	{
-		SVecD vDensity (m_aTemp[3], m_n) ;
-
-		t_size k ;
-		double dObj = 0, *pdDens, * const pdEndDens = vDensity.GetDataEnd () ;
-		const double *pdClustSize = m_vClustSize ;
-
-//		for (k = m_K - 1; k != NAI; --k)
-		for (k = 0; k < m_K; ++k)
-		{
-			const double &dClustSize = pdClustSize [k] ;
-			if (dClustSize <= m_dZeroTol)
-				continue ;
-
-			CalcDensity (m_mX, vDensity, k) ;	//	2do: introduce SCVecArray
-
-			double *pdZ = m_mZ.GetData (0, k) ;
-			double dZSum = 0 ;
-
-			pdDens = vDensity ;
-			while (pdDens < pdEndDens)
-			{
-				if (*pdDens <= 0.0)
-				{
-					dZSum += *pdZ ;
-					if (dZSum > m_dZeroTol)
-						return meal_NegInf () ;
-				}
-				else
-					dObj += *pdZ * log (*pdDens) ;
-
-				++pdZ ;
-				++pdDens ;
-			}
-
-			if (!m_nEqualWeights)	//	this can be avoided when equal-sized clusters are expected (only adding a fixed value to each object. function)
-				dObj += dClustSize * log (m_vWeights (k)) ;
-		}
-
-		return dObj ;
-	}
-
-
-	BOOL CClust_F::FindClustAssignment ()
-	{
-		t_size k ;
-		for (k = m_K - 1; k != NAI; k--)
-			CalcDensity (m_mX, m_mLL.GetColRef (k), k, m_vWeights (k)) ;
-
-		SVecD vLLRow (m_aTemp[3], m_K) ;
-		SVecD vZRow (m_aTemp[4], m_K) ;
-		SVecD vDisc (m_aTemp[5], m_n) ;
-
-		double *pdDisc = vDisc ;
-		int *pnAssign = m_vInd ;
-
-		for (k = 0; k < m_n; ++k)
-		{
-			CopyRow (*vLLRow, m_mLL, k) ;
-			CalcFuzzyRow (vLLRow, vZRow, *pdDisc, *pnAssign) ;
-			CopyRow (!m_mZ, vZRow, k) ;
-
-			++pdDisc ;
-			++pnAssign ;
-		}
-
-		FindOutliers (vDisc, m_vInd) ;
-
-		pnAssign = m_vInd ;
-		for (k = 0; k < m_n; ++k)														//	setting the rows of m_mZ which correspond to trimmed observations to zero.
-		{
-			if (*pnAssign == -1)
-				ResetRow (!m_mZ, 0, k) ;
-			++pnAssign ;
-		}
-
-		if (equal (m_mZ, m_mZOld))														//	the m_mZ matrix didn't change 
-			return FALSE ;
-
-		m_mZOld.Copy (m_mZ) ;															//	save current m_mZ - matrix
-
-		colSums_NC (*m_vClustSize, m_mZ) ;												//	calculate cluster sizes
-
-//		double * const pdClustSize = m_vClustSize ;
-//		for (k = m_p - 1; k != NAI; k--)
-//			NotifyClusterSize (k, pdClustSize[k]) ;
-
-		if (!m_nEqualWeights)
-			EO<SOP::divide_r>::VScVc (*m_vWeights, sum (m_vClustSize), m_vClustSize) ;	//	calculate cluster weights (if necessary)
-
-		return TRUE ;
-	}
-
-	void CClust_F::CalcFuzzyRow (const SCVecD &ll, const SVecD &z, double &dDisc, int &nInd)	//	temp1
-	{
-		ASSERT (ll.size () == z.size()) ;
-		select_cluster (dDisc, nInd, ll) ;
-
-		if (dDisc >= 1
-			//|| dDisc <= 0
-		)
-		{
-			SetCatZ (z, nInd) ;
-			if (dDisc > 0)
-				dDisc = log (dDisc) ;
-			return ;
-		}
-
-		SVecD ll_log (m_aTemp[1], ll.dim ()) ;
-		EO<UOP::neg_log_0set0>::VVc_NC (*ll_log, ll) ;
-
-		double *const pdL = ll_log,  *pdL1 = pdL, *pdL2, * const pdEndL = ll_log.GetDataEnd () ;
-		double *pdZ = z ;
-		double dSumZ = 0 ;
-
-		dDisc = 0 ;
-
-		while  (pdL1 < pdEndL)
-		{
-			*pdZ = 0 ;
-			if (*pdL1 > 0)		//	only if we have anything to add..
-			{
-
-				for (pdL2 = pdL; pdL2 < pdEndL; ++pdL2)
-					if (*pdL2 > 0)
-						*pdZ += pow (*pdL1 / *pdL2, m_dMm1Inv) ;
-
-				if (*pdZ > 0)
-				{
-					dSumZ += *pdZ ;
-					*pdZ = pow (*pdZ, -m_dM) ;
-					dDisc -= *pdL1 * *pdZ ;	//	*pdL1 is the negative log..
-				}
-			}
-			++pdL1 ;
-			++pdZ ;
-		}
-
-		if (dSumZ <= 0)
-		{
-			z.Reset (1.0 / m_K) ;
-			dDisc = 0 ;
-			EO<UOP::Apa_log_B_limit0>::SVc (dDisc, ll) ;	//	again calculating logarithms, because zeros have been removed earliear.
-			dDisc /= m_K ;
-//			SetCatZ (z, nInd) ;								//	old, wrong implementation
-//			dDisc = -pdL[nInd] ;
-		}
-	}
-
-	void CClust_F::SetCatZ (const SVecD &z, int nIdx)
-	{
-		double *pdZ = z, *const pdEndZ = z.GetDataEnd () ;
-		
-		while (pdZ < pdEndZ)
-		{
-			*pdZ = !nIdx ;
-			--nIdx ;
-			++pdZ ;
-		}
-	}
-
-/////////////////
-//  CClust_CS  //
-/////////////////
-
-	CClust_CS::CClust_CS (double *pdM, double *pdS)
-		: CClust_S (pdM, pdS)
-	{
-
-	}
-
-	void CClust_CS::EstimClustParams ()
-	{		//	calculates the mean and the cov matrix of the clusters currently defined by m_vIndTrim
-		t_size k ;
-
-		SMatD mCurX (m_aTemp[0]) ;						//	2do: eval max clustersize and require this matrix.
-
-		for (k = m_K - 1; k != NAI; k--)
-//		for (k = 0; k < m_K; k++)
-		{
-			t_size dwCurClustSize = (t_size) m_vClustSize (k) ;
-
-			if (!dwCurClustSize)
-				continue ;
-
-			SVecD vDCurMean = m_mCurM.GetColRef (k) ;	//	2do: use m_avCurM [k]	-> Implement	SCVecArray
-
-			vDCurMean.Reset (0) ;
-
-			mCurX.Require (dwCurClustSize, m_p) ;
-
-											//	stores the subsetted X matrix into mCurX, and sums up it's columns to vcDCurMean.
-			EO<UOP::AaC_BpaC>::MsVetMcdScgVceg_NC (!mCurX, *vDCurMean, m_mX, k, m_vInd) ;
-
-											//	Divide the colSums of mCurX by it's number of rows. -> vDCurMean is a mean vector.
-			EO<SOP::a_divide>::VSc (*vDCurMean, dwCurClustSize) ;
-
-			if (dwCurClustSize > 1)
-			{
-											//	Centers the mCurX - matrix
-				EO<SOP::a_minus>::MVcet (!mCurX, vDCurMean) ;
-
-											//	Calculating the covariance matrix
-				cov_centered_NC (!m_amCurS[k], mCurX, ((dwCurClustSize - 1.0) / dwCurClustSize)) ;
-			}
-			else
-				m_amCurS[k].Reset (0) ;
-		}
-	}
-
-	void CClust_CS::SaveCurResult ()
-	{
-		CClust_C::SaveCurResult () ;
-		CClust_S::SaveCurResult () ;
-	}
-
-
 /////////////////
 //  CClust_CM  //
 /////////////////
 
-	CClust_CM::CClust_CM (double *pdM)
-		: CClust_M (pdM)
+	CClust_CM::CClust_CM (t_size p, t_size k, double *pdM)
+		: CClust_M (p, k, pdM)
 	{
 
+                //VT::22.03.2023
+                //meal_printf("\nMY-TRACE ... CClust_CM() constructor 1 ...\n");
+                //meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
 	}
 
 	void CClust_CM::EstimClustParams ()
@@ -1029,89 +574,3 @@
 		CClust_M::SaveCurResult () ;
 	}
 
-/////////////////
-//  CClust_FS  //
-/////////////////
-
-	CClust_FS::CClust_FS (double dM, double *pdZ, double *pdM, double *pdS)
-		: CClust_F (dM, pdZ), CClust_S (pdM, pdS)
-	{
-		
-	}
-
-	void CClust_FS::EstimClustParams ()
-	{
-		t_size k ;
-
-		SMatD mXc (m_aTemp[0], m_mX.dim ()) ;
-		const double *pClustSize = m_vClustSize ;
-
-		for (k = m_K - 1; k != NAI; k--)
-		{
-			const double &dCurClustSize = pClustSize [k] ;
-			if (dCurClustSize > m_dZeroTol)
-			{
-				SVecD vDCurMean = m_mCurM.GetColRef (k) ;	//	2do: use m_avCurM [k]	-> Implement	SCVecArray
-
-					//R	iter$center[k,] = (t(iter$z_ij[,k]) %*% X) / iter$csize[k]
-				vDCurMean.Reset (0) ;
-				EO<SOP::ApaBmC>::VtMcVc_NC (*vDCurMean, m_mX, m_mZ.GetColRef (k)) ;
-				EO<SOP::a_divide>::VSc (*vDCurMean, dCurClustSize) ;
-
-					//R	X.c <- (X - matrix (iter$center[k,], ncol = pa$p, nrow = pa$n, byrow = TRUE))
-				EO<SOP::subtract>::MMcVct_NC (!mXc, m_mX, vDCurMean) ;
-
-					//R	iter$sigma[,,k] <- (t(X.c * iter$z_ij[,k]) %*% X.c) / iter$csize[k]
-				sme_matmult_at_diagb_a (mXc, m_mZ.GetColRef (k), !m_amCurS [k]) ;
-				EO<SOP::a_divide>::VSc (*m_amCurS [k], dCurClustSize) ;
-			}
-			else
-				m_amCurS[k].Reset (0) ;
-		}
-	}
-
-	void CClust_FS::SaveCurResult ()
-	{
-		CClust_F::SaveCurResult () ;
-		CClust_S::SaveCurResult () ;
-	}
-
-
-/////////////////
-//  CClust_FM  //
-/////////////////
-
-	CClust_FM::CClust_FM (double dM, double *pdZ, double *pdM)
-		: CClust_F (dM, pdZ), CClust_M (pdM)
-	{
-
-	}
-
-	void CClust_FM::EstimClustParams ()
-	{
-		t_size k ;
-
-		SMatD mXc (m_aTemp[0], m_mX.dim ()) ;
-		const double *pClustSize = m_vClustSize ;
-
-		for (k = m_K - 1; k != NAI; k--)
-		{
-			const double &dCurClustSize = pClustSize [k] ;
-
-			if (dCurClustSize <= m_dZeroTol)
-				continue ;
-
-			SVecD vDCurMean = m_mCurM.GetColRef (k) ;	//	2do: use m_avCurM [k]	-> Implement	SCVecArray
-
-				//R	iter$center[k,] = (t(iter$z_ij[,k]) %*% X) / iter$csize[k]
-			vDCurMean.Reset (0) ;
-			EO<SOP::ApaBmC>::VtMcVc_NC (*vDCurMean, m_mX, m_mZ.GetColRef (k)) ;
-			EO<SOP::a_divide>::VSc (*vDCurMean, dCurClustSize) ;
-		}
-	}
-
-	void CClust_FM::SaveCurResult ()
-	{
-		CClust_F::SaveCurResult () ;
-		CClust_M::SaveCurResult () ;
-	}

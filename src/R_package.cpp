@@ -46,7 +46,9 @@ R_MEAL_SETTINGS ("heinrich_fritz@hotmail.com") ;	//	settings for the R meal - im
 	{
 		TRY (
                 //VT::08.05.2018
-                // meal_printf("MY-TRACE ... Entering C_tclust()/CTClust()...\n");
+                //VT::22.03.2023
+                // meal_printf("\nMY-TRACE ... Entering C_tclust()/CTClust()...\n");
+                // meal_printf("\n%d %d %d \n", pnParIn[0], pnParIn[1], pnParIn[2]);
 				CTClust (pnParIn, pnParOut, pdParIn, pdParOut, pdX, pdM, pdS, pnAssign, pdClustSize, pdWeights, pdZ, pdObjER, pnConvER) ;
 			)
 	}

@@ -1,7 +1,7 @@
 #include "tclust.h"
 
 	CTClust::CTClust (int *pdwParamIn, double *pdParamIn, double *pdS, double *pdCSize)
-		: m_p (pdwParamIn[0]), m_K (pdwParamIn[1]), m_nDeter (pdwParamIn[6]), m_dwIterTune1 (pdwParamIn[2]), m_dwIterTune2 (pdwParamIn[3]), m_dwIterTune3 (pdwParamIn[4]), m_dwOVV (pdwParamIn[5])
+		: m_n (pdwParamIn[0]), m_p (pdwParamIn[1]), m_K (pdwParamIn[2]), m_nDeter (pdwParamIn[6]), m_dwIterTune1 (pdwParamIn[2]), m_dwIterTune2 (pdwParamIn[3]), m_dwIterTune3 (pdwParamIn[4]), m_dwOVV (pdwParamIn[5])
 //		, m_dwTrace (2)
 		, m_nConvCount (m_nFuzzy), m_nIterSuccess (m_nFuzzy), m_nCode (m_nFuzzy), m_nErrExc (m_nFuzzy), m_dwCountRestrOk(m_nFuzzy)
 		, m_pnConvER (NULL)
@@ -25,10 +25,13 @@
 		, m_amCurS (pdS, m_p, m_p, m_K)
 	{
 		meal_GetRNGstate () ;
+                //VT::22.03.2023
+                //  meal_printf("\nMY-TRACE ... CTClust() constructor 1 ...\n");
+                //  meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
 	}
 
 	CTClust::CTClust (int *pdwParamIn, double *pdParamIn, double *pdS, double *pdCSize, double *pdEVec, double *pdEval)
-		: m_p (pdwParamIn[0]), m_K (pdwParamIn[1]), m_nDeter (pdwParamIn[6]), m_dwIterTune1 (pdwParamIn[2]), m_dwIterTune2 (pdwParamIn[3]), m_dwIterTune3 (pdwParamIn[4]), m_dwOVV (pdwParamIn[5])
+		: m_n (pdwParamIn[0]), m_p (pdwParamIn[1]), m_K (pdwParamIn[2]), m_nDeter (pdwParamIn[6]), m_dwIterTune1 (pdwParamIn[2]), m_dwIterTune2 (pdwParamIn[3]), m_dwIterTune3 (pdwParamIn[4]), m_dwOVV (pdwParamIn[5])
 		, m_nConvCount (m_nFuzzy), m_nIterSuccess (m_nFuzzy), m_nCode (m_nFuzzy), m_nErrExc (m_nFuzzy), m_dwCountRestrOk (m_nFuzzy)
 		, m_pnConvER (NULL)
 
@@ -52,6 +55,9 @@
 		, m_amEVec (m_p, m_p, m_K), m_amCurS (pdS, m_p, m_p, m_K)
 	{
 		meal_GetRNGstate () ;
+                //VT::22.03.2023
+                //  meal_printf("\nMY-TRACE ... CTClust() constructor 2 ...\n");
+                //  meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
 	}
 
 	CTClust::CTClust (int *pnParIn, int *pnParOut, double *pdParIn, double *pdParOut, double *pdX, double *pdM, double *pdS, int *pnAssign, double *pdClustSize, double *pdWeights, double *pdZ, double *pdObjER, int *pnConvER)
@@ -99,6 +105,11 @@
 
 			//	splitting matrices and tensors into vector - and matrix arrays
 		meal_GetRNGstate () ;
+
+                //VT::22.03.2023
+                //  meal_printf("\nMY-TRACE ... CTClust() constructor 3 ...\n");
+                //  meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
+
 		calc () ;
 	}
 

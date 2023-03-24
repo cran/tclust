@@ -2,8 +2,11 @@
 
 	CTKMeans::CTKMeans (t_size n, t_size p, t_size k, double dAlpha, double dZeroTol, double *pdX, int *pnAssign, double *pdClustSize, double *pdClustWeights, int nEqualWeights, int nTrace, double *pdM)
 		: CClust (n, p, k, dAlpha, dZeroTol, pdX, pnAssign, pdClustSize, pdClustWeights, nEqualWeights, nTrace)
-		, CClust_CM (pdM)
+		, CClust_CM (p, k, pdM)
 	{
+                //VT::22.03.2023
+                //meal_printf("\nMY-TRACE ... CTKMeans() constructor 1 ...\n");
+                //meal_printf("\n%d %d %d \n", m_n, m_p, m_K);
 		
 	}
 

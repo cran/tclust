@@ -24,6 +24,11 @@ function (x, k = 3, alpha = 0.05, nstart = 50, iter.max = 20,
 
   par <- .tclust.preproc (par)
 
+##  VT::22.03.2023
+##  print(        as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
+##  		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace,
+##  					par$iter.tune, par$ovv)))
+
   ret.C <- .C(C_tclust, DUP = TRUE,
         as.integer (c (dim (par$x), par$k, par$fuzzy, par$nstart, par$iter.max,
 		            par$equal.weights, par$restr.C, par$deter.C, par$usetrace,

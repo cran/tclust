@@ -91,10 +91,25 @@
 
 	} ;
 
+	
+	class CClust_T : virtual public CClust
+	{
+	public:
+
+	protected:
+
+		virtual void FindOutliers (const SVecD &vDisc, const SVecN &vInd) ;
+		virtual void FindNearestClust (const SVecD &vDisc, const SVecN &vInd) ;
+		virtual void select_cluster (double &dDisc, int &nInd, const SCVecD &row) ;
+
+	} ;
+
 	class CClust_M : virtual public CClust
 	{
 	public:
-		CClust_M (t_size p, t_size k, double *pdM) ;
+		CClust_M (double *pdM) ;
+//		CClust_M (t_size n, t_size p, t_size k, double dAlpha, double dZeroTol, double *pdX, int *pnAssign, double *pdClustSize, double *pdClustWeights, double *pdM) ;
+
 
 	protected:
 
@@ -109,6 +124,32 @@
 
 	} ;
 
+	class CClust_S : public CClust_M
+	{
+	public:
+		CClust_S (double *pdM, double *pdS) ;
+//		CClust_S (t_size n, t_size p, t_size k, double dAlpha, double dZeroTol, double *pdX, int *pnAssign, double *pdClustSize, double *pdClustWeights, double *pdM, double *pdS) ;
+
+
+	protected:
+
+		virtual void EstimInitClustParams (int k, const SCVecN &vNIdx) ;
+		virtual void SaveCurResult () ;
+
+		virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) ;
+
+		virtual void SetSingularIniParams () ;
+
+//	Member Variables  //
+
+		const double m_dPd_Pp1 ;
+
+		SMatD m_mEVal ;
+
+
+		SCMatArrayD m_amEVec, m_amCurS, m_amBestEVec, m_amBestS ;
+
+	} ;
 
 	class CClust_C : virtual public CClust
 	{
@@ -121,10 +162,48 @@
 
 	} ;
 
+	class CClust_F : virtual public CClust
+	{
+		public:
+
+			CClust_F (double dM, double *pdZ) ;
+
+		protected:
+			virtual void SaveCurResult () ;
+
+			virtual double CalcObjFunc () ;
+			virtual BOOL FindClustAssignment () ;
+
+			void CalcFuzzyRow (const SCVecD &ll, const SVecD &z, double &dDisc, int &nInd) ; //	temp1
+
+			void SetCatZ (const SVecD &z, int nIdx) ;
+
+//	Member Variables  //
+
+		const double m_dM ;
+		const double m_dMm1Inv ;
+		SMatD m_mZ, m_mZ_best, m_mZOld ;
+	} ;
+
+	class CClust_CS : public CClust_C, public CClust_S
+	{
+	public:
+		CClust_CS (double *pdM, double *pdS) ;
+
+	protected:
+		virtual void EstimClustParams () ;
+		virtual double CalcObjFunc () { return CClust_C::CalcObjFunc () ; }
+		virtual void EstimInitClustParams (int k, const SCVecN &vNIdx) { CClust_S::EstimInitClustParams (k, vNIdx) ;}
+		virtual void SaveCurResult () ;
+		virtual void SetSingularIniParams () { CClust_S::SetSingularIniParams () ; }
+		virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) { CClust_S::CalcDensity (mX, vDens, k, dFact) ; }
+		virtual BOOL FindClustAssignment () { return CClust_C::FindClustAssignment () ; } ;
+	} ;
+
 	class CClust_CM : public CClust_C, public CClust_M
 	{
 	public:
-		CClust_CM (t_size p, t_size k, double *pdM) ;
+		CClust_CM (double *pdM) ;
 
 	protected:
 		virtual void EstimClustParams () ;
@@ -134,6 +213,37 @@
 		virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) { CClust_M::CalcDensity (mX, vDens, k, dFact) ; }
 		virtual BOOL FindClustAssignment () { return CClust_C::FindClustAssignment () ; } ;
 	} ;
+
+
+	class CClust_FS : public CClust_F, public CClust_S
+	{
+	public:
+		CClust_FS (double dM, double *pdZ, double *pdM, double *pdS) ;
+
+	protected:
+		virtual void EstimClustParams () ;
+		virtual double CalcObjFunc () { return CClust_F::CalcObjFunc () ; }
+		virtual void EstimInitClustParams (int k, const SCVecN &vNIdx) { CClust_S::EstimInitClustParams (k, vNIdx) ;}
+		virtual void SaveCurResult () ;
+		virtual void SetSingularIniParams () { CClust_S::SetSingularIniParams () ; }
+		virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) { CClust_S::CalcDensity (mX, vDens, k, dFact) ; }
+		virtual BOOL FindClustAssignment () { return CClust_F::FindClustAssignment () ; } ;
+	} ;
+
+	class CClust_FM : public CClust_F, public CClust_M
+	{
+	public:
+		CClust_FM (double dM, double *pdZ, double *pdM) ;
+
+	protected:
+		virtual void EstimClustParams () ;
+		virtual double CalcObjFunc () { return CClust_F::CalcObjFunc () ; }
+		virtual void EstimInitClustParams (int k, const SCVecN &vNIdx) { CClust_M::EstimInitClustParams (k, vNIdx) ;}
+		virtual void SaveCurResult () ;
+		virtual void CalcDensity (const SCMatD &mX, const SVecD &vDens, t_size k, const double dFact = 1) { CClust_M::CalcDensity (mX, vDens, k, dFact) ; }
+		virtual BOOL FindClustAssignment () { return CClust_F::FindClustAssignment () ; } ;
+	} ;
+
 
 	class UOP	//	user defined operators for class EO
 	{
