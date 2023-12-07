@@ -1,10 +1,10 @@
-07dca407e22907a15ee30a3a04c6945d *ChangeLog
-1b02000dc30194cff66590a7e2a9d7a1 *DESCRIPTION
+2015c63175c83bc7e61cdd806a0e9891 *ChangeLog
+5dbe78ee8ad29e21da5a7ce059f84653 *DESCRIPTION
 00f6ba15bc95c02485c79a51e40186fb *NAMESPACE
 777633e9758ef2691dd0a7a3ecfec1dc *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
-32ab7b1a23670f09eb932afaa4162e76 *R/R_restr.eigen.R
-432bd0f4f53692a2efa2206913c64e7c *R/R_tclust.R
+a53e368136c77ba0f98919ce5ea8a582 *R/R_restr.eigen.R
+5f00d6d37a51de124e4cf4147e364cb8 *R/R_tclust.R
 428b1ddddabe03f9b5884dc39463b29c *R/ScaleAdv.R
 4d90ca2ba9c11841c6a47cec52912c11 *R/ctlcurves.R
 9b8424b6de1e1fa481916036934d91e7 *R/discr_coords.R
@@ -16,7 +16,7 @@ b4a85513384769c55c4d931a5eabfa8c *R/plot_DiscrFact_p3.R
 f1a0ec82ab28cb0772204369cfa4b341 *R/print.tclust.R
 cf64a2e6ba1793122db3f6c8da0f180d *R/summary.DiscrFact.R
 68a451897524fef25af896eb407e2c9a *R/tclust-internal.R
-4503c8a13bd958422f01412c7d2b11da *R/tclust.R
+433a3b12c8970f631af07f142e5a39be *R/tclust.R
 9125afd4e2067c93ba3120c13dcb2452 *R/tclust.opt.restr.R
 f8baa656faa8db3660c829c5fada3aa4 *R/tkmeans.C.R
 666b8af967db73e56d13325623636c4e *R/tkmeans.R
@@ -28,8 +28,8 @@ c4e71bb9da5103406950f08bdf511c1b *data/swissbank.rda
 78a9cfca699653da2cf20b34b3161c48 *inst/doc/tclust.R
 7104c887f03b316d674b40c431e3ef63 *inst/doc/tclust.pdf
 e34d84495ccc062b32d3dded03a278db *inst/doc/tclust.rnw
-c597c8b37791fea4f4a51876c86ce5e3 *inst/work/clust.cpp
-de083e24b959dbf9467f800b61a9b1df *inst/work/clust.h
+b1b55b1800167dc076ce044d82ce83d2 *inst/work/clust.cpp
+c1a7b8dc9249bddbd0bbec8962aadbeb *inst/work/clust.h
 bff08d0d648e98df4e253dcc92e6e6cd *inst/work/tclust-notes.txt
 cceadf5f7d2f1a1372b3ce3f0785fd73 *man/DiscrFact.Rd
 2da4c4635f9d6761e6e29d2ef2c8e2ce *man/M5data.Rd
@@ -51,7 +51,7 @@ a345008d7eb6f22c46fce474f0f5f4cc *src/ML_meal.h
 33f5c7321b954c7b25874fc49fea65a4 *src/ML_passrng.h
 3bea4a11f9bcec02fc344b6b90cfae88 *src/Makevars
 55421a030d9e0cd85b3c41cc7ab0fed4 *src/R.Inc.h
-0516c4f17fdd4d25ab029f5ed32b0d72 *src/R_meal.cpp
+c246a7c2311a09dec18008b64f66ddd9 *src/R_meal.cpp
 3f8f4a18576964e1deecaf904a0ab314 *src/R_meal.h
 7e84e3d4804199091cf1164c6ff19e14 *src/R_meal_BLAS.cpp
 e26f55d98107bbf10c868677fcc6df63 *src/R_package.cpp

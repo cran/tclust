@@ -1,6 +1,6 @@
 Package: tclust
-Version: 1.5-4
-VersionNote: Released 1.5-2 on 2022-10-24 on CRAN
+Version: 1.5-5
+VersionNote: Released 1.5-4 on 2023-03-24 on CRAN
 Title: Robust Trimmed Clustering
 Author: Agustin Mayo Iscar, Luis Angel Garcia Escudero, Heinrich Fritz
 Maintainer: Valentin Todorov <valentin.todorov@chello.at>
@@ -12,5 +12,5 @@ URL: https://github.com/valentint/tclust
 BugReports: https://github.com/valentint/tclust/issues
 Repository: CRAN
 NeedsCompilation: yes
-Packaged: 2023-03-24 12:39:51 UTC; valen
-Date/Publication: 2023-03-24 17:20:02 UTC
+Packaged: 2023-12-07 12:15:40 UTC; valen
+Date/Publication: 2023-12-07 20:40:02 UTC
