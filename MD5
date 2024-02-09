@@ -1,6 +1,6 @@
-2015c63175c83bc7e61cdd806a0e9891 *ChangeLog
-5dbe78ee8ad29e21da5a7ce059f84653 *DESCRIPTION
-00f6ba15bc95c02485c79a51e40186fb *NAMESPACE
+2ff3b5ed8e1fbfe31949a8b7eb3f89e1 *ChangeLog
+2d7e2db133826f2c8e8b057065352002 *DESCRIPTION
+2043d166b25f01b699009847eea3c7a0 *NAMESPACE
 777633e9758ef2691dd0a7a3ecfec1dc *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
 a53e368136c77ba0f98919ce5ea8a582 *R/R_restr.eigen.R
@@ -13,7 +13,7 @@ a53e368136c77ba0f98919ce5ea8a582 *R/R_restr.eigen.R
 b05f323bfc052febde98c61a86e512b0 *R/plot_DiscrFact_p2.R
 b4a85513384769c55c4d931a5eabfa8c *R/plot_DiscrFact_p3.R
 32e68997147cd23730a3a328021295f7 *R/print.DiscrFact.R
-f1a0ec82ab28cb0772204369cfa4b341 *R/print.tclust.R
+d7c4ce2e96d3329d61f863edfed0caa0 *R/print.tclust.R
 cf64a2e6ba1793122db3f6c8da0f180d *R/summary.DiscrFact.R
 68a451897524fef25af896eb407e2c9a *R/tclust-internal.R
 433a3b12c8970f631af07f142e5a39be *R/tclust.R
@@ -42,7 +42,7 @@ e96ac128d6eca881813bda737f31c45f *man/plot.tclust.Rd
 91fd384a9643aebd56829490a03a3ddf *man/summary.DiscrFact.Rd
 98edcdb91f812d2b220364e5e0e3341d *man/swissbank.Rd
 500492db18b64e0e5745f159a7b5d586 *man/tclust.Rd
-5a24a3ddfd6599305d7bb3c6366bb5f2 *man/tkmeans.Rd
+ddeac5b06d9fcc1ab3e4807a94d8d4a7 *man/tkmeans.Rd
 ecd2a168df3dfeca85dccee4ef27399a *src/ML_meal.cpp
 a345008d7eb6f22c46fce474f0f5f4cc *src/ML_meal.h
 754991b8f3de457d07a1fff506e86b39 *src/ML_package.cpp
@@ -56,7 +56,7 @@ c246a7c2311a09dec18008b64f66ddd9 *src/R_meal.cpp
 7e84e3d4804199091cf1164c6ff19e14 *src/R_meal_BLAS.cpp
 e26f55d98107bbf10c868677fcc6df63 *src/R_package.cpp
 9921b1d8ec02c9ae0828b8d721e7ec3e *src/R_package.h
-6b499aa55ac3847641187c363027f2d2 *src/clust.cpp
+a49fa63e64f9eb9f3f2f72fc8e6d2012 *src/clust.cpp
 8911fed80a7ba46bdf374bfe66d736bb *src/clust.h
 8ad5313fabf3b19d951888eeedc24455 *src/perftimer.h
 bbb7d4e3c63cd776ad813b2338e78ea2 *src/restr.cpp
@@ -76,10 +76,10 @@ e7cc8752ee645ca9acd669986556fcbf *src/smat.sort.h
 720f90ec2580a91fa5070970c83d430b *src/smat.stat.h
 d5c8e1a30c94e0032f9a4b5ada5bd3ff *src/smat_meal_passrng.h
 52c8756a0535181b763022e84dc4f355 *src/smat_meal_passrng_hpp.h
-f7bafd9d7e5ffb6d003cbf546b49ce2d *src/tclust.cpp
+94795be1f4f956bf3e8c7adfc947382d *src/tclust.cpp
 03f530c27db8c46d735a31e269a2adfd *src/tclust.h
 ec3791b660a06145408db91f10f811bd *src/tclust_init.c
-b3fbf2f63d0e838eb8bd62b14749d349 *src/tkmeans.cpp
+db1d5696abec5046d1e1a0deae1591ae *src/tkmeans.cpp
 253c7dd6825db26df588c61a1ae6d87f *src/tkmeans.h
 b91f4b7d2c5142160b3dbcaf2b4a31ea *tests/ttclust.R
 10c90b5301e573043e7a97fd64b1288e *tests/ttclust.Rout.save
