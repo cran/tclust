@@ -1,5 +1,5 @@
-22c66f581ac48b2a3e62ed3971b58a7b *ChangeLog
-3d9fe707dfae98668e11c29684eec115 *DESCRIPTION
+48a77c7a1eaec37b2bb54db7dbbaaca2 *ChangeLog
+26c75f96c364fedc95228869b6ae4596 *DESCRIPTION
 d518650a511ec253d2569823e8df5ee2 *NAMESPACE
 036edea74e93c2b139cba599ed039351 *R/DiscrFact.R
 b7a94ab3400d96e8ba4200c763b60c07 *R/R_restr.R
@@ -30,8 +30,8 @@ c4e71bb9da5103406950f08bdf511c1b *data/swissbank.rda
 bae16c3bac1b9c706d3d00e0db63bcd6 *data/wholesale.rda
 703185d301f11b451f12d46cfb235c0d *inst/CITATION
 f762a3030fccb4398d9697ab90b5c73b *inst/doc/tclust.R
-f492b680f2b520e593558432e92da0be *inst/doc/tclust.pdf
-aaca67d8559b19d8e6a3d6e1e19ce719 *inst/doc/tclust.rnw
+5267986244dc0a497efd8caee5ddcef8 *inst/doc/tclust.pdf
+939698f4e693d3c51b253251752f4cf1 *inst/doc/tclust.rnw
 3b30deada519f06ca23767e6cc2797b4 *inst/work/dmnorm-old.R
 57abf32d87c5f500b484e83a466bfc58 *man/DiscrFact.Rd
 b1a2343258ddaf20df6dc8e3e02cf21b *man/LG5data.Rd
@@ -55,10 +55,10 @@ d67f6b6a3396816d8d66f6a09c31799d *man/swissbank.Rd
 e811209600f5fce155b6894cc9df1de0 *src/Makevars.win
 f61d5cc889d738cf10cbac881456feb8 *src/RcppExports.cpp
 6d4de863ec917d5b25ba2a5a527ef52b *src/rlg.cpp
-c8404790f77f8e8391ce793404d7f5e6 *src/tclust.cpp
+ee8c766540c538492164fd612111e446 *src/tclust.cpp
 4b5e0c50e2ef7ec7732a83b03d0bb365 *src/tclust_types.h
-957ef522d84bf10dac0f5bd032b09a68 *src/tkmeans.cpp
-0a99a904febf02a3eb684220a47777d0 *tests/ttclust.R
-3d188ddb95f77f9eb8603ca983049e90 *tests/ttclust.Rout.save
+4992d943c879dcb48dc90ee00441c474 *src/tkmeans.cpp
+d92232cbd7347083c420e750cb6e7d8c *tests/ttclust.R
+a4eb9eebd1121629b5c8f501a9bad76f *tests/ttclust.Rout.save
 9960fd15aa6236fd3aaa41831f610571 *vignettes/tclust.bib
-aaca67d8559b19d8e6a3d6e1e19ce719 *vignettes/tclust.rnw
+939698f4e693d3c51b253251752f4cf1 *vignettes/tclust.rnw
