@@ -3,7 +3,6 @@
  *
  */
 
-//  Rcpp::compileAttributes("C:/users/valen/onedrive/myrepo/rrdev/robClus")
 //  Rcpp::compileAttributes("C:/projects/statproj/R/tclust")
 
 // #include <RcppCommon.h>
@@ -21,6 +20,7 @@ namespace Rcpp {
   template <> SEXP wrap(const iteration& iter) {
     return Rcpp::List::create(
       _["obj"] = iter.obj,
+      _["NlogL"] = iter.NlogL,
       _["cluster"] = iter.cluster,
       _["disttom"] = iter.disttom,
       _["size"] = iter.size,
@@ -64,6 +64,7 @@ Rcpp::List iter_to_list(iteration &iter)
       _["cluster"] = iter.cluster,
       _["disttom"] = iter.disttom,
       _["obj"] = iter.obj,
+      _["NlogL"] = iter.NlogL,
       _["size"] = iter.size,
       _["weights"] = iter.weights,
       _["code"] = iter.code,
@@ -479,25 +480,29 @@ arma::vec dmvnrm_arma_fast(arma::mat const &x, arma::rowvec const &mean, arma::m
  */
 void calcObj(arma::mat x, iteration &iter, params &pa)
 {
-  int n = pa.n;
-  int k = pa.k;
-  Rcpp::String opt = pa.opt;
+    int n = pa.n;
+    int k = pa.k;
+    Rcpp::String opt = pa.opt;
 
-  arma::vec ww(n);
-  arma::vec w;
+    // VT::25.09.2024 - Compute always the classification log-likelihood and store NlogL
+    //  which will be used to compute the BIC CLACLA and MICCLA.
+    arma::vec ww(n);
+    arma::vec w;
+    arma::vec ww1(n);
+    arma::vec w1;
 
-  if(opt == "HARD") {
     for (int ki = 0; ki < k; ki++) {
-      w = iter.weights(ki) * dmvnrm_arma_fast(x, iter.centers.row(ki), iter.cov.slice(ki)) % arma::conv_to<arma::mat>::from(iter.cluster == ki + 1);
-      ww = w % (w >= 0) + ww; //	calculates each individual contribution for the obj funct hard
+        w = iter.weights(ki) * dmvnrm_arma_fast(x, iter.centers.row(ki), iter.cov.slice(ki));
+        ww = w % (w >= 0) + ww;                                     //	calculates each individual contribution for the obj funct mixture
+        w1 = w % arma::conv_to<arma::mat>::from(iter.cluster == ki + 1);
+        ww1 = w1 % (w1 >= 0) + ww1;                                 //	calculates each individual contribution for the obj funct hard
     }
-  } else {
-    for (int ki = 0; ki < k; ki++) {
-      w = iter.weights(ki) * dmvnrm_arma_fast(x, iter.centers.row(ki), iter.cov.slice(ki));
-      ww = w % (w >= 0) + ww; //	calculates each individual contribution for the obj funct mixture
-    }
-  }
-  iter.obj = arma::accu(arma::log(ww.elem(arma::find(iter.cluster > 0))));
+    iter.NlogL = -2 * arma::accu(arma::log(ww1.elem(arma::find(iter.cluster > 0))));
+
+    if(opt == "HARD") 
+        iter.obj = -1 * iter.NlogL / 2;
+    else
+        iter.obj = arma::accu(arma::log(ww.elem(arma::find(iter.cluster > 0))));
 }
 
 /**
@@ -719,6 +724,7 @@ iteration tclust_c2(arma::mat x, int k, arma::uvec cluster, double alpha = 0.05,
     iter.cov = arma::cube(p, p, k);
     iter.cluster = cluster;
     iter.obj = 0.0,
+    iter.NlogL = 0.0,
     iter.size = size;
     iter.weights = size / no_trim;
     iter.code = 0;
@@ -794,6 +800,7 @@ Rcpp::List tclust_c1(arma::mat x, int k, double alpha = 0.05,
 
   iteration iter;
   iter.obj = 0.0,
+  iter.NlogL = 0.0,
   iter.cluster = arma::uvec(n);
   iter.size = arma::vec(k);
   iter.weights = arma::vec(k);
