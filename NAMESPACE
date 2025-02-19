@@ -16,7 +16,7 @@ importFrom("parallel", "detectCores", "makeCluster", "stopCluster")
 import("foreach", "foreach")
 import(doParallel)
 
-importFrom("ellipsis", "check_dots_used")
+importFrom("rlang", "check_dots_used")
 
 export(
     simula.rlg,
@@ -43,7 +43,8 @@ export(
     tkmeans,
     print.tkmeans,
     plot.tkmeans,
-    tclustIC
+    tclustIC,
+    randIndex
 )
 
 #   S3method (print, rlg)

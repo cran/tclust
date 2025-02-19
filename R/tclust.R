@@ -289,6 +289,11 @@ tclust <- function(x, k, alpha=0.05, nstart=500, niter1=3, niter2=20, nkeep=5, i
         niter1 <- iter.max
     }
         
+    if(equal.weights && opt == "MIXT") {
+        warning("The parameter 'equalweights' cannot be TRUE if mixture model approach is assumed (opt='MIXT')")
+        equal.weights <- FALSE
+    }
+
 	parlist <- list(k=k, alpha=alpha, nstart=nstart, niter1=niter1, niter2=niter2, nkeep=nkeep, 
         restr=restr, restr.C=restrC, deter.C=deterC, restr.fact=restr.fact, cshape=cshape, opt=opt,
         equal.weights=equal.weights, center=center, scale=scale,
@@ -416,25 +421,26 @@ tclust <- function(x, k, alpha=0.05, nstart=500, niter1=3, niter2=20, nkeep=5, i
     pb2 <- txtProgressBar(min = 0, max = nkeep, style = 3)
   }
   
-  best_iter <- NULL
-  best_iter_obj <- -Inf
-  
-  for(j in 1:nkeep){
-    iter <- tclust_c2(x, k, best_assig_list[[j]], alpha, restrC=restrC, deterC=deterC, restr.fact, cshape=cshape,
-        niter2, opt, equal.weights, zero_tol=1e-16)
+    best_iter <- NULL
+    best_iter_obj <- -Inf
     
-    if(iter$obj > best_iter_obj){
-      best_iter <- iter
-      best_iter_obj <- iter$obj
+    for(j in 1:nkeep){
+        iter <- tclust_c2(x, k, best_assig_list[[j]], alpha, restrC=restrC, deterC=deterC, restr.fact, cshape=cshape,
+            niter2, opt, equal.weights, zero_tol=1e-16)
+        
+        if(iter$obj > best_iter_obj){
+            best_iter <- iter
+            best_iter_obj <- iter$obj
+        }
+    
+        if(trace){
+            setTxtProgressBar(pb2, j)
+        }
     }
-    
+
     if(trace){
-      setTxtProgressBar(pb2, j)
+        cat("\n\n")
     }
-  }
-  if(trace){
-    cat("\n\n")
-  }
   
     ## Adjust the returned object to be similar to 'tclust': 
     
@@ -472,7 +478,7 @@ tclust <- function(x, k, alpha=0.05, nstart=500, niter1=3, niter2=20, nkeep=5, i
     best_iter$disttom <- NULL       # remove disttom which is used only in tkmeans objects
     
     ret <- c(best_iter, list(cluster.ini=matrix(unlist(cluster.ini), byrow=TRUE, nrow=length(cluster.ini)),
-        obj.ini=obj.ini, int=int, par=parlist, k=sum(best_iter$size > 0)))
+                obj.ini=obj.ini, int=int, par=parlist, k=sum(best_iter$size > 0)))
 
     ##  - Dimnames of center and cov
     dn.x <- dimnames(x)
