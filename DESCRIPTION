@@ -2,8 +2,8 @@ Package: tclust
 Type: Package
 Encoding: UTF-8
 Title: Robust Trimmed Clustering
-Version: 2.1-2
-VersionNote: Released 2.1-0 on 2025-02-19 on CRAN
+Version: 2.2-0
+VersionNote: Released 2.1-2 on 2025-06-29 on CRAN
 Authors@R: c(person("Valentin", "Todorov", role = c("aut", "cre"), email = "valentin@todorov.at", comment=c(ORCID = "0000-0003-4215-0245"))
          , person("Luis Angel", "García Escudero", role = "aut")
          , person("Agustín", "Mayo Iscar", role = "aut")
@@ -16,13 +16,14 @@ Description: Provides functions for robust trimmed clustering. The methods are
     Fritz et al. (2012) <doi:10.18637/jss.v047.i12>, 
     Garcia-Escudero et al. (2011)  <doi:10.1007/s11222-010-9194-z> and others.
 Depends: R(>= 3.6.2)
-Imports: Rcpp (>= 1.0.7), doParallel, parallel, foreach, MASS, rlang
+Imports: Rcpp (>= 1.0.7), doParallel, parallel, foreach, MASS, rlang,
+        methods
 Suggests: mclust, cluster, sn
 LazyLoad: yes
 License: GPL-3
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 URL: https://github.com/valentint/tclust
 BugReports: https://github.com/valentint/tclust/issues
 Repository: CRAN
@@ -32,5 +33,5 @@ Author: Valentin Todorov [aut, cre] (ORCID:
   Agustín Mayo Iscar [aut],
   Javier Crespo Guerrero [aut],
   Heinrich Fritz [aut]
-Packaged: 2025-06-28 23:28:04 UTC; valen
-Date/Publication: 2025-06-29 14:40:02 UTC
+Packaged: 2026-04-25 20:39:00 UTC; valen
+Date/Publication: 2026-04-26 10:20:03 UTC
