@@ -2,7 +2,7 @@ Package: tclust
 Type: Package
 Encoding: UTF-8
 Title: Robust Trimmed Clustering
-Version: 2.2-0
+Version: 2.2-3
 VersionNote: Released 2.1-2 on 2025-06-29 on CRAN
 Authors@R: c(person("Valentin", "Todorov", role = c("aut", "cre"), email = "valentin@todorov.at", comment=c(ORCID = "0000-0003-4215-0245"))
          , person("Luis Angel", "García Escudero", role = "aut")
@@ -33,5 +33,5 @@ Author: Valentin Todorov [aut, cre] (ORCID:
   Agustín Mayo Iscar [aut],
   Javier Crespo Guerrero [aut],
   Heinrich Fritz [aut]
-Packaged: 2026-04-25 20:39:00 UTC; valen
-Date/Publication: 2026-04-26 10:20:03 UTC
+Packaged: 2026-09-21 15:38:34 UTC; valen
+Date/Publication: 2026-09-21 16:30:02 UTC

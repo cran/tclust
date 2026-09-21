@@ -20,6 +20,11 @@
 
 using namespace Rcpp;
 
+Rcpp::List restrSigmaGPCM(arma::cube SigmaB, arma::vec niini, GPCMPars &pa,
+                          bool trace=false, 
+                          Rcpp::Nullable<arma::vec> lmd_=R_NilValue,
+                          Rcpp::Nullable<arma::cube> OMG_=R_NilValue);
+
 namespace Rcpp {
   template <> SEXP wrap(const iteration& iter) {
     return Rcpp::List::create(
@@ -361,41 +366,65 @@ arma::mat restr2Deter(arma::mat autovalues, arma::vec ni_ini, double restr_facto
  * @param iter: a reference to the cluster information. Its values are modified.
  * @param pa: a reference to the procedure parameters.
  */
-void fRestr(iteration &iter, params &pa) {
-    arma::cube u(pa.p, pa.p, pa.k); // Eigenvectors
-    arma::mat d(pa.p, pa.k);        // Eigenvalues
+void fRestr(iteration &iter, params &pa, GPCMPars &pars) {
 
-    for(int ki = 0; ki < pa.k; ki++) {
-
-        arma::vec eigval;
-        arma::mat eigvec;
-        arma::eig_sym(eigval, eigvec, iter.cov.slice(ki));
+    if(pa.restrC == 0) {
+        arma::cube u(pa.p, pa.p, pa.k); // Eigenvectors
+        arma::mat d(pa.p, pa.k);        // Eigenvalues
     
-        u.slice(ki) = eigvec;
-        d.col(ki) = eigval;
-    }
-
-    d.elem(find(d < 0)).fill(0);  // all eigenvalue < 0 are assigned to 0, this issue appears for numerical errors
+        for(int ki = 0; ki < pa.k; ki++) {
     
-    if(!pa.deterC)
-        d = restr2Eigenv(d, iter.size, pa.restr_fact, pa.zero_tol);
-    else {
-        //  iter.size.print("Autovalues size");
-        //  d.print("Autovalues to be restricted");
-        d = restr2Deter(d, iter.size, pa.restr_fact, pa.cshape, pa.zero_tol);
-    }
-    
-    // checking for singularity in all clusters.
-    int code = d.max() > pa.zero_tol;
-    iter.code = code;
-    
-    if(code)  {
-        // Reconstructing the cov matrices
-        // d.print();
-        for (int ki = 0; ki < pa.k; ki++) { 
-            iter.cov.slice(ki) = u.slice(ki) * arma::diagmat(d.col(ki)) * u.slice(ki).t();
+            arma::vec eigval;
+            arma::mat eigvec;
+            arma::eig_sym(eigval, eigvec, iter.cov.slice(ki));
+        
+            u.slice(ki) = eigvec;
+            d.col(ki) = eigval;
         }
-    }
+    
+        d.elem(find(d < 0)).fill(0);  // all eigenvalue < 0 are assigned to 0, this issue appears for numerical errors
+        
+        if(!pa.deterC)
+            d = restr2Eigenv(d, iter.size, pa.restr_fact, pa.zero_tol);
+        else {
+            //  iter.size.print("Autovalues size");
+            //  d.print("Autovalues to be restricted");
+            d = restr2Deter(d, iter.size, pa.restr_fact, pa.cshape, pa.zero_tol);
+        }
+        
+        // checking for singularity in all clusters.
+        int code = d.max() > pa.zero_tol;
+        iter.code = code;
+        
+        if(code)  {
+            // Reconstructing the cov matrices
+            // d.print();
+            for (int ki = 0; ki < pa.k; ki++) { 
+                iter.cov.slice(ki) = u.slice(ki) * arma::diagmat(d.col(ki)) * u.slice(ki).t();
+            }
+        }
+    }else {
+    
+        // VT:::23.07.2026: Check if one or more of the covariance matrices are sigular.
+        // If so, skip the call to restrSigmaGPCM() and return code=0
+        arma::vec cond(pa.k);
+        for(int ki = 0; ki < pa.k; ki++) {
+            cond(ki) = arma::rcond(iter.cov.slice(ki));
+        }
+        bool code = cond.min() >= arma::datum::eps;
+        
+        // DEBUG
+        // Rcout << "In fRestr(): cond=" << cond << std::endl;
+        // cond.print("cond");
+          
+        if(code) {
+            Rcpp::List tmp = restrSigmaGPCM(iter.cov, iter.size, pars);
+            iter.cov = Rcpp::as<arma::cube>(tmp["Sigma"]);
+            iter.OMG = Rcpp::as<arma::cube>(tmp["OMG"]);
+            iter.lmd = Rcpp::as<arma::vec>(tmp["lmd"]);
+            iter.code = code;
+        }
+    }    
 }
 
 /**
@@ -465,6 +494,12 @@ void inplace_tri_mat_mult(arma::rowvec &x, arma::mat const &trimat) {
   }
 }
 
+/*
+//  This version of dmvnrm_arma_fast() will crash in chol() if one of the covariances 
+//  is slightly non-positive definite.
+//  If this happens, we will replaace chol() by eigendecomposition.
+//  Alternatively, SVD can be used - more stable than eigen but also slower.
+
 arma::vec dmvnrm_arma_fast(arma::mat const &x, arma::rowvec const &mean, arma::mat const &cov, 
         bool const logd=false) {
         
@@ -488,6 +523,85 @@ arma::vec dmvnrm_arma_fast(arma::mat const &x, arma::rowvec const &mean, arma::m
     
     return exp(out);
 }
+*/
+
+arma::vec dmvnrm_arma_fast(const arma::mat &x,
+                           const arma::rowvec &mean,
+                           const arma::mat &cov,
+                           const bool logd = false)
+{
+    using arma::uword;
+    const uword n = x.n_rows;
+    const uword xdim = x.n_cols;
+
+    arma::vec out(n);
+
+    arma::mat U;
+    arma::mat rooti;
+    double rootisum;
+    bool chol_ok = arma::chol(U, cov);
+    
+    if (chol_ok) {
+        rooti = arma::inv(arma::trimatu(U));
+        rootisum = arma::sum(log(rooti.diag()));
+    } else {
+        
+        /*
+            // Fall back to SVD
+            arma::mat U, V;
+            arma::vec s;
+            arma::svd(U, s, V, cov);
+            
+            double tol = std::max(s.max(), 1.0) * 1e-12;
+            s.transform([tol](double x){ return std::max(x, tol); });
+            
+            rooti = U * arma::diagmat(1.0 / arma::sqrt(s));
+            rootisum = -0.5 * arma::sum(log(s));
+        */
+        
+        // Fall back to eigendecomposition
+        arma::vec eigval;
+        arma::mat eigvec;
+    
+        arma::eig_sym(eigval, eigvec, cov);
+    
+        // Tolerance for tiny negative eigenvalues
+        double tol = std::max(eigval.max(), 1.0) * 1e-12;
+    
+        eigval.for_each([tol](double &v) {
+            if (v < tol) v = tol;
+        });
+    
+        arma::vec invsqrt = 1.0 / arma::sqrt(eigval);
+    
+        rooti = eigvec * arma::diagmat(invsqrt);
+    
+        // log(det(rooti)) = -1/2 log(det(cov))
+        rootisum = -0.5 * arma::sum(log(eigval));
+    } 
+    
+    const double constants =
+        -(double)xdim / 2.0 * log2pi;
+
+    const double other_terms = rootisum + constants;
+
+    arma::rowvec z;
+
+    for (uword i = 0; i < n; ++i) {
+
+        z = x.row(i) - mean;
+
+        if (chol_ok) {
+            inplace_tri_mat_mult(z, rooti);
+        } else {
+            z *= rooti;
+        }
+
+        out(i) = other_terms - 0.5 * arma::dot(z, z);
+    }
+
+    return logd ? out : arma::exp(out);
+} 
 
 /**
  * Calculate the objective function value.
@@ -594,13 +708,17 @@ void findClustAssig(arma::mat x, iteration &iter, params &pa)
     bool equal_weights = pa.equal_weights;
     Rcpp::String opt = pa.opt;
     
-    //  Rcout << "Entering findClustAssig()" << std::endl;
+    //Rcout << "Entering findClustAssig()" << std::endl;
+    //iter.size.print("iter.size");
     
     arma::mat ll(n, k);
     for(int ki = 0; ki < k; ki++)   {        
         
         // VT::11.02.2025 - use the logs of the likelihood
         // ll.col(ki) = iter.weights(ki) + dmvnrm_arma_fast(x, iter.centers.row(ki), iter.cov.slice(ki), false);
+        
+        // iter.cov.slice(ki).print();
+        
         ll.col(ki) = log(iter.weights(ki)) + dmvnrm_arma_fast(x, iter.centers.row(ki), iter.cov.slice(ki), true);
     }
 
@@ -673,14 +791,20 @@ void findClustAssig(arma::mat x, iteration &iter, params &pa)
  * @param iter: a reference to the cluster information. Its values are modified.
  * @param pa: a reference to the procedure parameters.
  */
-void concentration_steps(int niter, arma::mat x, iteration &iter, params &pa)
+void concentration_steps(int niter, arma::mat x, iteration &iter, params &pa, GPCMPars &pars)
 {
+    // Rcout << "Enter concentration_steps ..." << std::endl;
 
     for(int i1 = 0; i1 < niter; i1++) {
-        fRestr(iter, pa); // restricting the clusters' scatter structure (Changes the iter object)
-        
-        // Rcout << "After frestr(): iter.code=" << iter.code << std::endl; 
-        
+
+    // Rcout << i1 << "   " << "Before fRestr() ..." << std::endl;
+    // iter.cov.print("cov before");
+
+        fRestr(iter, pa, pars); // restricting the clusters' scatter structure (Changes the iter object)
+    
+    // Rcout << i1 << "   " << "After fRestr(): iter.code=" << iter.code << std::endl;
+    // iter.cov.print("cov after");
+                
         if(iter.code == 0)  {
             if(i1 > 0) {
                 calcObj(x, iter, pa);
@@ -697,6 +821,7 @@ void concentration_steps(int niter, arma::mat x, iteration &iter, params &pa)
         findClustAssig(x, iter, pa); 
         
         // Rcout << "After findClustAssig(): iter.code=" << iter.code << ", i1=" << i1 << std::endl; 
+        
         if((int)iter.code == 2 || (i1 == niter - 1))
             break;
         
@@ -704,7 +829,9 @@ void concentration_steps(int niter, arma::mat x, iteration &iter, params &pa)
         estimClustPar(x, iter, pa); // estimates the cluster's parameters
     }
     
+    // Rcout << "Before calcObj():" << std::endl; 
     calcObj(x, iter, pa); // calculates the objcetive function value
+    // Rcout << "After calcObj():" << std::endl; 
 }
 
 // Internal function for concentration steps (refinement) in tclust()
@@ -735,7 +862,7 @@ void concentration_steps(int niter, arma::mat x, iteration &iter, params &pa)
 // @export
 // [[Rcpp::export]]
 iteration tclust_c2(arma::mat x, int k, arma::uvec cluster, double alpha = 0.05,
-                     int restrC=0, bool deterC=false, double restr_fact = 12, double cshape=1e10,
+                     int restrC=0, bool deterC=false, double restr_fact = 12, double cshape=1e10, Nullable<List> paList_ = R_NilValue,
                      int niter2 = 20, Rcpp::String opt = "HARD",
                      bool equal_weights = false, double zero_tol = 1e-16)
 {
@@ -762,6 +889,12 @@ iteration tclust_c2(arma::mat x, int k, arma::uvec cluster, double alpha = 0.05,
     
     arma::vec size = (arma::sum(posterior, 0)).t();
     
+    GPCMPars pars;
+    if(paList_.isNotNull()){
+        Rcpp::List paList(paList_);    // casting to underlying type List
+        pars = parsePars(paList);
+    }
+
     params pa;
     pa.n = n;
     pa.p = p;
@@ -784,6 +917,12 @@ iteration tclust_c2(arma::mat x, int k, arma::uvec cluster, double alpha = 0.05,
     iter.obj = 0.0,
     iter.NlogL = 0.0,
     iter.size = size;
+    iter.lmd = arma::vec(k);
+    iter.OMG = arma::cube(p, p, k);
+
+    // DEBUG
+    // Rcout << "Enter tclust_c2()=================================================" << std::endl;
+
     
     // VT::29.10.2024 - the results with or without equal_weights were identical
     //  because the condition 'if(!equal_weights)' was missing
@@ -803,10 +942,13 @@ iteration tclust_c2(arma::mat x, int k, arma::uvec cluster, double alpha = 0.05,
     //  To solve this, we do an exctra call to frestr(), if niter2 == 0.
 
     if(niter2 == 0) {
-        fRestr(iter, pa); 
+        fRestr(iter, pa, pars); 
     }
     
-    concentration_steps(niter2, x, iter, pa);
+    concentration_steps(niter2, x, iter, pa, pars);
+
+    // DEBUG
+    // Rcout << "Returning from tclust_c2():" << std::endl; 
     
     return iter;
 }
@@ -834,7 +976,7 @@ iteration tclust_c2(arma::mat x, int k, arma::uvec cluster, double alpha = 0.05,
 // @export
 // [[Rcpp::export]]
 Rcpp::List tclust_c1(arma::mat x, int k, double alpha = 0.05,
-                     int restrC=0, bool deterC=false, double restr_fact = 12, double cshape=1e10, 
+                     int restrC=0, bool deterC=false, double restr_fact = 12, double cshape=1e10, Nullable<List> paList_ = R_NilValue,
                      int niter1 = 3, Rcpp::String opt = "HARD",
                      bool equal_weights = false, double zero_tol = 1e-16)
 {
@@ -843,6 +985,12 @@ Rcpp::List tclust_c1(arma::mat x, int k, double alpha = 0.05,
   int p = x.n_cols;
   int no_trim = std::floor(n * (1 - alpha));
 
+    GPCMPars pars;
+    if(paList_.isNotNull()){
+        Rcpp::List paList(paList_);    // casting to underlying type List
+        pars = parsePars(paList);
+    }
+    
   params pa;
   pa.n = n;
   pa.p = p;
@@ -868,9 +1016,17 @@ Rcpp::List tclust_c1(arma::mat x, int k, double alpha = 0.05,
   iter.cov = arma::cube(p, p, k);
   iter.code = 0;
   iter.posterior = arma::mat(n, p);
+    iter.lmd = arma::vec(k);
+    iter.OMG = arma::cube(p, p, k);
 
-  initClusters(x, iter, pa);                // Cluster random initialization
-  concentration_steps(niter1, x, iter, pa); // Apply niter1 concentration steps
+    // DEBUG
+    // Rcout << "Enter tclust_c1()=================================================" << std::endl;
+
+  initClusters(x, iter, pa);                        // Cluster random initialization
+  concentration_steps(niter1, x, iter, pa, pars);   // Apply niter1 concentration steps
+
+    // DEBUG
+    // Rcout << "Returning from tclust_c1():" << std::endl; 
 
   return Rcpp::List::create(
       _["obj"] = iter.obj,
@@ -905,6 +1061,7 @@ arma::vec dmvnrm(arma::mat x, arma::rowvec mean, arma::mat cov) {
 
 //' Function to perform the E-step for a Gaussian mixture distribution
 //' @name estepRR
+//' @rdname estepRR
 //' @description Compute the log PDF for each observation, the posterior probabilities
 //'     and the objective function (total log-likelihood) for a Gaussian 
 //'     mixture distribution
@@ -976,7 +1133,8 @@ arma::vec dmvnrm(arma::mat x, arma::rowvec mean, arma::mat cov) {
 //'        dd$obj
 //'        dd$logpdf
 //'        dd$postprob
-        
+//' @export
+//'
 // [[Rcpp::export]]
 Rcpp::List estepRR(const arma::mat& ll) {
 
